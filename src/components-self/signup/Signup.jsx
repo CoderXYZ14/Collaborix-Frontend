@@ -1,9 +1,12 @@
+import { Button } from "@/components/ui/button";
 import InputBox from "../InputBox";
 import {
   HoverCard,
   HoverCardContent,
   HoverCardTrigger,
 } from "@/components/ui/hover-card";
+import { LogIn } from "lucide-react";
+import { Link } from "react-router-dom";
 
 const Signup = () => {
   return (
@@ -42,7 +45,7 @@ const Signup = () => {
                 I accept the{" "}
                 <HoverCard>
                   <HoverCardTrigger>
-                    <span className="font-bold text-primary-600 hover:underline text-blue-700 cursor-pointer">
+                    <span className="font-bold text-primary-600 hover:underline text-orange-600 cursor-pointer">
                       Terms and Conditions
                     </span>
                   </HoverCardTrigger>
@@ -54,6 +57,19 @@ const Signup = () => {
               </label>
             </div>
           </div>
+          <Button className="rounded-lg bg-orange-600 w-full text-sm">
+            Create an account
+            <LogIn className="ml-2" />
+          </Button>
+          <p class="text-sm font-light text-gray-500 dark:text-gray-400">
+            Already have an account?{" "}
+            <Link
+              to="#"
+              class="font-medium text-orange-600 hover:underline dark:text-primary-500"
+            >
+              Login here
+            </Link>
+          </p>
         </form>
       </div>
     </div>
