@@ -7,8 +7,11 @@ import {
   HoverCardContent,
   HoverCardTrigger,
 } from "@/components/ui/hover-card";
-import { LogIn } from "lucide-react";
+import { Alert, AlertDescription, AlertTitle } from "@/components/ui/alert";
+import { LogIn, Terminal } from "lucide-react";
 import { Link } from "react-router-dom";
+import { useDispatch } from "react-redux";
+import { login } from "../../store/authSlice.js";
 
 const Signup = () => {
   const [formData, setFormData] = useState({
@@ -19,6 +22,8 @@ const Signup = () => {
     password: "",
     termsAccepted: false,
   });
+  const [alert, setAlert] = useState({ show: false, message: "", type: "" });
+  const dispatch = useDispatch();
 
   const handleChange = (e) => {
     const isCheckbox = e.target.type === "checkbox";
@@ -37,23 +42,47 @@ const Signup = () => {
     };
 
     if (!termsAccepted) {
-      console.error("You must accept the terms and conditions to sign up.");
+      setAlert({
+        show: true,
+        message: "You must accept the terms and conditions to sign up.",
+        type: "error",
+      });
       return;
     }
-    console.log("Data being sent to the backend:", dataToSend);
     try {
       const response = await axios.post(
         "http://localhost:8000/api/v1/users/register",
         dataToSend
       );
       console.log("Account created successfully:", response.data);
+      dispatch(login({ userData: dataToSend }));
+      localStorage.setItem("userData", JSON.stringify(dataToSend));
+      setAlert({
+        show: true,
+        message: "Account created successfully!",
+        type: "success",
+      });
     } catch (error) {
+      setAlert({
+        show: true,
+        message: "Error creating account. Please try again.",
+        type: "error",
+      });
       console.error("Error creating account:", error);
     }
   };
   return (
     <div className="bg-gray-50 dark:bg-gray-900 flex justify-center items-center w-full h-screen">
       <div className="w-full max-w-md bg-white h-auto px-6 py-8 rounded-lg shadow dark:border dark:bg-gray-800 dark:border-gray-700">
+        {alert.show && (
+          <Alert className="bg-green-400">
+            <Terminal className="h-4 w-4" />
+            <AlertTitle>
+              {alert.type === "error" ? "Error" : "Success"}
+            </AlertTitle>
+            <AlertDescription>{alert.message}</AlertDescription>
+          </Alert>
+        )}
         <h1 className="text-xl font-bold text-gray-900 dark:text-white">
           Create an account
         </h1>
