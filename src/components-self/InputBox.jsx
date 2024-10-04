@@ -1,6 +1,5 @@
 import { Input } from "../components/ui/input";
 import { Label } from "../components/ui/label";
-import React from "react";
 
 const InputBox = ({ label, placeholder, type, name, value, onChange }) => {
   return (

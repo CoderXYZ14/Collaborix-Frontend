@@ -1,5 +1,7 @@
-import { Button } from "@/components/ui/button";
+import axios from "axios";
+import { useState } from "react";
 import InputBox from "../InputBox";
+import { Button } from "@/components/ui/button";
 import {
   HoverCard,
   HoverCardContent,
@@ -7,7 +9,6 @@ import {
 } from "@/components/ui/hover-card";
 import { LogIn } from "lucide-react";
 import { Link } from "react-router-dom";
-import axios from "axios";
 
 const Signup = () => {
   const [formData, setFormData] = useState({
@@ -20,16 +21,31 @@ const Signup = () => {
   });
 
   const handleChange = (e) => {
-    const { name, value, type, checked } = e.target;
+    const isCheckbox = e.target.type === "checkbox";
     setFormData({
       ...formData,
-      [name]: type === "checkbox" ? checked : value,
+      [e.target.name]: isCheckbox ? e.target.checked : e.target.value,
     });
   };
+
   const handleSubmit = async (e) => {
     e.preventDefault();
+    const { firstName, lastName, termsAccepted, ...rest } = formData;
+    const dataToSend = {
+      ...rest,
+      fullName: `${firstName} ${lastName}`,
+    };
+
+    if (!termsAccepted) {
+      console.error("You must accept the terms and conditions to sign up.");
+      return;
+    }
+    console.log("Data being sent to the backend:", dataToSend);
     try {
-      const response = await axios.post("/api/signup", formData);
+      const response = await axios.post(
+        "http://localhost:8000/api/v1/users/register",
+        dataToSend
+      );
       console.log("Account created successfully:", response.data);
     } catch (error) {
       console.error("Error creating account:", error);
@@ -128,11 +144,11 @@ const Signup = () => {
             Create an account
             <LogIn className="ml-2" />
           </Button>
-          <p class="text-sm font-light text-gray-500 dark:text-gray-400">
+          <p className="text-sm font-light text-gray-500 dark:text-gray-400">
             Already have an account?{" "}
             <Link
               to="#"
-              class="font-medium text-orange-600 hover:underline dark:text-primary-500"
+              className="font-medium text-orange-600 hover:underline dark:text-primary-500"
             >
               Login here
             </Link>
