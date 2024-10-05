@@ -9,7 +9,7 @@ import {
 } from "@/components/ui/hover-card";
 import { Alert, AlertDescription, AlertTitle } from "@/components/ui/alert";
 import { LogIn, Terminal } from "lucide-react";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import { useDispatch } from "react-redux";
 import { login } from "../../store/authSlice.js";
 
@@ -24,6 +24,7 @@ const Signup = () => {
   });
   const [alert, setAlert] = useState({ show: false, message: "", type: "" });
   const dispatch = useDispatch();
+  const navigate = useNavigate();
 
   const handleChange = (e) => {
     const isCheckbox = e.target.type === "checkbox";
@@ -49,28 +50,43 @@ const Signup = () => {
       });
       return;
     }
+
     try {
-      const response = await axios.post(
+      // Register the user
+      const registerResponse = await axios.post(
         "http://localhost:8000/api/v1/users/register",
         dataToSend
       );
-      console.log("Account created successfully:", response.data);
-      dispatch(login({ userData: dataToSend }));
-      localStorage.setItem("userData", JSON.stringify(dataToSend));
+      console.log("Account created successfully:", registerResponse.data);
+
+      const loginData = {
+        identifier: dataToSend.username,
+        password: dataToSend.password,
+      };
+      const loginResponse = await axios.post(
+        "http://localhost:8000/api/v1/users/login",
+        loginData
+      );
+
+      dispatch(login({ userData: loginResponse.data }));
+
+      localStorage.setItem("userData", JSON.stringify(loginResponse.data));
+
       setAlert({
         show: true,
-        message: "Account created successfully!",
+        message: "Account created and logged in successfully!",
         type: "success",
       });
     } catch (error) {
       setAlert({
         show: true,
-        message: "Error creating account. Please try again.",
+        message: "Error creating account or logging in. Please try again.",
         type: "error",
       });
-      console.error("Error creating account:", error);
+      console.error("Error creating account or logging in:", error);
     }
   };
+
   return (
     <div className="bg-gray-50 dark:bg-gray-900 flex justify-center items-center w-full h-screen">
       <div className="w-full max-w-md bg-white h-auto px-6 py-8 rounded-lg shadow dark:border dark:bg-gray-800 dark:border-gray-700">
