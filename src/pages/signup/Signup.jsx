@@ -1,7 +1,7 @@
 import { Signup as SignupComponent } from "../../components-self/index.js";
 const Signup = () => {
   return (
-    <div className="py-8">
+    <div className="">
       <SignupComponent />
     </div>
   );

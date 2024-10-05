@@ -52,7 +52,6 @@ const Signup = () => {
     }
 
     try {
-      // Register the user
       const registerResponse = await axios.post(
         "http://localhost:8000/api/v1/users/register",
         dataToSend
@@ -77,6 +76,7 @@ const Signup = () => {
         message: "Account created and logged in successfully!",
         type: "success",
       });
+      navigate("/");
     } catch (error) {
       setAlert({
         show: true,
@@ -99,6 +99,7 @@ const Signup = () => {
             <AlertDescription>{alert.message}</AlertDescription>
           </Alert>
         )}
+
         <h1 className="text-xl font-bold text-gray-900 dark:text-white">
           Create an account
         </h1>
