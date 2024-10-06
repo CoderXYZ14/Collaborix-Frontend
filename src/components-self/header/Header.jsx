@@ -1,4 +1,12 @@
 import { Button } from "@/components/ui/button";
+import {
+  Menubar,
+  MenubarContent,
+  MenubarItem,
+  MenubarMenu,
+  MenubarSeparator,
+  MenubarTrigger,
+} from "@/components/ui/menubar";
 import { CircleUser, Code2 } from "lucide-react";
 import { Link, NavLink, useLocation } from "react-router-dom";
 import { useSelector } from "react-redux";
@@ -69,14 +77,39 @@ const Header = () => {
             {!isAuthRoute && (
               <div className="flex items-center space-x-4">
                 {!isLoggedIn ? (
-                  <div className="mr-4">
-                    <Avatar className="w-8 h-8">
-                      {" "}
-                      {/* Reduced size */}
-                      <AvatarImage src="https://github.com/shadcn.png" />
-                      <AvatarFallback>CN</AvatarFallback>
-                    </Avatar>
-                  </div>
+                  <Menubar>
+                    <MenubarMenu>
+                      <MenubarTrigger>
+                        <Avatar className="w-8 h-8 rounded-full overflow-hidden cursor-pointer">
+                          <AvatarImage src="https://github.com/shadcn.png" />
+                          <AvatarFallback>CN</AvatarFallback>
+                        </Avatar>
+                      </MenubarTrigger>
+                      <MenubarContent>
+                        <MenubarItem
+                          onSelect={() => console.log("Profile clicked")}
+                        >
+                          Profile
+                        </MenubarItem>
+                        <MenubarItem
+                          onSelect={() => console.log("Settings clicked")}
+                        >
+                          Settings
+                        </MenubarItem>
+                        <MenubarSeparator />
+                        <MenubarItem
+                          onSelect={() => console.log("Help clicked")}
+                        >
+                          Help
+                        </MenubarItem>
+                        <MenubarItem
+                          onSelect={() => console.log("Sign Out clicked")}
+                        >
+                          Sign Out
+                        </MenubarItem>
+                      </MenubarContent>
+                    </MenubarMenu>
+                  </Menubar>
                 ) : (
                   <>
                     <Link to="/signin">

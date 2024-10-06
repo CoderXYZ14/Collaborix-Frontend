@@ -4,7 +4,7 @@ import InputBox from "../InputBox";
 import { Button } from "@/components/ui/button";
 import { Alert, AlertDescription, AlertTitle } from "@/components/ui/alert";
 import { LogIn, Terminal } from "lucide-react";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import { useDispatch } from "react-redux";
 import { login } from "../../store/authSlice.js";
 
@@ -22,7 +22,7 @@ const Signin = () => {
       [e.target.name]: e.target.value,
     });
   };
-
+  const navigate = useNavigate();
   const handleSubmit = async (e) => {
     e.preventDefault();
     try {
@@ -38,6 +38,7 @@ const Signin = () => {
         message: "Logged in successfully!",
         type: "success",
       });
+      navigate("/");
     } catch (error) {
       setAlert({
         show: true,
