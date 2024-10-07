@@ -1,63 +1,18 @@
 import { Button } from "@/components/ui/button";
-import {
-  Menubar,
-  MenubarContent,
-  MenubarItem,
-  MenubarMenu,
-  MenubarSeparator,
-  MenubarTrigger,
-} from "@/components/ui/menubar";
-import { CircleUser, Code2 } from "lucide-react";
+import { Code2 } from "lucide-react";
 import { Link, NavLink, useLocation, useNavigate } from "react-router-dom";
-import { useDispatch, useSelector } from "react-redux";
-import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
-import axios from "axios";
-import { logout } from "@/store/authSlice";
-
-import { useEffect } from "react"; // Import useEffect
+import { useSelector } from "react-redux";
+import UserMenu from "./UserMenu";
 
 const Header = () => {
   const location = useLocation();
   const isAuthRoute =
     location.pathname === "/signin" || location.pathname === "/signup";
-
   const isLoggedIn = useSelector((state) => state.auth.status);
-  const dispatch = useDispatch();
   const navigate = useNavigate();
 
-  const handleLogout = async () => {
-    try {
-      const userData = JSON.parse(localStorage.getItem("userData"));
-      const accessToken = userData?.accessToken;
-      if (!accessToken) {
-        console.error("No access token found.");
-        return;
-      }
-
-      await axios.post(
-        "http://localhost:8000/api/v1/users/logout",
-        {},
-        {
-          withCredentials: true,
-          headers: {
-            Authorization: `Bearer ${accessToken}`,
-          },
-        }
-      );
-
-      // Clear tokens from local storage
-      localStorage.removeItem("userData");
-      localStorage.removeItem("accessToken");
-
-      // Dispatch logout action and navigate
-      dispatch(logout());
-      navigate("/");
-    } catch (error) {
-      console.error(
-        "Logout failed:",
-        error.response?.data?.message || error.message
-      );
-    }
+  const handleLogout = () => {
+    navigate("/");
   };
 
   return (
@@ -118,37 +73,7 @@ const Header = () => {
             {!isAuthRoute && (
               <div className="flex items-center space-x-4">
                 {isLoggedIn ? (
-                  <Menubar>
-                    <MenubarMenu>
-                      <MenubarTrigger>
-                        <Avatar className="w-8 h-8 rounded-full overflow-hidden cursor-pointer">
-                          <AvatarImage src="https://github.com/shadcn.png" />
-                          <AvatarFallback>CN</AvatarFallback>
-                        </Avatar>
-                      </MenubarTrigger>
-                      <MenubarContent>
-                        <MenubarItem
-                          onSelect={() => console.log("Profile clicked")}
-                        >
-                          Profile
-                        </MenubarItem>
-                        <MenubarItem
-                          onSelect={() => console.log("Settings clicked")}
-                        >
-                          Settings
-                        </MenubarItem>
-                        <MenubarSeparator />
-                        <MenubarItem
-                          onSelect={() => console.log("Help clicked")}
-                        >
-                          Help
-                        </MenubarItem>
-                        <MenubarItem onSelect={handleLogout}>
-                          Sign Out
-                        </MenubarItem>
-                      </MenubarContent>
-                    </MenubarMenu>
-                  </Menubar>
+                  <UserMenu onLogout={handleLogout} />
                 ) : (
                   <>
                     <Link to="/signin">
