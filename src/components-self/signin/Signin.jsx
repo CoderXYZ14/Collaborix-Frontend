@@ -30,9 +30,10 @@ const Signin = () => {
         "http://localhost:8000/api/v1/users/login",
         { identifier: formData.identifier, password: formData.password }
       );
-      console.log("User logged in successfully:", response.data);
-      dispatch(login({ userData: response.data.user }));
-      localStorage.setItem("userData", JSON.stringify(response.data.user));
+      console.log("User logged in successfully:", response.data.data);
+      dispatch(login({ userData: response.data.data }));
+      localStorage.setItem("userData", JSON.stringify(response.data.data));
+
       setAlert({
         show: true,
         message: "Logged in successfully!",

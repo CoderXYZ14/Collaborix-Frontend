@@ -8,9 +8,13 @@ import {
   MenubarTrigger,
 } from "@/components/ui/menubar";
 import { CircleUser, Code2 } from "lucide-react";
-import { Link, NavLink, useLocation } from "react-router-dom";
-import { useSelector } from "react-redux";
+import { Link, NavLink, useLocation, useNavigate } from "react-router-dom";
+import { useDispatch, useSelector } from "react-redux";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
+import axios from "axios";
+import { logout } from "@/store/authSlice";
+
+import { useEffect } from "react"; // Import useEffect
 
 const Header = () => {
   const location = useLocation();
@@ -18,6 +22,43 @@ const Header = () => {
     location.pathname === "/signin" || location.pathname === "/signup";
 
   const isLoggedIn = useSelector((state) => state.auth.status);
+  const dispatch = useDispatch();
+  const navigate = useNavigate();
+
+  const handleLogout = async () => {
+    try {
+      const userData = JSON.parse(localStorage.getItem("userData"));
+      const accessToken = userData?.accessToken;
+      if (!accessToken) {
+        console.error("No access token found.");
+        return;
+      }
+
+      await axios.post(
+        "http://localhost:8000/api/v1/users/logout",
+        {},
+        {
+          withCredentials: true,
+          headers: {
+            Authorization: `Bearer ${accessToken}`,
+          },
+        }
+      );
+
+      // Clear tokens from local storage
+      localStorage.removeItem("userData");
+      localStorage.removeItem("accessToken");
+
+      // Dispatch logout action and navigate
+      dispatch(logout());
+      navigate("/");
+    } catch (error) {
+      console.error(
+        "Logout failed:",
+        error.response?.data?.message || error.message
+      );
+    }
+  };
 
   return (
     <header>
@@ -41,7 +82,7 @@ const Header = () => {
                     className={({ isActive }) =>
                       `block py-2 pr-4 pl-3 duration-200 text-sm ${
                         isActive ? "text-orange-600" : "text-gray-700"
-                      }  hover:bg-gray-50 lg:hover:bg-transparent lg:border-0 hover:text-orange-700 lg:p-0`
+                      } hover:bg-gray-50 lg:hover:bg-transparent lg:border-0 hover:text-orange-700 lg:p-0`
                     }
                   >
                     Home
@@ -53,7 +94,7 @@ const Header = () => {
                     className={({ isActive }) =>
                       `block py-2 pr-4 pl-3 duration-200 text-sm ${
                         isActive ? "text-orange-600" : "text-gray-700"
-                      }  hover:bg-gray-50 lg:hover:bg-transparent lg:border-0 hover:text-orange-700 lg:p-0`
+                      } hover:bg-gray-50 lg:hover:bg-transparent lg:border-0 hover:text-orange-700 lg:p-0`
                     }
                   >
                     Signin
@@ -65,7 +106,7 @@ const Header = () => {
                     className={({ isActive }) =>
                       `block py-2 pr-4 pl-3 duration-200 text-sm ${
                         isActive ? "text-orange-600" : "text-gray-700"
-                      }  hover:bg-gray-50 lg:hover:bg-transparent lg:border-0 hover:text-orange-700 lg:p-0`
+                      } hover:bg-gray-50 lg:hover:bg-transparent lg:border-0 hover:text-orange-700 lg:p-0`
                     }
                   >
                     Signup
@@ -76,7 +117,7 @@ const Header = () => {
 
             {!isAuthRoute && (
               <div className="flex items-center space-x-4">
-                {!isLoggedIn ? (
+                {isLoggedIn ? (
                   <Menubar>
                     <MenubarMenu>
                       <MenubarTrigger>
@@ -102,9 +143,7 @@ const Header = () => {
                         >
                           Help
                         </MenubarItem>
-                        <MenubarItem
-                          onSelect={() => console.log("Sign Out clicked")}
-                        >
+                        <MenubarItem onSelect={handleLogout}>
                           Sign Out
                         </MenubarItem>
                       </MenubarContent>
