@@ -13,9 +13,13 @@ function App() {
     const userData = localStorage.getItem("userData");
 
     if (userData) {
-      const parsedData = JSON.parse(userData);
-      dispatch(login({ userData: parsedData }));
-      navigate("/");
+      try {
+        const parsedData = JSON.parse(userData);
+        dispatch(login({ userData: parsedData }));
+        navigate("/");
+      } catch (error) {
+        console.error("Failed to parse userData:", error);
+      }
     }
   }, [dispatch, navigate]);
 
