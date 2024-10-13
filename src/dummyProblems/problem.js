@@ -1,4 +1,4 @@
-export const problem = [
+export const problems = [
   {
     id: "two-sum",
     title: "Two Sum",

@@ -56,6 +56,20 @@ const Header = () => {
                 </li>
                 <li>
                   <NavLink
+                    to="/problems"
+                    className={({ isActive }) =>
+                      `block py-2 pr-4 pl-3 duration-200 text-sm ${
+                        isActive
+                          ? "text-orange-600"
+                          : "text-gray-700 dark:text-gray-300"
+                      } hover:bg-gray-50 lg:hover:bg-transparent lg:border-0 hover:text-orange-700 lg:p-0`
+                    }
+                  >
+                    Problems
+                  </NavLink>
+                </li>
+                <li>
+                  <NavLink
                     to="/signin"
                     className={({ isActive }) =>
                       `block py-2 pr-4 pl-3 duration-200 text-sm ${
