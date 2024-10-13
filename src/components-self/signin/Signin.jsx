@@ -2,19 +2,19 @@ import axios from "axios";
 import { useState } from "react";
 import InputBox from "../InputBox";
 import { Button } from "@/components/ui/button";
-import { Alert, AlertDescription, AlertTitle } from "@/components/ui/alert";
-import { LogIn, Terminal } from "lucide-react";
+import { LogIn } from "lucide-react";
 import { Link, useNavigate } from "react-router-dom";
 import { useDispatch } from "react-redux";
 import { login } from "../../store/authSlice.js";
+import { toast } from "react-toastify";
 
 const Signin = () => {
   const [formData, setFormData] = useState({
     identifier: "",
     password: "",
   });
-  const [alert, setAlert] = useState({ show: false, message: "", type: "" });
   const dispatch = useDispatch();
+  const navigate = useNavigate();
 
   const handleChange = (e) => {
     setFormData({
@@ -22,7 +22,7 @@ const Signin = () => {
       [e.target.name]: e.target.value,
     });
   };
-  const navigate = useNavigate();
+
   const handleSubmit = async (e) => {
     e.preventDefault();
     try {
@@ -34,17 +34,15 @@ const Signin = () => {
       dispatch(login({ userData: response.data.data }));
       localStorage.setItem("userData", JSON.stringify(response.data.data));
 
-      setAlert({
-        show: true,
-        message: "Logged in successfully!",
-        type: "success",
+      toast.success("Logged in successfully!", {
+        position: "top-center",
+        autoClose: 3000,
       });
       navigate("/");
     } catch (error) {
-      setAlert({
-        show: true,
-        message: "Error logging in. Please try again.",
-        type: "error",
+      toast.error("Error logging in. Please try again.", {
+        position: "top-center",
+        autoClose: 3000,
       });
       console.error("Error logging in:", error);
     }
@@ -53,17 +51,6 @@ const Signin = () => {
   return (
     <div className="bg-gray-50 dark:bg-gray-900 flex justify-center items-center w-full h-screen">
       <div className="w-full max-w-md bg-white h-auto px-6 py-8 rounded-lg shadow dark:border dark:bg-gray-800 dark:border-gray-700">
-        {alert.show && (
-          <Alert
-            className={alert.type === "error" ? "bg-red-400" : "bg-green-500"}
-          >
-            <Terminal className="h-4 w-4" />
-            <AlertTitle>
-              {alert.type === "error" ? "Error" : "Success"}
-            </AlertTitle>
-            <AlertDescription>{alert.message}</AlertDescription>
-          </Alert>
-        )}
         <h1 className="text-xl font-bold text-gray-900 dark:text-white">
           Login to your account
         </h1>

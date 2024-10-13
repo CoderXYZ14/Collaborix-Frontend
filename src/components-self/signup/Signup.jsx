@@ -7,11 +7,11 @@ import {
   HoverCardContent,
   HoverCardTrigger,
 } from "@/components/ui/hover-card";
-import { Alert, AlertDescription, AlertTitle } from "@/components/ui/alert";
-import { LogIn, Terminal } from "lucide-react";
+import { LogIn } from "lucide-react";
 import { Link, useNavigate } from "react-router-dom";
 import { useDispatch } from "react-redux";
 import { login } from "../../store/authSlice.js";
+import { toast } from "react-toastify";
 
 const Signup = () => {
   const [formData, setFormData] = useState({
@@ -22,7 +22,6 @@ const Signup = () => {
     password: "",
     termsAccepted: false,
   });
-  const [alert, setAlert] = useState({ show: false, message: "", type: "" });
   const dispatch = useDispatch();
   const navigate = useNavigate();
 
@@ -43,10 +42,9 @@ const Signup = () => {
     };
 
     if (!termsAccepted) {
-      setAlert({
-        show: true,
-        message: "You must accept the terms and conditions to sign up.",
-        type: "error",
+      toast.error("You must accept the terms and conditions to sign up.", {
+        position: "top-center",
+        autoClose: 3000,
       });
       return;
     }
@@ -71,17 +69,15 @@ const Signup = () => {
 
       localStorage.setItem("userData", JSON.stringify(loginResponse.data));
 
-      setAlert({
-        show: true,
-        message: "Account created and logged in successfully!",
-        type: "success",
+      toast.success("Account created and logged in successfully!", {
+        position: "top-center",
+        autoClose: 3000,
       });
       navigate("/");
     } catch (error) {
-      setAlert({
-        show: true,
-        message: "Error creating account or logging in. Please try again.",
-        type: "error",
+      toast.error("Error creating account or logging in. Please try again.", {
+        position: "top-center",
+        autoClose: 3000,
       });
       console.error("Error creating account or logging in:", error);
     }
@@ -90,16 +86,6 @@ const Signup = () => {
   return (
     <div className="bg-gray-50 dark:bg-gray-900 flex justify-center items-center w-full h-screen">
       <div className="w-full max-w-md bg-white h-auto px-6 py-8 rounded-lg shadow dark:border dark:bg-gray-800 dark:border-gray-700">
-        {alert.show && (
-          <Alert className="bg-green-400">
-            <Terminal className="h-4 w-4" />
-            <AlertTitle>
-              {alert.type === "error" ? "Error" : "Success"}
-            </AlertTitle>
-            <AlertDescription>{alert.message}</AlertDescription>
-          </Alert>
-        )}
-
         <h1 className="text-xl font-bold text-gray-900 dark:text-white">
           Create an account
         </h1>

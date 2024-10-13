@@ -19,7 +19,7 @@ const ProblemList = () => {
     <main className="flex-col justify-center items-center  dark:bg-gray-900 w-full h-screen">
       <div className="w-full  h-auto px-6 py-8 r ">
         <h1 className="text-3xl font-bold text-center mb-8">
-          &ldquo;QUALITY OVER QUANTITY&rdquo;
+          &ldquo;QUALITY OVER QUANTITY&rdquo; 👇
         </h1>
         <div className="relative overflow-x-auto mx-auto sm:rounded-lg rounded-lg shadow  dark:border-gray-700 px-6 pb-10 flex justify-center items-center">
           <table className="w-full text-sm text-left text-gray-500 dark:text-gray-400 max-w-[1200px]">

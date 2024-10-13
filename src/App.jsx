@@ -1,13 +1,16 @@
-import { Outlet, useNavigate } from "react-router-dom";
+import { Outlet, useNavigate, useLocation } from "react-router-dom";
 import "./App.css";
-import { Footer, Header } from "./components-self";
+import { Footer, Header, ProblemHeader } from "./components-self";
 import { useDispatch, useSelector } from "react-redux";
 import { useEffect } from "react";
 import { login } from "./store/authSlice";
+import { ToastContainer } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
 
 function App() {
   const dispatch = useDispatch();
   const navigate = useNavigate();
+  const location = useLocation();
   const darkMode = useSelector((state) => state.theme.darkMode);
 
   useEffect(() => {
@@ -32,10 +35,26 @@ function App() {
     }
   }, [darkMode]);
 
+  // Determine if we are on /problem/:pid route
+  const isProblemPage = location.pathname.startsWith("/problem/");
+
   return (
     <div className="min-h-screen flex flex-wrap content-between">
+      <ToastContainer
+        position="top-center"
+        autoClose={3000}
+        hideProgressBar={false}
+        newestOnTop={false}
+        closeOnClick
+        rtl={false}
+        pauseOnFocusLoss
+        draggable
+        pauseOnHover
+        theme={darkMode ? "dark" : "light"}
+      />
       <div className="w-full block">
-        <Header />
+        {isProblemPage ? <ProblemHeader /> : <Header />}{" "}
+        {/* Conditionally render the header */}
         <main>
           <Outlet />
         </main>

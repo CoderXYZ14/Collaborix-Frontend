@@ -1,4 +1,4 @@
-import ProblemList from "@/components-self/problems/ProblemList";
+import { ProblemList } from "@/components-self";
 import React from "react";
 
 const Problems = () => {
