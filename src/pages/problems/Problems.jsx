@@ -1,4 +1,4 @@
-import ProblemList from "@/components-self/problems/ProblemTopBar";
+import ProblemList from "@/components-self/problems/ProblemList";
 import React from "react";
 
 const Problems = () => {

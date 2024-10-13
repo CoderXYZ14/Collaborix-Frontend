@@ -1,4 +1,4 @@
-import { Youtube } from "lucide-react";
+import { CircleCheckBig, Youtube } from "lucide-react";
 import { problems } from "../../dummyProblems/problem.js";
 import { Link } from "react-router-dom";
 const ProblemList = () => {
@@ -46,16 +46,22 @@ const ProblemList = () => {
               {problems.map((problem) => (
                 <tr
                   key={problem.id}
-                  className="bg-white border-b dark:bg-gray-800 dark:border-gray-700 hover:bg-gray-50 dark:hover:bg-gray-600"
+                  className={`${
+                    problem.order % 2 == 1
+                      ? "dark:bg-gray-800/5"
+                      : "dark:bg-gray-800"
+                  } bg-white border-b  dark:border-gray-700 `}
                 >
-                  <td className="px-6 py-4">{problem.order}</td>
+                  <td className="px-6 py-4">
+                    <CircleCheckBig color="#078827" />
+                  </td>
                   <td className="px-6 py-4 font-medium text-gray-900 dark:text-white whitespace-nowrap">
-                    <a
-                      href={`/problem/${problem.id}`}
+                    <Link
+                      to={`/problem/${problem.id}`}
                       className="hover:underline"
                     >
                       {problem.title}
-                    </a>
+                    </Link>
                   </td>
                   <td
                     className={`px-6 py-4 ${getDifficultyColor(
