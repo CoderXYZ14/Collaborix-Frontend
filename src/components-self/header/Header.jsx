@@ -1,22 +1,25 @@
 import { Button } from "@/components/ui/button";
-import { Code2, Sun, Moon } from "lucide-react";
-import { Link, NavLink, useLocation, useNavigate } from "react-router-dom";
+import {
+  Code2,
+  Sun,
+  Moon,
+  ChevronLeft,
+  ChevronRight,
+  AlignJustify,
+} from "lucide-react";
+import { Link, NavLink, useLocation } from "react-router-dom";
 import { useSelector, useDispatch } from "react-redux";
 import { toggleDarkMode } from "../../store/themeSlice.js";
-import UserMenu from "./UserMenu";
+import UserMenu from "../header/UserMenu";
 
 const Header = () => {
   const location = useLocation();
   const isAuthRoute =
     location.pathname === "/signin" || location.pathname === "/signup";
+  const isProblemPage = location.pathname.startsWith("/problem/");
   const isLoggedIn = useSelector((state) => state.auth.status);
   const darkMode = useSelector((state) => state.theme.darkMode);
   const dispatch = useDispatch();
-  const navigate = useNavigate();
-
-  const handleLogout = () => {
-    navigate("/");
-  };
 
   const handleThemeToggle = () => {
     dispatch(toggleDarkMode());
@@ -38,7 +41,25 @@ const Header = () => {
                 </p>
               </div>
             </div>
-            <div>
+            {isProblemPage ? (
+              <div className="flex items-center gap-1 flex-1 justify-center">
+                <div className="flex items-center justify-center rounded bg-dark-fill-3 hover:scale-110 h-8 w-8 cursor-pointer">
+                  <ChevronLeft size={20} />
+                </div>
+                <Link
+                  to="/"
+                  className="flex items-center gap-1 font-medium max-w-[170px] text-dark-gray-8 cursor-pointer"
+                >
+                  <div className="hover:scale-110">
+                    <AlignJustify size={20} />
+                  </div>
+                  <p className="text-sm">Problem List</p>
+                </Link>
+                <div className="flex items-center justify-center rounded bg-dark-fill-3 hover:scale-110 h-8 w-8 cursor-pointer">
+                  <ChevronRight size={20} />
+                </div>
+              </div>
+            ) : (
               <ul className="flex items-center justify-between font-medium lg:flex-row lg:space-x-8 lg:mt-0">
                 <li>
                   <NavLink
@@ -68,37 +89,8 @@ const Header = () => {
                     Problems
                   </NavLink>
                 </li>
-                <li>
-                  <NavLink
-                    to="/signin"
-                    className={({ isActive }) =>
-                      `block py-2 pr-4 pl-3 duration-200 text-sm ${
-                        isActive
-                          ? "text-orange-600"
-                          : "text-gray-700 dark:text-gray-300"
-                      } hover:bg-gray-50 lg:hover:bg-transparent lg:border-0 hover:text-orange-700 lg:p-0`
-                    }
-                  >
-                    Signin
-                  </NavLink>
-                </li>
-                <li>
-                  <NavLink
-                    to="/signup"
-                    className={({ isActive }) =>
-                      `block py-2 pr-4 pl-3 duration-200 text-sm ${
-                        isActive
-                          ? "text-orange-600"
-                          : "text-gray-700 dark:text-gray-300"
-                      } hover:bg-gray-50 lg:hover:bg-transparent lg:border-0 hover:text-orange-700 lg:p-0`
-                    }
-                  >
-                    Signup
-                  </NavLink>
-                </li>
               </ul>
-            </div>
-
+            )}
             {!isAuthRoute && (
               <div className="flex items-center space-x-4">
                 <div
@@ -118,7 +110,7 @@ const Header = () => {
                   )}
                 </div>
                 {isLoggedIn ? (
-                  <UserMenu onLogout={handleLogout} />
+                  <UserMenu />
                 ) : (
                   <>
                     <Link to="/signin">

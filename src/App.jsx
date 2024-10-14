@@ -53,7 +53,7 @@ function App() {
         theme={darkMode ? "dark" : "light"}
       />
       <div className="w-full block">
-        {isProblemPage ? <ProblemHeader /> : <Header />}{" "}
+        <Header />
         {/* Conditionally render the header */}
         <main>
           <Outlet />
