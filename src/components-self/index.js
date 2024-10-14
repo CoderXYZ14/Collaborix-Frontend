@@ -1,5 +1,4 @@
 import Header from "./header/Header";
-import ProblemHeader from "./problem-header/ProblemHeader";
 import Footer from "./footer/Footer";
 import Container from "./container/Container";
 import Signup from "./signup/Signup";
@@ -10,7 +9,6 @@ import Codespace from "./codespace/Codespace";
 
 export {
   Header,
-  ProblemHeader,
   Footer,
   Container,
   Signup,
