@@ -6,7 +6,7 @@ import { vscodeDark } from "@uiw/codemirror-theme-vscode";
 import { javascript } from "@codemirror/lang-javascript";
 const Playground = () => {
   return (
-    <div className="flex flex-col bg-gray-700 relative">
+    <div className="flex flex-col bg-gray-900 relative">
       <PreferenceNavbar />
       <Split
         className=" h-[calc(100vh-95px)]"
