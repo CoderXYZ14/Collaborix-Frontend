@@ -1,7 +1,11 @@
-import React from "react";
+import { ProblemPage as ProblemPageComponent } from "../../components-self";
 
 const ProblemPage = () => {
-  return <div>problemPage</div>;
+  return (
+    <div>
+      <ProblemPageComponent />
+    </div>
+  );
 };
 
 export default ProblemPage;

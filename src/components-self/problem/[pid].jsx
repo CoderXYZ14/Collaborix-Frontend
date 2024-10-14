@@ -1,7 +1,12 @@
 import React from "react";
+import Codespace from "../codespace/Codespace"; // Importing Codespace component
 
 const ProblemPage = () => {
-  return <h1>ABC</h1>;
+  return (
+    <div>
+      <Codespace />
+    </div>
+  );
 };
 
 export default ProblemPage;
