@@ -1,5 +1,4 @@
-import assert from "assert";
-import { Problem } from "../types/problem";
+import assert from "./customAssert.js";
 
 export const jumpGameHandler = (fn) => {
   try {

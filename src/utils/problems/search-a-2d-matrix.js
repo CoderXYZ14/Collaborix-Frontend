@@ -1,4 +1,4 @@
-import assert from "assert";
+import assert from "./customAssert.js";
 import example1 from "./images/search-a-2d-1.jpg";
 import example2 from "./images/search-a-2d-2.jpg";
 

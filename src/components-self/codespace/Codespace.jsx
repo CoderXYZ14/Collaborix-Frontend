@@ -2,7 +2,7 @@ import Split from "react-split";
 import ProblemDescription from "./ProblemDescription/ProblemDescription";
 import Playground from "./playground/Playground";
 
-const Codespace = () => {
+const Codespace = ({ problem, pid }) => {
   return (
     <Split className="split" minSize={0}>
       <ProblemDescription />

@@ -1,5 +1,4 @@
-import assert from "assert";
-
+import assert from "./customAssert.js";
 const starterCodeTwoSum = `function twoSum(nums,target){
   // Write your code here
 };`;

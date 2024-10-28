@@ -1,5 +1,4 @@
-import assert from "assert";
-
+import assert from "./customAssert.js";
 export const validParenthesesHandler = (fn) => {
   try {
     const tests = ["()", "()[]{}", "(]", "([)]", "{[]}"];
