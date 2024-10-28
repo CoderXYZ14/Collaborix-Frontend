@@ -15,7 +15,6 @@ function App() {
 
   useEffect(() => {
     const userData = localStorage.getItem("userData");
-
     if (userData) {
       try {
         const parsedData = JSON.parse(userData);
@@ -36,7 +35,8 @@ function App() {
   }, [darkMode]);
 
   return (
-    <div className="min-h-screen flex flex-wrap content-between">
+    <div className="min-h-screen">
+      <Header />
       <ToastContainer
         position="top-center"
         autoClose={3000}
@@ -49,13 +49,10 @@ function App() {
         pauseOnHover
         theme={darkMode ? "dark" : "light"}
       />
-      <div className="w-full block">
-        <Header />
-        <main>
-          <Outlet />
-        </main>
-        {/* <Footer /> */}
-      </div>
+      <main>
+        <Outlet />
+      </main>
+      {/* <Footer /> */}
     </div>
   );
 }

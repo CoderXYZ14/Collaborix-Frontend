@@ -6,7 +6,7 @@ const Codespace = ({ problem }) => {
   return (
     <Split className="split" minSize={0}>
       <ProblemDescription problem={problem} />
-      <Playground />
+      <Playground problem={problem} />
     </Split>
   );
 };
