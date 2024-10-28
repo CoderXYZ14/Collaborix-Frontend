@@ -6,8 +6,11 @@ import { vscodeDark } from "@uiw/codemirror-theme-vscode";
 import { javascript } from "@codemirror/lang-javascript";
 import EditorFooter from "./EditorFooter";
 const Playground = () => {
+  const boilerplate = `function twoSum(num,target){
+  //Write your code here
+}`;
   return (
-    <div className="flex flex-col bg-gray-900 relative">
+    <div className="flex flex-col bg-gray-900 relative overflow-x-hidden">
       <PreferenceNavbar />
       <Split
         className=" h-[calc(100vh-95px)]"
@@ -17,7 +20,7 @@ const Playground = () => {
       >
         <div className="w-full overflow-auto">
           <ReactCodeMirror
-            value="const a=1"
+            value={boilerplate}
             theme={vscodeDark}
             extensions={[javascript()]}
             style={{ fontSize: 16 }}
@@ -77,9 +80,9 @@ const Playground = () => {
               [0,1]
             </div>
           </div>
+          <EditorFooter />
         </div>
       </Split>
-      <EditorFooter />
     </div>
   );
 };
