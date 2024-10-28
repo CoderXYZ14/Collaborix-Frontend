@@ -4,6 +4,7 @@ import { Codespace } from "../index.js";
 
 const ProblemPage = () => {
   const { pid } = useParams();
+
   const problem = problems[pid];
   console.log(problem);
   if (!problem) {
@@ -12,7 +13,7 @@ const ProblemPage = () => {
 
   return (
     <div>
-      <Codespace problem={problem} pid={pid} />
+      <Codespace problem={problem} />
     </div>
   );
 };
