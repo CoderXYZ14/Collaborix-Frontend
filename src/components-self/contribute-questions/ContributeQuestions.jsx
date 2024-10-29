@@ -1,4 +1,3 @@
-import React, { useState } from "react";
 import InputBox from "../InputBox";
 import { Button } from "@/components/ui/button";
 import {
@@ -9,6 +8,7 @@ import {
   SelectValue,
 } from "@/components/ui/select";
 import { LogIn, Rocket } from "lucide-react";
+import { useState } from "react";
 import { toast } from "react-toastify";
 
 const ContributeQuestions = () => {
@@ -52,7 +52,7 @@ const ContributeQuestions = () => {
   };
 
   return (
-    <main className="bg-gradient-to-b from-purple-100 to-purple-200 dark:from-slate-900 dark:to-purple-900">
+    <main className="bg-gradient-to-b from-purple-400 to-purple-200 dark:bg-gradient-to-b dark:from-slate-800 from-5% dark:to-purple-800">
       <div className="flex min-h-screen flex-col items-center px-6 py-20">
         <h1 className="flex items-center gap-2 text-3xl font-bold text-purple-900 dark:text-purple-100 mb-8">
           Contribute a Problem <Rocket className="h-8 w-8" />
@@ -138,7 +138,7 @@ const ContributeQuestions = () => {
 
               <Button
                 type="submit"
-                className="w-full bg-purple-600 hover:bg-purple-700 dark:bg-purple-500 dark:hover:bg-purple-600 text-white font-medium py-2.5 rounded-lg transition-colors duration-200 text-sm"
+                className="w-full bg-purple-600 hover:bg-purple-700 dark:bg-purple-500 dark:hover:bg-purple-600 text-gray-100 font-medium py-2.5 rounded-lg transition-colors duration-200 text-sm"
               >
                 Add Problem <LogIn size={20} className="ml-2" />
               </Button>

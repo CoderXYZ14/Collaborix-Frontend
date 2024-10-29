@@ -53,7 +53,7 @@ function App() {
           pauseOnHover
           theme={darkMode ? "dark" : "light"}
         />
-        <main className="flex-grow">
+        <main className="flex-grow ">
           {" "}
           <Outlet />
         </main>
