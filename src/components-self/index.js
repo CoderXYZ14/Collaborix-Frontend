@@ -3,7 +3,7 @@ import Footer from "./footer/Footer";
 import Container from "./container/Container";
 import Signup from "./signup/Signup";
 import Signin from "./signin/Signin";
-import ProblemList from "./problems/ProblemList";
+import ProblemList from "./problem-set/ProblemList";
 import ProblemPage from "./problem/[pid].jsx";
 import Codespace from "./codespace/Codespace";
 

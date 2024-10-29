@@ -1,6 +1,8 @@
+import React from "react";
 import { CircleCheckBig, Youtube } from "lucide-react";
 import { problems } from "../../dummyProblems/problem.js";
 import { Link } from "react-router-dom";
+
 const ProblemList = () => {
   const getDifficultyColor = (difficulty) => {
     switch (difficulty.toLowerCase()) {
@@ -16,14 +18,14 @@ const ProblemList = () => {
   };
 
   return (
-    <main className="flex-col justify-center items-center  dark:bg-gray-900 w-full h-screen">
-      <div className="w-full  h-auto px-6 py-8 r ">
-        <h1 className="text-3xl font-bold text-center mb-8 text-white">
+    <main className="flex-col justify-center items-center bg-gradient-to-b from-violet-700 to-purple-600 dark:bg-gradient-to-b dark:from-slate-800 from-5% dark:to-purple-800 w-full h-auto pb-20">
+      <div className=" px-6 pt-20 pb-12 flex flex-col items-center">
+        <h1 className="text-3xl font-bold text-center mb-8 text-gray-50">
           &ldquo;QUALITY OVER QUANTITY&rdquo; 👇
         </h1>
-        <div className="relative overflow-x-auto mx-auto sm:rounded-lg rounded-lg shadow  dark:border-gray-700 px-6 pb-10 flex justify-center items-center">
-          <table className="w-full text-sm text-left text-gray-500 dark:text-gray-400 max-w-[1200px]">
-            <thead className="text-xs text-gray-700 uppercase bg-gray-50 dark:bg-gray-700 dark:text-gray-400">
+        <div className="relative overflow-x-auto mx-auto sm:rounded-lg rounded-lg shadow bg-white/80 dark:bg-gray-800/90 dark:border-gray-700 px-6 pb-10 w-full max-w-[1200px]">
+          <table className="w-full text-sm text-left text-gray-700 dark:text-gray-400 ">
+            <thead className="text-xs text-gray-600 uppercase bg-gray-300 dark:bg-gray-700 dark:text-gray-400">
               <tr>
                 <th scope="col" className="px-6 py-3 font-medium">
                   Status
@@ -48,16 +50,16 @@ const ProblemList = () => {
                   key={problem.id}
                   className={`${
                     problem.order % 2 == 1
-                      ? "dark:bg-gray-800/5"
-                      : "dark:bg-gray-800"
-                  } bg-white border-b  dark:border-gray-700 `}
+                      ? "bg-gray-200 dark:bg-purple-700/5"
+                      : "bg-gray-50 dark:bg-gray-800"
+                  } border-b dark:border-gray-700 hover:bg-gray-300 dark:hover:bg-purple-900/30 transition-colors`}
                 >
-                  <td className="px-6 py-4">
+                  <td className="px-6 py-2">
                     <CircleCheckBig color="#078827" />
                   </td>
-                  <td className="px-6 py-4 font-medium text-gray-900 dark:text-white whitespace-nowrap">
+                  <td className="px-6 py-2 font-medium text-gray-800 dark:text-gray-200 whitespace-nowrap">
                     <Link
-                      to={`/problem/${problem.id}`}
+                      to={`/problems/${problem.id}`}
                       className="hover:underline"
                     >
                       {problem.title}
@@ -70,22 +72,27 @@ const ProblemList = () => {
                   >
                     {problem.difficulty}
                   </td>
-                  <td className="px-6 py-4">{problem.category}</td>
-                  <td className="px-6 py-4">
+                  <td className="px-6 py-4 text-gray-600 dark:text-gray-400">
+                    {problem.category}
+                  </td>
+                  <td className="px-6 py-2">
                     {problem.videoId ? (
                       <Link
                         to={`https://takeuforward.org/data-structure/${problem.videoId}`}
                         target="_blank"
+                        className="inline-block py-1 rounded-full hover:bg-gray-300 dark:hover:bg-gray-600 transition-colors"
                       >
                         <Youtube
                           size={32}
                           color="#ff0000"
-                          strokeWidth={2.25}
+                          strokeWidth={2}
                           className="hover:scale-110 transition-transform"
                         />
                       </Link>
                     ) : (
-                      <span className="text-gray-400">Soon</span>
+                      <span className="text-gray-500 dark:text-gray-400">
+                        Soon
+                      </span>
                     )}
                   </td>
                 </tr>

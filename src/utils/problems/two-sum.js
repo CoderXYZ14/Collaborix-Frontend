@@ -36,15 +36,30 @@ const handlerTwoSum = (fn) => {
 export const twoSum = {
   id: "two-sum",
   title: "1. Two Sum",
-  problemStatement: `<p class='mt-3'>
-  Given an array of integers <code>nums</code> and an integer <code>target</code>, return
-  <em>indices of the two numbers such that they add up to</em> <code>target</code>.
-</p>
-<p class='mt-3'>
-  You may assume that each input would have <strong>exactly one solution</strong>, and you
-  may not use thesame element twice.
-</p>
-<p class='mt-3'>You can return the answer in any order.</p>`,
+  problemStatement: ` <p>
+                Given an array of integers
+                <code class="text-violet-600 dark:text-violet-400 bg-violet-50 dark:bg-violet-900/20 px-1.5 py-0.5 rounded text-sm transition-colors duration-200">
+                  nums
+                </code>
+                and an integer
+                <code class="text-violet-600 dark:text-violet-400 bg-violet-50 dark:bg-violet-900/20 px-1.5 py-0.5 rounded text-sm transition-colors duration-200">
+                  target
+                </code>
+            , return
+                <em class="text-slate-900 dark:text-slate-200 transition-colors duration-200">
+                  indices of the two numbers such that they add up to target
+                </em>
+                .
+              </p>
+              <p>
+                You may assume that each input would have
+                <strong class="font-medium text-slate-900 dark:text-slate-200 transition-colors duration-200">
+                  exactly one solution
+                </strong>
+                , and you may not use the same element twice.
+              </p>
+              <p>You can return the answer in any order.</p>
+              `,
   examples: [
     {
       id: 1,

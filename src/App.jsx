@@ -38,22 +38,26 @@ function App() {
   }, [darkMode]);
 
   return (
-    <div className="min-h-screen">
-      <Header />
-      <ToastContainer
-        position="top-center"
-        autoClose={3000}
-        hideProgressBar={false}
-        newestOnTop={false}
-        closeOnClick
-        rtl={false}
-        pauseOnFocusLoss
-        draggable
-        pauseOnHover
-        theme={darkMode ? "dark" : "light"}
-      />
-
-      <Outlet />
+    <div className="min-h-screen flex flex-wrap content-between">
+      <div className="w-full block">
+        <Header />
+        <ToastContainer
+          position="top-center"
+          autoClose={3000}
+          hideProgressBar={false}
+          newestOnTop={false}
+          closeOnClick
+          rtl={false}
+          pauseOnFocusLoss
+          draggable
+          pauseOnHover
+          theme={darkMode ? "dark" : "light"}
+        />
+        <main className="flex-grow">
+          {" "}
+          <Outlet />
+        </main>
+      </div>
     </div>
   );
 }

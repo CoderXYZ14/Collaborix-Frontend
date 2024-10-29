@@ -1,10 +1,13 @@
-import { ProblemPage as ProblemPageComponent } from "../../components-self";
+import {
+  Container,
+  ProblemPage as ProblemPageComponent,
+} from "../../components-self";
 
 const ProblemPage = () => {
   return (
-    <div>
+    <Container>
       <ProblemPageComponent />
-    </div>
+    </Container>
   );
 };
 

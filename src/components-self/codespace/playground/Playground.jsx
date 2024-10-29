@@ -2,7 +2,7 @@ import React, { useState } from "react";
 import PreferenceNavbar from "./PreferenceNavbar";
 import Split from "react-split";
 import ReactCodeMirror from "@uiw/react-codemirror";
-import { vscodeDark } from "@uiw/codemirror-theme-vscode";
+import { vscodeDark, vscodeLight } from "@uiw/codemirror-theme-vscode";
 import { javascript } from "@codemirror/lang-javascript";
 import EditorFooter from "./EditorFooter";
 const Playground = ({ problem }) => {
@@ -19,7 +19,7 @@ const Playground = ({ problem }) => {
         <div className="w-full overflow-auto">
           <ReactCodeMirror
             value={problem.starterCode}
-            theme={vscodeDark}
+            theme={vscodeLight}
             extensions={[javascript()]}
             style={{ fontSize: 14 }}
           />

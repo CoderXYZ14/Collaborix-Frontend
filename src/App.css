@@ -1,0 +1,4 @@
+.min-h-screen {
+  min-height: 100vh;
+  overflow-y: auto; /* Ensure scrollbar only appears on overflow */
+}

@@ -25,11 +25,11 @@ const router = createBrowserRouter([
         element: <Signin />,
       },
       {
-        path: "/problems",
+        path: "/problemset",
         element: <Problems />,
       },
       {
-        path: "/problem/:pid",
+        path: "/problems/:pid",
         element: <ProblemPage />,
       },
     ],

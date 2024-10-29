@@ -58,11 +58,6 @@
   }
 }
 
-@media (max-width: 768px) {
-  .overflow-hidden {
-    overflow-x: hidden; /* Hide horizontal overflow */
-  }
-}
 .split {
   display: flex;
   flex-direction: row;
@@ -94,4 +89,12 @@
 }
 .cm-focused {
   outline: none !important;
+}
+
+html,
+body {
+  margin: 0;
+  padding: 0;
+  height: 100%; /* Ensure full height for body */
+  overflow-x: hidden; /* Prevent horizontal scroll if not needed */
 }

@@ -1,8 +1,12 @@
-import { ProblemList } from "@/components-self";
+import { Container, ProblemList } from "@/components-self";
 import React from "react";
 
 const Problems = () => {
-  return <ProblemList />;
+  return (
+    <Container>
+      <ProblemList />
+    </Container>
+  );
 };
 
 export default Problems;
