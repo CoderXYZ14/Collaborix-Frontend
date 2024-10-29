@@ -1,6 +1,6 @@
-import { Outlet, useNavigate, useLocation } from "react-router-dom";
+import { Outlet, useNavigate } from "react-router-dom";
 import "./App.css";
-import { Footer, Header } from "./components-self";
+import { Header } from "./components-self";
 import { useDispatch, useSelector } from "react-redux";
 import { useEffect } from "react";
 import { login } from "./store/authSlice";
@@ -10,7 +10,6 @@ import "react-toastify/dist/ReactToastify.css";
 function App() {
   const dispatch = useDispatch();
   const navigate = useNavigate();
-  const location = useLocation();
   const darkMode = useSelector((state) => state.theme.darkMode);
 
   useEffect(() => {
@@ -21,7 +20,11 @@ function App() {
         dispatch(login({ userData: parsedData }));
         navigate("/");
       } catch (error) {
-        console.error("Failed to parse userData:", error);
+        toast.error("Failed to parse userData:", {
+          position: "top-center",
+          autoClose: 3000,
+        });
+        console.error("Failed to parse userData");
       }
     }
   }, [dispatch, navigate]);
@@ -49,10 +52,8 @@ function App() {
         pauseOnHover
         theme={darkMode ? "dark" : "light"}
       />
-      <main>
-        <Outlet />
-      </main>
-      {/* <Footer /> */}
+
+      <Outlet />
     </div>
   );
 }
