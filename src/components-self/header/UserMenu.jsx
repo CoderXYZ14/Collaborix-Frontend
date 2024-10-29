@@ -10,6 +10,7 @@ import {
   MenubarTrigger,
 } from "@/components/ui/menubar";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
+import { Link } from "react-router-dom";
 
 const UserMenu = ({ onLogout }) => {
   const dispatch = useDispatch();
@@ -60,9 +61,9 @@ const UserMenu = ({ onLogout }) => {
           <MenubarItem onSelect={() => console.log("Profile clicked")}>
             Profile
           </MenubarItem>
-          <MenubarItem onSelect={() => console.log("Settings clicked")}>
-            Settings
-          </MenubarItem>
+          <Link to="/contribute-questions">
+            <MenubarItem>Contribute</MenubarItem>
+          </Link>
           <MenubarSeparator />
           <MenubarItem onSelect={() => console.log("Help clicked")}>
             Help

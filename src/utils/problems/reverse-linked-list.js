@@ -1,7 +1,7 @@
 import assert from "./customAssert.js";
 import example from "./images/reverseLL.jpg";
 
-// JS doesn't have a built in LinkedList class, so we'll create one
+// JS doesn't have a built-in LinkedList class, so we'll create one
 class LinkedList {
   value;
   next;
@@ -40,7 +40,7 @@ export const reverseLinkedListHandler = (fn) => {
   }
 };
 
-// it creates a linked list from an array
+// Helper function to create a linked list from an array
 function createLinkedList(values) {
   const head = new LinkedList(values[0]);
   let current = head;
@@ -52,7 +52,7 @@ function createLinkedList(values) {
   return head;
 }
 
-// it returns an array of values from a linked list
+// Helper function to get array of values from a linked list
 function getListValues(head) {
   const values = [];
   let current = head;
@@ -79,28 +79,41 @@ function reverseLinkedList(head) {
 export const reverseLinkedList = {
   id: "reverse-linked-list",
   title: "2. Reverse Linked List",
-  problemStatement: `<p class='mt-3'>Given the <code>head</code> of a singly linked list, reverse the list, and return <em>the reversed list</em>.</p>
-	`,
+  problemStatement: `<p>
+                Given the 
+                <code class="text-violet-600 dark:text-violet-400 bg-violet-50 dark:bg-violet-900/20 px-1.5 py-0.5 rounded text-sm transition-colors duration-200">
+                  head
+                </code>
+                of a singly linked list, reverse the list, and return
+                <em class="text-slate-900 dark:text-slate-200 transition-colors duration-200">the reversed list</em>.
+              </p>`,
   examples: [
     {
       id: 0,
       inputText: "head = [1,2,3,4,5]",
       outputText: "[5,4,3,2,1]",
       img: example.src,
+      explanation:
+        "The linked list is reversed from [1,2,3,4,5] to [5,4,3,2,1].",
     },
     {
       id: 1,
       inputText: "head = [1,2,3]",
       outputText: "[3,2,1]",
+      explanation: "The linked list is reversed from [1,2,3] to [3,2,1].",
     },
     {
       id: 2,
       inputText: "head = [1]",
       outputText: "[1]",
+      explanation: "A single node remains as is after reversal.",
     },
   ],
-  constraints: `<li class='mt-2'>The number of nodes in the list is the range <code>[0, 5000]</code>.</li>
-<li class='mt-2'><code>-5000 <= Node.val <= 5000</code></li>`,
+  constraints: `<li class='mt-2'>
+  <code>0 ≤ Node.count ≤ 5000</code>
+</li> <li class='mt-2'>
+<code>-5000 ≤ Node.val ≤ 5000</code>
+</li>`,
   starterCode: starterCodeReverseLinkedListJS,
   handlerFunction: reverseLinkedListHandler,
   starterFunctionName: "function reverseLinkedList(",
