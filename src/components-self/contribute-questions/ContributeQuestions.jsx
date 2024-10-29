@@ -7,8 +7,10 @@ import {
   SelectTrigger,
   SelectValue,
 } from "@/components/ui/select";
+import axios from "axios";
 import { LogIn, Rocket } from "lucide-react";
 import { useState } from "react";
+import { useNavigate } from "react-router-dom";
 import { toast } from "react-toastify";
 
 const ContributeQuestions = () => {
@@ -19,7 +21,7 @@ const ContributeQuestions = () => {
     category: "",
     videoId: "",
   });
-
+  const navigate = useNavigate();
   const handleChange = (e) => {
     setFormData({
       ...formData,
@@ -32,9 +34,7 @@ const ContributeQuestions = () => {
     try {
       const response = await axios.post(
         "http://localhost:8000/api/v1/problems/add-questions",
-        {
-          formData,
-        }
+        formData
       );
 
       toast.success("Question added successfully !!", {
