@@ -6,7 +6,7 @@ import Signin from "./signin/Signin";
 import ProblemList from "./problem-set/ProblemList";
 import ProblemPage from "./problem/[pid].jsx";
 import Codespace from "./codespace/Codespace";
-
+import ContributeQuestions from "./contribute-questions/ContributeQuestions";
 export {
   Header,
   Footer,
@@ -16,4 +16,5 @@ export {
   ProblemList,
   Codespace,
   ProblemPage,
+  ContributeQuestions,
 };

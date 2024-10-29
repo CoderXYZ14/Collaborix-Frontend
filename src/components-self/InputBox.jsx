@@ -14,7 +14,7 @@ const InputBox = ({
     <div className="mt-2">
       <Label
         htmlFor={name}
-        className="block mb-1 text-sm text-gray-900 dark:text-white font-semibold"
+        className="block mb-1.5 text-sm font-medium text-slate-700 dark:text-slate-200"
       >
         {label}
       </Label>
@@ -24,7 +24,13 @@ const InputBox = ({
         id={name}
         value={value}
         onChange={onChange}
-        className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
+        className="block w-full px-3 py-2 text-sm rounded-lg
+          bg-slate-100 dark:bg-slate-800/90
+          border border-slate-200 dark:border-slate-700
+          text-slate-900 dark:text-slate-100
+          placeholder:text-slate-400 dark:placeholder:text-slate-500
+          focus:outline-none focus:ring-2 focus:ring-purple-500/50 dark:focus:ring-purple-400/50 focus:border-purple-500 dark:focus:border-purple-400
+          transition-colors duration-200"
         placeholder={placeholder}
         required={required}
       />
