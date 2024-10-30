@@ -1,5 +1,4 @@
 import { CircleCheckBig, Youtube } from "lucide-react";
-import { problems } from "../../dummyProblems/problem.js";
 import { Link } from "react-router-dom";
 import useGetProblems from "@/custom-hooks/useGetProblems.js";
 
