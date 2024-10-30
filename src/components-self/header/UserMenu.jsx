@@ -11,8 +11,9 @@ import {
 } from "@/components/ui/menubar";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import { Link } from "react-router-dom";
+import { toast } from "react-toastify";
 
-const UserMenu = ({ onLogout }) => {
+const UserMenu = () => {
   const dispatch = useDispatch();
 
   const handleLogout = async () => {
@@ -34,13 +35,20 @@ const UserMenu = ({ onLogout }) => {
           },
         }
       );
-
+      console.log("logout success");
+      dispatch(logout());
       localStorage.removeItem("userData");
       localStorage.removeItem("accessToken");
 
-      dispatch(logout());
-      onLogout();
+      toast.success("User logged out successfully !!", {
+        position: "top-center",
+        autoClose: 3000,
+      });
     } catch (error) {
+      toast.error("Error logging out. Please try again.", {
+        position: "top-center",
+        autoClose: 3000,
+      });
       console.error(
         "Logout failed:",
         error.response?.data?.message || error.message

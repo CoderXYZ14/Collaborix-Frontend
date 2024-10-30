@@ -11,6 +11,7 @@ import { LogIn } from "lucide-react";
 import { Link, useNavigate } from "react-router-dom";
 import { useDispatch } from "react-redux";
 import { login } from "../../store/authSlice.js";
+import { toast } from "react-toastify";
 
 const Signup = () => {
   const [formData, setFormData] = useState({
@@ -64,9 +65,9 @@ const Signup = () => {
         loginData
       );
 
-      dispatch(login({ userData: loginResponse.data }));
+      dispatch(login({ userData: loginResponse.data.data }));
 
-      localStorage.setItem("userData", JSON.stringify(loginResponse.data));
+      localStorage.setItem("userData", JSON.stringify(loginResponse.data.data));
 
       toast.success("Account created and logged in successfully!", {
         position: "top-center",
