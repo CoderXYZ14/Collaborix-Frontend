@@ -1,6 +1,6 @@
 import Split from "react-split";
-import ProblemDescription from "./ProblemDescription/ProblemDescription";
 import Playground from "./playground/Playground";
+import ProblemDescription from "./problem-description/ProblemDescription";
 
 const Codespace = ({ problem }) => {
   return (

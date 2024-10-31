@@ -12,6 +12,7 @@ import { Link, NavLink, useLocation } from "react-router-dom";
 import { useSelector, useDispatch } from "react-redux";
 import { toggleDarkMode } from "../../store/themeSlice.js";
 import UserMenu from "../header/UserMenu";
+import useHandleProblemChange from "@/custom-hooks/useHandleProblemChange.js";
 
 const Header = () => {
   const location = useLocation();
@@ -21,6 +22,7 @@ const Header = () => {
   const isLoggedIn = useSelector((state) => state.auth.status);
   const darkMode = useSelector((state) => state.theme.darkMode);
   const dispatch = useDispatch();
+  const handleProblemChange = useHandleProblemChange();
 
   const handleThemeToggle = () => {
     dispatch(toggleDarkMode());
@@ -52,7 +54,10 @@ const Header = () => {
             </div>
             {isProblemPage ? (
               <div className="flex items-center gap-2 flex-1 justify-center">
-                <div className="flex items-center justify-center rounded-lg bg-white/5 hover:bg-white/10 h-8 w-8 cursor-pointer transition-all duration-200 border border-white/10">
+                <div
+                  className="flex items-center justify-center rounded-lg bg-white/5 hover:bg-white/10 h-8 w-8 cursor-pointer transition-all duration-200 border border-white/10"
+                  onClick={() => handleProblemChange(false)}
+                >
                   <ChevronLeft size={18} />
                 </div>
                 <Link
@@ -64,7 +69,10 @@ const Header = () => {
                   </div>
                   <p className="text-sm font-medium">Problem List</p>
                 </Link>
-                <div className="flex items-center justify-center rounded-lg bg-white/5 hover:bg-white/10 h-8 w-8 cursor-pointer transition-all duration-200 border border-white/10">
+                <div
+                  className="flex items-center justify-center rounded-lg bg-white/5 hover:bg-white/10 h-8 w-8 cursor-pointer transition-all duration-200 border border-white/10"
+                  onClick={() => handleProblemChange(true)}
+                >
                   <ChevronRight size={18} />
                 </div>
               </div>

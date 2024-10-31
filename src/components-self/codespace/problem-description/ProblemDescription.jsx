@@ -16,7 +16,7 @@ const ProblemDescription = ({ problem }) => {
           <div className="space-y-6">
             <div className="flex flex-col space-y-4">
               <h1 className="text-xl font-semibold text-slate-900 dark:text-white transition-colors duration-200">
-                1. {problem.title}
+                {problem.title}
               </h1>
 
               <div className="flex items-center space-x-2">

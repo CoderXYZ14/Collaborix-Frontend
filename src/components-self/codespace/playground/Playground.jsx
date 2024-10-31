@@ -17,7 +17,7 @@ const Playground = ({ problem }) => {
       <Split
         className="h-[calc(100vh-95px)]"
         direction="vertical"
-        sizes={[60, 40]}
+        sizes={[57, 43]}
         minSize={60}
       >
         <div className="w-full overflow-auto">
