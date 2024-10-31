@@ -1,12 +1,39 @@
-import React, { useEffect, useState } from "react";
+import React from "react";
 import { CheckCircle } from "lucide-react";
-
 import useProblemSolvedStatus from "@/custom-hooks/useProblemSolvedStatus";
 
 const ProblemDescription = ({ problem, solved }) => {
   const isSolved = useProblemSolvedStatus(problem.id);
+
+  const getDifficultyColor = (difficulty) => {
+    switch (difficulty.toLowerCase()) {
+      case "easy":
+        return {
+          textColor: "text-green-600",
+          bgColor: "bg-green-100 dark:bg-green-950/30",
+        };
+      case "medium":
+        return {
+          textColor: "text-yellow-600",
+          bgColor: "bg-yellow-100 dark:bg-yellow-950/30",
+        };
+      case "hard":
+        return {
+          textColor: "text-red-600",
+          bgColor: "bg-red-100 dark:bg-red-950/30",
+        };
+      default:
+        return {
+          textColor: "text-gray-600",
+          bgColor: "bg-gray-100 dark:bg-gray-950/30",
+        };
+    }
+  };
+
+  const { textColor, bgColor } = getDifficultyColor(problem.difficulty);
+
   return (
-    <div className="flex flex-col h-screen bg-gradient-to-b from-violet-200 from-10% to-purple-100 dark:bg-gradient-to-b dark:from-slate-800 dark:from-5% dark:to-purple-800  transition-colors duration-200">
+    <div className="flex flex-col h-screen bg-gradient-to-b from-violet-200 from-10% to-purple-100 dark:bg-gradient-to-b dark:from-slate-800 dark:from-5% dark:to-purple-800 transition-colors duration-200">
       {/* Tab Navigation */}
       <div className="flex h-12 items-center bg-gray-100 dark:bg-slate-900 border-b border-gray-200 dark:border-slate-800 transition-colors duration-200">
         <div className="px-6 py-2.5 text-sm font-medium bg-white dark:bg-slate-950 text-slate-900 dark:text-white border-b-2 border-violet-500 transition-colors duration-200">
@@ -24,11 +51,15 @@ const ProblemDescription = ({ problem, solved }) => {
 
               <div className="flex items-center space-x-2">
                 <div className="flex items-center space-x-2">
-                  <span className="inline-flex items-center px-2.5 py-1 rounded-full text-xs font-medium bg-green-100 dark:bg-green-950/30 text-green-600 dark:text-green-400 transition-colors duration-200">
+                  <span
+                    className={`inline-flex items-center px-2.5 py-1 rounded-full text-xs font-medium ${bgColor} ${textColor} transition-colors duration-200`}
+                  >
                     {problem.difficulty}
                   </span>
                   {(solved || isSolved) && (
-                    <CheckCircle className="w-4 h-4 text-green-600 dark:text-green-400 transition-colors duration-200" />
+                    <CheckCircle
+                      className={`w-4 h-4 ${textColor} transition-colors duration-200`}
+                    />
                   )}
                 </div>
               </div>
