@@ -2,7 +2,7 @@ import { useState } from "react";
 import axios from "axios";
 import { toast } from "react-toastify";
 
-const useSubmitProblem = (pid, userCode, setSolved, setSuccess) => {
+const useSubmitProblem = (pid, setSolved, setSuccess) => {
   const [loading, setLoading] = useState(false);
 
   const submitProblem = async () => {

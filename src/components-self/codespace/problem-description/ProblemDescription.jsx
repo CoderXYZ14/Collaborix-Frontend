@@ -1,7 +1,36 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
 import { CheckCircle } from "lucide-react";
+import axios from "axios";
 
 const ProblemDescription = ({ problem, solved }) => {
+  const [isSolved, setIsSolved] = useState(false);
+  useEffect(() => {
+    const checkProblemSolvedStatus = async () => {
+      try {
+        const userData = JSON.parse(localStorage.getItem("userData"));
+        const accessToken = userData?.accessToken;
+        if (!accessToken) return;
+
+        const response = await axios.post(
+          `http://localhost:8000/api/v1/problems/solved-status/${problem.id}`,
+          {},
+          {
+            withCredentials: true,
+            headers: { Authorization: `Bearer ${accessToken}` },
+          }
+        );
+
+        if (response.data.success) {
+          setIsSolved(response.data.data.solved);
+        }
+      } catch (error) {
+        console.error("Error checking problem solved status:", error);
+        setIsSolved(false);
+      }
+    };
+
+    checkProblemSolvedStatus();
+  }, [problem.id]);
   return (
     <div className="flex flex-col h-screen bg-gradient-to-b from-violet-200 from-10% to-purple-100 dark:bg-gradient-to-b dark:from-slate-800 dark:from-5% dark:to-purple-800  transition-colors duration-200">
       {/* Tab Navigation */}
@@ -24,7 +53,7 @@ const ProblemDescription = ({ problem, solved }) => {
                   <span className="inline-flex items-center px-2.5 py-1 rounded-full text-xs font-medium bg-green-100 dark:bg-green-950/30 text-green-600 dark:text-green-400 transition-colors duration-200">
                     {problem.difficulty}
                   </span>
-                  {solved && (
+                  {(solved || isSolved) && (
                     <CheckCircle className="w-4 h-4 text-green-600 dark:text-green-400 transition-colors duration-200" />
                   )}
                 </div>

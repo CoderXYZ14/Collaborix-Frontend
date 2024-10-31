@@ -1,0 +1,38 @@
+import { useEffect, useState } from "react";
+import axios from "axios";
+
+const useProblemSolvedStatus = (problemId) => {
+  const [isSolved, setIsSolved] = useState(false);
+
+  useEffect(() => {
+    const checkProblemSolvedStatus = async () => {
+      try {
+        const userData = JSON.parse(localStorage.getItem("userData"));
+        const accessToken = userData?.accessToken;
+        if (!accessToken) return;
+
+        const response = await axios.post(
+          `http://localhost:8000/api/v1/problems/solved-status/${problemId}`,
+          {},
+          {
+            withCredentials: true,
+            headers: { Authorization: `Bearer ${accessToken}` },
+          }
+        );
+
+        if (response.data.success) {
+          setIsSolved(response.data.data.solved);
+        }
+      } catch (error) {
+        console.error("Error checking problem solved status:", error);
+        setIsSolved(false);
+      }
+    };
+
+    checkProblemSolvedStatus();
+  }, [problemId]);
+
+  return isSolved;
+};
+
+export default useProblemSolvedStatus;

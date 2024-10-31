@@ -17,12 +17,7 @@ const Playground = ({ problem, setSuccess, setSolved }) => {
   const isLoggedIn = useSelector((state) => state.auth.status);
   const { pid } = useParams();
 
-  const { submitProblem, loading } = useSubmitProblem(
-    pid,
-    userCode,
-    setSolved,
-    setSuccess
-  );
+  const { submitProblem } = useSubmitProblem(pid, setSolved, setSuccess);
 
   const handleSubmit = async () => {
     if (!isLoggedIn) {
