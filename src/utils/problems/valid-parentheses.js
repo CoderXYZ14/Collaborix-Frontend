@@ -23,6 +23,7 @@ const starterCodeValidParenthesesJS = `function validParentheses(s) {
 
 export const validParentheses = {
   id: "valid-parentheses",
+  difficulty: "Easy",
   title: "4. Valid Parentheses",
   problemStatement: `
     <p class='mt-3'>Given a string <code>s</code> containing just the characters <code>'('</code>, <code>')'</code>, <code>'{'</code>, <code>'}'</code>, <code>'['</code> and <code>']'</code>, determine if the input string is valid.</p>

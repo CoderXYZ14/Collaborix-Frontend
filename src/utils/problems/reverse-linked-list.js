@@ -79,6 +79,7 @@ function reverseLinkedList(head) {
 export const reverseLinkedList = {
   id: "reverse-linked-list",
   title: "2. Reverse Linked List",
+  difficulty: "Hard",
   problemStatement: `<p>
                 Given the 
                 <code class="text-violet-600 dark:text-violet-400 bg-violet-50 dark:bg-violet-900/20 px-1.5 py-0.5 rounded text-sm transition-colors duration-200">
