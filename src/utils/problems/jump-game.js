@@ -9,6 +9,7 @@ export const jumpGameHandler = (fn) => {
       [2, 5, 0, 0],
     ];
     const answers = [true, false, true, true];
+
     for (let i = 0; i < tests.length; i++) {
       const result = fn(tests[i]);
       assert.equal(result, answers[i]);
@@ -35,7 +36,6 @@ export const jumpGame = {
     Return <code>true</code> if you can reach the last index, or <code>false</code> otherwise.
     </p>
   `,
-
   examples: [
     {
       id: 0,

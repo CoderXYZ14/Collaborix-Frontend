@@ -21,18 +21,26 @@ export const search2DMatrixHandler = (fn) => {
         ],
         target: 13,
       },
+      {
+        matrix: [[1]],
+        target: 1,
+      },
     ];
-    const answers = [true, false];
+
+    const answers = [true, false, true];
+
     for (let i = 0; i < tests.length; i++) {
       const result = fn(tests[i].matrix, tests[i].target);
       assert.deepEqual(result, answers[i]);
     }
+
     return true;
   } catch (error) {
-    console.log("Error from searchA2DMatrixHandler: ", error);
+    console.log("Error from search2DMatrixHandler: ", error);
     throw new Error(error);
   }
 };
+
 const starterCodeSearch2DMatrixJS = `// Do not edit function name
 function searchMatrix(matrix, target) {
   // Write your code here

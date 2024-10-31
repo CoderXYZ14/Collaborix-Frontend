@@ -20,7 +20,7 @@ class LinkedList {
       prev = current;
       current = next;
     }
-    return;
+    return prev; // Return new head of the reversed list
   }
 }
 

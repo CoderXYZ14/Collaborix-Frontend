@@ -13,7 +13,7 @@ const arraysEqual = (a, b) => {
   return true;
 };
 
-// checks if the user has the correct code
+// Checks if the user has the correct code
 const handlerTwoSum = (fn) => {
   try {
     const nums = [
@@ -45,6 +45,26 @@ const handlerTwoSum = (fn) => {
     console.log("twoSum handler function error");
     throw error;
   }
+};
+
+// Implementation function for twoSum
+const twoSumImplementation = (nums, target) => {
+  const map = new Map(); // Create a map to store the indices of the numbers
+
+  for (let i = 0; i < nums.length; i++) {
+    const complement = target - nums[i]; // Calculate the complement of the current number
+
+    // Check if the complement exists in the map
+    if (map.has(complement)) {
+      return [map.get(complement), i]; // Return the indices if found
+    }
+
+    // Store the current number's index in the map
+    map.set(nums[i], i);
+  }
+
+  // If no solution is found, which should not happen as per the problem statement
+  throw new Error("No two sum solution");
 };
 
 export const twoSum = {
@@ -81,3 +101,6 @@ export const twoSum = {
   order: 1,
   starterFunctionName: "function twoSum(",
 };
+
+// Export the implementation function separately if needed
+export { twoSumImplementation };
