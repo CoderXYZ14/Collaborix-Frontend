@@ -8,36 +8,26 @@ const useGetProblems = (setLoading) => {
   useEffect(() => {
     const fetchProblems = async () => {
       try {
-        // Retrieve user data from localStorage
-        const userData = JSON.parse(localStorage.getItem("userData"));
-        const accessToken = userData?.accessToken;
-        console.log(accessToken);
-        // Early return if no access token
-        if (!accessToken) {
-          setLoading(false);
-          return [];
-        }
-
-        // Set loading to true before fetch
         setLoading(true);
 
-        // Make API call
+        // Get user data if available
+        const userData = JSON.parse(localStorage.getItem("userData"));
+        const accessToken = userData?.accessToken;
+
+        // Make API call with or without token
         const response = await axios.get(
           "http://localhost:8000/api/v1/problems/get-questions",
-
           {
             withCredentials: true,
-            headers: { Authorization: `Bearer ${accessToken}` },
+            headers: accessToken
+              ? { Authorization: `Bearer ${accessToken}` }
+              : {},
           }
         );
-        console.log(response);
-        // Set problems and loading state
+
         setProblems(response.data.data);
         setLoading(false);
-
-        return response.data.data;
       } catch (error) {
-        // Ensure loading is set to false on error
         setLoading(false);
 
         toast.error("Error fetching questions. Please try again.", {
@@ -46,9 +36,7 @@ const useGetProblems = (setLoading) => {
         });
 
         console.error("Error fetching questions:", error);
-
-        // Return empty array on error
-        return [];
+        setProblems([]); // Set empty array on error
       }
     };
 
@@ -57,5 +45,4 @@ const useGetProblems = (setLoading) => {
 
   return problems;
 };
-
 export default useGetProblems;

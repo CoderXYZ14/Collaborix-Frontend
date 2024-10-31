@@ -24,11 +24,7 @@ const ProblemList = ({ setLoading }) => {
           >
             <td className="px-6 py-2">
               {problem.submitted && (
-                <CircleCheckBig
-                  color="#078827"
-                  size={24} // Added consistent size
-                  className="mx-auto" // Center the icon
-                />
+                <CircleCheckBig color="#078827" size={24} className="mx-auto" />
               )}
             </td>
             <td className="px-6 py-2 font-medium text-gray-800 dark:text-gray-200 whitespace-nowrap">
