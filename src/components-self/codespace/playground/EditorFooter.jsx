@@ -2,7 +2,7 @@ import { Button } from "@/components/ui/button";
 import { ChevronUp } from "lucide-react";
 import React from "react";
 
-const EditorFooter = () => {
+const EditorFooter = ({ handleSubmit }) => {
   return (
     <div className="flex  w-full ">
       <div className="mx-5 my-3 flex justify-between w-full">
@@ -10,7 +10,10 @@ const EditorFooter = () => {
           <Button className="px-5 py-1.5 text-sm font-medium items-center  transition-all focus:outline-none inline-flex bg-neutral-800  hover:bg-neutral-700 text-gray-50 rounded-lg">
             Run
           </Button>
-          <Button className="px-3 py-1.5 font-medium items-center transition-all focus:outline-none inline-flex text-sm text-gray-50 bg-green-600 hover:bg-green-700 rounded-lg">
+          <Button
+            className="px-3 py-1.5 font-medium items-center transition-all focus:outline-none inline-flex text-sm text-gray-50 bg-green-600 hover:bg-green-700 rounded-lg"
+            onClick={handleSubmit}
+          >
             Submit
           </Button>
         </div>

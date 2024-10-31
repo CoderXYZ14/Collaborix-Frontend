@@ -12,7 +12,7 @@ const Codespace = ({ problem }) => {
     <Split className="split" minSize={0}>
       <ProblemDescription problem={problem} />
       <div>
-        <Playground problem={problem} />
+        <Playground problem={problem} setSuccess={setSuccess} />
         {success && (
           <Confetti
             gravity={0.3}
