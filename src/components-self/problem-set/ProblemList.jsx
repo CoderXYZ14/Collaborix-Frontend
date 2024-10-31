@@ -1,6 +1,6 @@
 import { CircleCheckBig, Youtube } from "lucide-react";
 import { Link } from "react-router-dom";
-import useGetProblems from "@/custom-hooks/useGetProblems.js";
+import useGetProblems from "@/custom-hooks/useGetProblems";
 import useGetDifficultyColor from "@/custom-hooks/useGetDifficultyColor";
 
 const ProblemList = ({ setLoading }) => {
@@ -23,7 +23,13 @@ const ProblemList = ({ setLoading }) => {
             } border-b dark:border-gray-700 hover:bg-gray-300 dark:hover:bg-purple-900/30 transition-colors`}
           >
             <td className="px-6 py-2">
-              <CircleCheckBig color="#078827" />
+              {problem.submitted && (
+                <CircleCheckBig
+                  color="#078827"
+                  size={24} // Added consistent size
+                  className="mx-auto" // Center the icon
+                />
+              )}
             </td>
             <td className="px-6 py-2 font-medium text-gray-800 dark:text-gray-200 whitespace-nowrap">
               <Link to={`/problems/${problem.id}`} className="hover:underline">
