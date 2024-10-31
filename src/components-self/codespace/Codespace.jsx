@@ -1,14 +1,27 @@
 import Split from "react-split";
 import Playground from "./playground/Playground";
 import ProblemDescription from "./problem-description/ProblemDescription";
-import Confetti from "react-confetti/dist/types/Confetti";
+import Confetti from "react-confetti";
+import useWindowSize from "@/custom-hooks/useWindowSize";
+import { useState } from "react";
 
 const Codespace = ({ problem }) => {
+  const { width, height } = useWindowSize();
+  const [success, setSuccess] = useState(false);
   return (
     <Split className="split" minSize={0}>
       <ProblemDescription problem={problem} />
-      <Playground problem={problem} />
-      <Confetti gravity={0.3} tweenDuration={3000} />
+      <div>
+        <Playground problem={problem} />
+        {success && (
+          <Confetti
+            gravity={0.3}
+            tweenDuration={2000}
+            width={width}
+            height={height}
+          />
+        )}
+      </div>
     </Split>
   );
 };
