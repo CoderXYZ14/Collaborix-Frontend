@@ -2,7 +2,7 @@ import { useEffect, useState } from "react";
 import axios from "axios";
 
 const useProblemSolvedStatus = (problemId) => {
-  const [isSolved, setIsSolved] = useState(false);
+  const [isSolved, setIsSolved] = useState(null); // Initialize as null
 
   useEffect(() => {
     const checkProblemSolvedStatus = async () => {
@@ -22,6 +22,8 @@ const useProblemSolvedStatus = (problemId) => {
 
         if (response.data.success) {
           setIsSolved(response.data.data.solved);
+        } else {
+          setIsSolved(false);
         }
       } catch (error) {
         console.error("Error checking problem solved status:", error);
