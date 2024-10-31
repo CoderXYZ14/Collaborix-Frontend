@@ -8,11 +8,16 @@ import { useState } from "react";
 const Codespace = ({ problem }) => {
   const { width, height } = useWindowSize();
   const [success, setSuccess] = useState(false);
+  const [solved, setSolved] = useState(false);
   return (
     <Split className="split" minSize={0}>
-      <ProblemDescription problem={problem} />
+      <ProblemDescription problem={problem} solved={solved} />
       <div>
-        <Playground problem={problem} setSuccess={setSuccess} />
+        <Playground
+          problem={problem}
+          setSuccess={setSuccess}
+          setSolved={setSolved}
+        />
         {success && (
           <Confetti
             gravity={0.3}

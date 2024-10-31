@@ -1,7 +1,7 @@
 import React from "react";
 import { CheckCircle } from "lucide-react";
 
-const ProblemDescription = ({ problem }) => {
+const ProblemDescription = ({ problem, solved }) => {
   return (
     <div className="flex flex-col h-screen bg-gradient-to-b from-violet-200 from-10% to-purple-100 dark:bg-gradient-to-b dark:from-slate-800 dark:from-5% dark:to-purple-800  transition-colors duration-200">
       {/* Tab Navigation */}
@@ -22,9 +22,11 @@ const ProblemDescription = ({ problem }) => {
               <div className="flex items-center space-x-2">
                 <div className="flex items-center space-x-2">
                   <span className="inline-flex items-center px-2.5 py-1 rounded-full text-xs font-medium bg-green-100 dark:bg-green-950/30 text-green-600 dark:text-green-400 transition-colors duration-200">
-                    Easy
+                    {problem.difficulty}
                   </span>
-                  <CheckCircle className="w-4 h-4 text-green-600 dark:text-green-400 transition-colors duration-200" />
+                  {solved && (
+                    <CheckCircle className="w-4 h-4 text-green-600 dark:text-green-400 transition-colors duration-200" />
+                  )}
                 </div>
               </div>
             </div>

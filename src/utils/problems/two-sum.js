@@ -70,6 +70,7 @@ const twoSumImplementation = (nums, target) => {
 export const twoSum = {
   id: "two-sum",
   title: "1. Two Sum",
+  difficulty: "Easy",
   problemStatement: `
     <p>Given an array of integers <code class="text-violet-600 dark:text-violet-400 bg-violet-50 dark:bg-violet-900/20 px-1.5 py-0.5 rounded text-sm transition-colors duration-200">nums</code>
     and an integer <code class="text-violet-600 dark:text-violet-400 bg-violet-50 dark:bg-violet-900/20 px-1.5 py-0.5 rounded text-sm transition-colors duration-200">target</code>, return

@@ -9,12 +9,20 @@ import { useSelector } from "react-redux";
 import { toast } from "react-toastify";
 import { useParams } from "react-router-dom";
 import { problems } from "@/utils/problems";
+import useSubmitProblem from "@/custom-hooks/useSubmitProblem";
 
-const Playground = ({ problem, setSuccess }) => {
+const Playground = ({ problem, setSuccess, setSolved }) => {
   const [activeTestCases, setActiveTestCases] = useState(0);
   const [userCode, setUserCode] = useState(problem.starterCode);
   const isLoggedIn = useSelector((state) => state.auth.status);
   const { pid } = useParams();
+
+  const { submitProblem, loading } = useSubmitProblem(
+    pid,
+    userCode,
+    setSolved,
+    setSuccess
+  );
 
   const handleSubmit = async () => {
     if (!isLoggedIn) {
@@ -24,6 +32,7 @@ const Playground = ({ problem, setSuccess }) => {
       });
       return;
     }
+
     try {
       const cb = new Function(`return ${userCode}`)();
       const success = problems[pid].handlerFunction(cb);
@@ -33,13 +42,9 @@ const Playground = ({ problem, setSuccess }) => {
           position: "top-center",
           autoClose: 2000,
         });
-        setSuccess(true);
-        setTimeout(() => {
-          setSuccess(false);
-        }, 2000);
+        await submitProblem();
       }
     } catch (error) {
-      console.log(error.message);
       if (error.message.startsWith("AssertionError")) {
         toast.error("Oops! One or more test cases failed", {
           position: "top-center",
