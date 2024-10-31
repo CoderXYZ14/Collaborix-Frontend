@@ -1,36 +1,12 @@
 import React from "react";
 import { CheckCircle } from "lucide-react";
 import useProblemSolvedStatus from "@/custom-hooks/useProblemSolvedStatus";
+import useGetDifficultyColor from "@/custom-hooks/useGetDifficultyColor";
 
 const ProblemDescription = ({ problem, solved }) => {
   const isSolved = useProblemSolvedStatus(problem.id);
 
-  const getDifficultyColor = (difficulty) => {
-    switch (difficulty.toLowerCase()) {
-      case "easy":
-        return {
-          textColor: "text-green-600",
-          bgColor: "bg-green-100 dark:bg-green-950/30",
-        };
-      case "medium":
-        return {
-          textColor: "text-yellow-600",
-          bgColor: "bg-yellow-100 dark:bg-yellow-950/30",
-        };
-      case "hard":
-        return {
-          textColor: "text-red-600",
-          bgColor: "bg-red-100 dark:bg-red-950/30",
-        };
-      default:
-        return {
-          textColor: "text-gray-600",
-          bgColor: "bg-gray-100 dark:bg-gray-950/30",
-        };
-    }
-  };
-
-  const { textColor, bgColor } = getDifficultyColor(problem.difficulty);
+  const { textColor, bgColor } = useGetDifficultyColor(problem.difficulty);
 
   return (
     <div className="flex flex-col h-screen bg-gradient-to-b from-violet-200 from-10% to-purple-100 dark:bg-gradient-to-b dark:from-slate-800 dark:from-5% dark:to-purple-800 transition-colors duration-200">
