@@ -34,7 +34,8 @@ const ProblemDescription = ({ problem, solved }) => {
                   </span>
                   {(solved || isSolved) && (
                     <CheckCircle
-                      className={`w-4 h-4 ${textColor} transition-colors duration-200`}
+                      color="#078827"
+                      className={`w-4 h-4  transition-colors duration-200`}
                     />
                   )}
                 </div>

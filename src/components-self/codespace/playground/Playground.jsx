@@ -13,7 +13,7 @@ import useSubmitProblem from "@/custom-hooks/useSubmitProblem";
 
 const Playground = ({ problem, setSuccess, setSolved }) => {
   const [activeTestCases, setActiveTestCases] = useState(0);
-  const [userCode, setUserCode] = useState(problem.starterCode);
+  let [userCode, setUserCode] = useState(problem.starterCode);
   const isLoggedIn = useSelector((state) => state.auth.status);
   const { pid } = useParams();
 
@@ -29,6 +29,7 @@ const Playground = ({ problem, setSuccess, setSolved }) => {
     }
 
     try {
+      userCode = userCode.slice(userCode.indexOf(problem.starterFunctionName));
       const cb = new Function(`return ${userCode}`)();
       const success = problems[pid].handlerFunction(cb);
 
