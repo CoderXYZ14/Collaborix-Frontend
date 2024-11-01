@@ -65,9 +65,15 @@ const Playground = ({ problem, setSuccess, setSolved }) => {
     setUserCode(value);
     localStorage.setItem(`code-${pid}`, JSON.stringify(value));
   };
+
+  const handleReset = () => {
+    setUserCode(problem.starterCode);
+    localStorage.removeItem(`code-${pid}`);
+  };
+
   return (
     <div className="flex flex-col bg-gray-900 relative overflow-x-hidden">
-      <PreferenceNavbar />
+      <PreferenceNavbar onReset={handleReset} />
       <Split
         className="h-[calc(100vh-95px)]"
         direction="vertical"
