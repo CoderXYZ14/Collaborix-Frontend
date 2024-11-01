@@ -1,4 +1,4 @@
-const { useEffect, useState, useCallback } = require("react");
+import { useEffect, useState, useCallback } from "react";
 
 const useFullscreen = () => {
   const [isFullscreen, setIsFullscreen] = useState(false);
@@ -29,3 +29,5 @@ const useFullscreen = () => {
     toggleFullscreen,
   };
 };
+
+export default useFullscreen;
