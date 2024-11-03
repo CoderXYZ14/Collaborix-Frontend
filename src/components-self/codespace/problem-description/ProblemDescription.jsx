@@ -1,21 +1,125 @@
 import React from "react";
-import { CheckCircle } from "lucide-react";
-import useProblemSolvedStatus from "@/custom-hooks/useProblemSolvedStatus";
-import useGetDifficultyColor from "@/custom-hooks/useGetDifficultyColor";
+import { CheckCircle, Users, UserPlus } from "lucide-react";
+import {
+  HoverCard,
+  HoverCardContent,
+  HoverCardTrigger,
+} from "@/components/ui/hover-card";
+import {
+  Dialog,
+  DialogContent,
+  DialogHeader,
+  DialogTitle,
+} from "@/components/ui/dialog";
+import { Button } from "@/components/ui/button";
+import { Input } from "@/components/ui/input";
+import { useState } from "react";
 
 const ProblemDescription = ({ problem, solved }) => {
-  const isSolved = useProblemSolvedStatus(problem.id);
+  const [roomId, setRoomId] = useState("");
+  const [showCreateDialog, setShowCreateDialog] = useState(false);
+  const [showJoinDialog, setShowJoinDialog] = useState(false);
 
-  const { textColor, bgColor } = useGetDifficultyColor(problem.difficulty);
+  const handleCreateRoom = () => {
+    const newRoomId = crypto.randomUUID();
+    setRoomId(newRoomId);
+    setShowCreateDialog(true);
+  };
 
   return (
     <div className="flex flex-col h-screen bg-gradient-to-b from-violet-200 from-10% to-purple-100 dark:bg-gradient-to-b dark:from-slate-800 dark:from-5% dark:to-purple-800 transition-colors duration-200">
       {/* Tab Navigation */}
-      <div className="flex h-12 items-center bg-gray-100 dark:bg-slate-900 border-b border-gray-200 dark:border-slate-800 transition-colors duration-200">
-        <div className="px-6 py-2.5 text-sm font-medium bg-white dark:bg-slate-950 text-slate-900 dark:text-white border-b-2 border-violet-500 transition-colors duration-200">
+      <div className="flex justify-between h-12 items-center bg-gray-100 dark:bg-slate-900 border-b border-gray-200 dark:border-slate-800 transition-colors duration-200">
+        <div className="px-6 py-2.5 text-sm font-medium bg-white dark:bg-slate-950 text-slate-900 dark:text-white border-b-2 border-violet-500 transition-colors duration-200 flex items-center">
           Description
         </div>
+        <div className="mr-4 flex items-center space-x-1 ">
+          {/* Create Room Icon with Hover Card */}
+          <HoverCard>
+            <HoverCardTrigger asChild>
+              <UserPlus
+                className="h-4 w-4 text-slate-600 dark:text-slate-300 hover:text-violet-600 dark:hover:text-violet-400 cursor-pointer transition-colors duration-200"
+                onClick={handleCreateRoom}
+              />
+            </HoverCardTrigger>
+            <HoverCardContent className="w-64">
+              <div className="text-sm">Create a room</div>
+            </HoverCardContent>
+          </HoverCard>
+
+          {/* Join Room Icon with Hover Card */}
+          <HoverCard>
+            <HoverCardTrigger asChild>
+              <Users
+                className="h-4 w-4 text-slate-600 dark:text-slate-300 hover:text-violet-600 dark:hover:text-violet-400 cursor-pointer transition-colors duration-200"
+                onClick={() => setShowJoinDialog(true)}
+              />
+            </HoverCardTrigger>
+            <HoverCardContent className="w-64">
+              <div className="text-sm">Join a room </div>
+            </HoverCardContent>
+          </HoverCard>
+        </div>
       </div>
+
+      {/* Create Room Dialog */}
+      <Dialog
+        open={showCreateDialog}
+        onOpenChange={setShowCreateDialog}
+        className="bg-white"
+      >
+        <DialogContent className="sm:max-w-md bg-gradient-to-b from-violet-200 from-10% to-purple-100 dark:bg-gradient-to-b dark:from-slate-800 dark:from-5% dark:to-purple-900 transition-colors duration-200">
+          <DialogHeader>
+            <DialogTitle className="dark:text-gray-300">
+              Room Created
+            </DialogTitle>
+          </DialogHeader>
+          <div className="space-y-4">
+            <div className="text-sm text-slate-600 dark:text-slate-300">
+              Share this room ID with others to collaborate:
+            </div>
+            <div className="flex items-center space-x-2">
+              <Input
+                readOnly
+                value={roomId}
+                className="font-mono text-sm dark:text-gray-200 text-gray-800"
+              />
+              <Button
+                size="sm"
+                className="bg-purple-700 text-gray-300 "
+                onClick={() => navigator.clipboard.writeText(roomId)}
+              >
+                Copy
+              </Button>
+            </div>
+          </div>
+        </DialogContent>
+      </Dialog>
+
+      {/* Join Room Dialog */}
+      <Dialog open={showJoinDialog} onOpenChange={setShowJoinDialog}>
+        <DialogContent className="sm:max-w-md bg-gradient-to-b from-violet-200 from-10% to-purple-100 dark:bg-gradient-to-b dark:from-slate-800 dark:from-5% dark:to-purple-900 transition-colors duration-200">
+          <DialogHeader>
+            <DialogTitle className="dark:text-gray-300">Join Room</DialogTitle>
+          </DialogHeader>
+          <div className="space-y-4">
+            <div className="text-sm text-slate-600 dark:text-slate-300">
+              Enter the room ID to join:
+            </div>
+            <div className="flex items-center space-x-2">
+              <Input
+                // value={roomId}
+                // onChange={(e) => setRoomId(e.target.value)}
+                placeholder="Enter room ID"
+                className="font-mono text-sm dark:text-gray-200 text-gray-800"
+              />
+              <Button size="sm" className="bg-purple-700 text-gray-300">
+                Join
+              </Button>
+            </div>
+          </div>
+        </DialogContent>
+      </Dialog>
 
       <div className="flex-1 overflow-y-auto">
         <div className="p-6">
@@ -28,14 +132,14 @@ const ProblemDescription = ({ problem, solved }) => {
               <div className="flex items-center space-x-2">
                 <div className="flex items-center space-x-2">
                   <span
-                    className={`inline-flex items-center px-2.5 py-1 rounded-full text-xs font-medium ${bgColor} ${textColor} transition-colors duration-200`}
+                    className={`inline-flex items-center px-2.5 py-1 rounded-full text-xs font-medium ${problem.bgColor} ${problem.textColor} transition-colors duration-200`}
                   >
                     {problem.difficulty}
                   </span>
-                  {(solved || isSolved) && (
+                  {solved && (
                     <CheckCircle
                       color="#078827"
-                      className={`w-4 h-4  transition-colors duration-200`}
+                      className="w-4 h-4 transition-colors duration-200"
                     />
                   )}
                 </div>
