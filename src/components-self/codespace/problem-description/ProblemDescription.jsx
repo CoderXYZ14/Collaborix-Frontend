@@ -14,8 +14,13 @@ import {
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { useState } from "react";
+import useGetDifficultyColor from "@/custom-hooks/useGetDifficultyColor";
+import useProblemSolvedStatus from "@/custom-hooks/useProblemSolvedStatus";
 
 const ProblemDescription = ({ problem, solved }) => {
+  const isSolved = useProblemSolvedStatus(problem.id);
+  const { textColor, bgColor } = useGetDifficultyColor(problem.difficulty);
+
   const [roomId, setRoomId] = useState("");
   const [showCreateDialog, setShowCreateDialog] = useState(false);
   const [showJoinDialog, setShowJoinDialog] = useState(false);
@@ -132,11 +137,11 @@ const ProblemDescription = ({ problem, solved }) => {
               <div className="flex items-center space-x-2">
                 <div className="flex items-center space-x-2">
                   <span
-                    className={`inline-flex items-center px-2.5 py-1 rounded-full text-xs font-medium ${problem.bgColor} ${problem.textColor} transition-colors duration-200`}
+                    className={`inline-flex items-center px-2.5 py-1 rounded-full text-xs font-medium ${bgColor} ${textColor} transition-colors duration-200`}
                   >
                     {problem.difficulty}
                   </span>
-                  {solved && (
+                  {(solved || isSolved) && (
                     <CheckCircle
                       color="#078827"
                       className="w-4 h-4 transition-colors duration-200"
