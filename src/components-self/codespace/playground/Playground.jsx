@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useRef, useState } from "react";
 import PreferenceNavbar from "./PreferenceNavbar";
 import Split from "react-split";
 import ReactCodeMirror from "@uiw/react-codemirror";
@@ -10,8 +10,19 @@ import { toast } from "react-toastify";
 import { useParams } from "react-router-dom";
 import { problems } from "@/utils/problems";
 import useSubmitProblem from "@/custom-hooks/useSubmitProblem";
+import { initSocket } from "@/socket/socket";
 
 const Playground = ({ problem, setSuccess, setSolved }) => {
+  //socket
+  const socketRef = useRef(null);
+  useEffect(() => {
+    const init = async () => {
+      socketRef.current = await initSocket;
+      socketRef.emit("join");
+    };
+    init();
+  }, []);
+
   const [activeTestCases, setActiveTestCases] = useState(0);
   let [userCode, setUserCode] = useState(problem.starterCode);
   const isLoggedIn = useSelector((state) => state.auth.status);
