@@ -16,6 +16,8 @@ import { Input } from "@/components/ui/input";
 import { useState } from "react";
 import useGetDifficultyColor from "@/custom-hooks/useGetDifficultyColor";
 import useProblemSolvedStatus from "@/custom-hooks/useProblemSolvedStatus";
+import { v4 as uuidV4 } from "uuid";
+import { toast } from "react-toastify";
 
 const ProblemDescription = ({ problem, solved }) => {
   const isSolved = useProblemSolvedStatus(problem.id);
@@ -25,10 +27,26 @@ const ProblemDescription = ({ problem, solved }) => {
   const [showCreateDialog, setShowCreateDialog] = useState(false);
   const [showJoinDialog, setShowJoinDialog] = useState(false);
 
-  const handleCreateRoom = () => {
-    const newRoomId = crypto.randomUUID();
+  const [clients, setClients] = useState([
+    { socketId: 1, username: "Shahwaiz I" },
+    { socketId: 2, username: "Coder X" },
+  ]);
+
+  const handleCreateRoom = (e) => {
+    e.preventDefault();
+    const newRoomId = uuidV4();
     setRoomId(newRoomId);
     setShowCreateDialog(true);
+  };
+
+  const handleCopyRoomId = () => {
+    navigator.clipboard.writeText(roomId);
+    setShowCreateDialog(false);
+
+    toast.success("Room ID copied to clipboard!", {
+      position: "top-center",
+      autoClose: 2000,
+    });
   };
 
   return (
@@ -92,7 +110,7 @@ const ProblemDescription = ({ problem, solved }) => {
               <Button
                 size="sm"
                 className="bg-purple-700 text-gray-300 "
-                onClick={() => navigator.clipboard.writeText(roomId)}
+                onClick={handleCopyRoomId}
               >
                 Copy
               </Button>
