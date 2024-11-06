@@ -19,24 +19,21 @@ import useProblemSolvedStatus from "@/custom-hooks/useProblemSolvedStatus";
 import { v4 as uuidV4 } from "uuid";
 import { toast } from "react-toastify";
 
-const ProblemDescription = ({ problem, solved }) => {
+const ProblemDescription = ({ problem, solved, onRoomCreated }) => {
   const isSolved = useProblemSolvedStatus(problem.id);
   const { textColor, bgColor } = useGetDifficultyColor(problem.difficulty);
 
   const [roomId, setRoomId] = useState("");
   const [showCreateDialog, setShowCreateDialog] = useState(false);
   const [showJoinDialog, setShowJoinDialog] = useState(false);
-
-  const [clients, setClients] = useState([
-    { socketId: 1, username: "Shahwaiz I" },
-    { socketId: 2, username: "Coder X" },
-  ]);
+  const [joinRoomId, setJoinRoomId] = useState("");
 
   const handleCreateRoom = (e) => {
     e.preventDefault();
     const newRoomId = uuidV4();
     setRoomId(newRoomId);
     setShowCreateDialog(true);
+    onRoomCreated(newRoomId);
   };
 
   const handleCopyRoomId = () => {
@@ -47,6 +44,20 @@ const ProblemDescription = ({ problem, solved }) => {
       position: "top-center",
       autoClose: 2000,
     });
+  };
+
+  const handleJoinRoom = () => {
+    if (joinRoomId) {
+      // Update the roomId with the joinRoomId
+      setRoomId(joinRoomId);
+      setShowJoinDialog(false); // Close the join room dialog
+      onRoomCreated(joinRoomId); // Notify parent component that the room was created/joined
+    } else {
+      toast.error("Please enter a room ID", {
+        position: "top-center",
+        autoClose: 2000,
+      });
+    }
   };
 
   return (
@@ -131,12 +142,16 @@ const ProblemDescription = ({ problem, solved }) => {
             </div>
             <div className="flex items-center space-x-2">
               <Input
-                // value={roomId}
-                // onChange={(e) => setRoomId(e.target.value)}
+                value={joinRoomId}
+                onChange={(e) => setJoinRoomId(e.target.value)}
                 placeholder="Enter room ID"
                 className="font-mono text-sm dark:text-gray-200 text-gray-800"
               />
-              <Button size="sm" className="bg-purple-700 text-gray-300">
+              <Button
+                size="sm"
+                className="bg-purple-700 text-gray-300"
+                onClick={handleJoinRoom}
+              >
                 Join
               </Button>
             </div>
