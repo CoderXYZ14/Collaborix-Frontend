@@ -5,8 +5,9 @@ export const initSocket = async () => {
     "force new connection": true,
     reconnectionAttempt: "Infinity",
     timeout: 10000,
-    transports: ["websockets"],
+    transports: ["websocket"],
   };
+
   return io(import.meta.env.VITE_APP_BACKEND_URL, options);
   //return an instance of socket client
 };

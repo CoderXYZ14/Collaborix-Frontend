@@ -9,14 +9,25 @@ const Codespace = ({ problem }) => {
   const { width, height } = useWindowSize();
   const [success, setSuccess] = useState(false);
   const [solved, setSolved] = useState(false);
+  const [roomId, setRoomId] = useState("");
+
+  const handleRoomCreated = (newRoomId) => {
+    setRoomId(newRoomId);
+  };
+
   return (
     <Split className="split" minSize={0}>
-      <ProblemDescription problem={problem} solved={solved} />
+      <ProblemDescription
+        problem={problem}
+        solved={solved}
+        onRoomCreated={handleRoomCreated}
+      />
       <div>
         <Playground
           problem={problem}
           setSuccess={setSuccess}
           setSolved={setSolved}
+          roomId={roomId}
         />
         {success && (
           <Confetti
