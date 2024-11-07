@@ -10,36 +10,18 @@ import { toast } from "react-toastify";
 import { useParams } from "react-router-dom";
 import { problems } from "@/utils/problems";
 import useSubmitProblem from "@/custom-hooks/useSubmitProblem";
-import { initSocket } from "@/socket/socket";
-import ACTIONS from "@/utils/socket-actions/action";
 
-const Playground = ({ problem, setSuccess, setSolved, roomId }) => {
-  //socket
-  const socketRef = useRef(null);
-  const [username, setUsername] = useState("");
-
-  useEffect(() => {
-    const init = async () => {
-      socketRef.current = await initSocket();
-      socketRef.current.on("connect_error", (err) => handleErrors(err));
-      socketRef.current.on("connect_failed", (err) => handleErrors(err));
-
-      function handleErrors(e) {
-        console.log("socket error", e);
-
-        toast.error("Socket connection failed, try again later.", {
-          position: "top-center",
-          autoClose: 2000,
-        });
-      }
-      socketRef.current.emit(ACTIONS.JOIN, { roomId, username });
-      // console.log(roomId);
-      // console.log("username" + username);
-    };
-    init();
-  }, [roomId, username]);
-
+const Playground = ({
+  problem,
+  setSuccess,
+  setSolved,
+  roomId,
+  username,
+  clients,
+  socket,
+}) => {
   const [activeTestCases, setActiveTestCases] = useState(0);
+
   let [userCode, setUserCode] = useState(problem.starterCode);
   const isLoggedIn = useSelector((state) => state.auth.status);
   const { pid } = useParams();
@@ -85,14 +67,15 @@ const Playground = ({ problem, setSuccess, setSolved, roomId }) => {
 
   useEffect(() => {
     const storedUser = localStorage.getItem("userData");
-    //console.log(storedUser); // Retrieve the 'user' object from localStorage
-    const parsedUser = storedUser ? JSON.parse(storedUser) : null; // Parse the stored JSON string
-    const storedUsername = parsedUser?.user.username || ""; // Safely access 'username' from the parsed object
+    const parsedUser = storedUser ? JSON.parse(storedUser) : null;
+    const storedUsername = parsedUser?.user.username || "";
 
-    setUsername(storedUsername); // Set the username in the state
-
-    const code = localStorage.getItem(`code-${pid}`);
-    if (isLoggedIn) setUserCode(code ? JSON.parse(code) : problem.starterCode);
+    if (isLoggedIn)
+      setUserCode(
+        localStorage.getItem(`code-${pid}`)
+          ? JSON.parse(localStorage.getItem(`code-${pid}`))
+          : problem.starterCode
+      );
     else setUserCode(problem.starterCode);
   }, [pid, isLoggedIn, problem.starterCode]);
 
@@ -105,7 +88,6 @@ const Playground = ({ problem, setSuccess, setSolved, roomId }) => {
     setUserCode(problem.starterCode);
     localStorage.removeItem(`code-${pid}`);
   };
-
   return (
     <div className="flex flex-col bg-gray-900 relative overflow-x-hidden">
       <PreferenceNavbar onReset={handleReset} />
