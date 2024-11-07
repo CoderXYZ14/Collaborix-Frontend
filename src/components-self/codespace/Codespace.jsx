@@ -19,9 +19,27 @@ const Codespace = ({ problem }) => {
 
   useEffect(() => {
     const init = async () => {
+      console.log("clients" + clients);
       socketRef.current = await initSocket();
       socketRef.current.on("connect_error", (err) => handleErrors(err));
       socketRef.current.on("connect_failed", (err) => handleErrors(err));
+
+      // const handleUsernameInput = (newUsername) => {
+      //   // Check if the newUsername is unique
+      //   if (clients.some((client) => client.username === newUsername)) {
+      //     // Username is not unique, prompt the user to choose a different one
+      //     toast.error(
+      //       "Username is already taken, please choose a different one.",
+      //       {
+      //         position: "top-center",
+      //         autoClose: 2000,
+      //       }
+      //     );
+      //   } else {
+      //     // Username is unique, set the username
+      //     //setUsername(newUsername);
+      //   }
+      // };
 
       function handleErrors(e) {
         console.log("socket error", e);
@@ -36,23 +54,41 @@ const Codespace = ({ problem }) => {
       socketRef.current.on(
         ACTIONS.JOINED,
         ({ clients, username: joinedUsername, socketId }) => {
-          toast.info(`${joinedUsername} joined the room`, {
-            position: "top-center",
-            autoClose: 2000,
-          });
+          if (username !== joinedUsername) {
+            handleUsernameInput(joinedUsername);
+          }
           setClients(clients);
-          console.log(clients);
         }
       );
+
+      //listing for disconnected
+      socketRef.current.on(ACTIONS.DISCONNECTED, ({ socketId, username }) => {
+        toast.info(`${username} left the room`, {
+          position: "top-center",
+          autoClose: 2000,
+        });
+        setClients((prev) => {
+          return prev.filter((client) => client.socketId !== socketId);
+        });
+      });
     };
     init();
-  }, [roomId, username]);
+    //clear listner
+    return () => {
+      if (socketRef.current) {
+        socketRef.current.disconnect();
+        socketRef.current.off(ACTIONS.JOINED);
+        socketRef.current.off(ACTIONS.DISCONNECTED);
+      }
+    };
+  }, [roomId]);
 
   const handleRoomCreated = (newRoomId) => {
     setRoomId(newRoomId);
     const storedUser = localStorage.getItem("userData");
     const parsedUser = storedUser ? JSON.parse(storedUser) : null;
     const storedUsername = parsedUser?.user.username || "";
+    console.log(storedUsername);
     setUsername(storedUsername);
   };
 
@@ -70,7 +106,6 @@ const Codespace = ({ problem }) => {
           setSuccess={setSuccess}
           setSolved={setSolved}
           roomId={roomId}
-          username={username}
           clients={clients}
           socket={socketRef.current}
         />
