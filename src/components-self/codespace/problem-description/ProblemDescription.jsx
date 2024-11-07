@@ -19,7 +19,7 @@ import useProblemSolvedStatus from "@/custom-hooks/useProblemSolvedStatus";
 import { v4 as uuidV4 } from "uuid";
 import { toast } from "react-toastify";
 
-const ProblemDescription = ({ problem, solved, onRoomCreated }) => {
+const ProblemDescription = ({ problem, solved, onRoomCreated, clients }) => {
   const isSolved = useProblemSolvedStatus(problem.id);
   const { textColor, bgColor } = useGetDifficultyColor(problem.difficulty);
 
@@ -226,6 +226,18 @@ const ProblemDescription = ({ problem, solved, onRoomCreated }) => {
                 </div>
               ))}
             </div>
+          </div>
+          <div className="flex items-center mt-4 space-x-4">
+            {clients.map((client) => (
+              <div key={client.socketId} className="flex flex-col items-center">
+                <div className="w-8 h-8 bg-violet-500 rounded-full text-white flex items-center justify-center">
+                  {client.username.charAt(0).toUpperCase()}
+                </div>
+                <div className="text-sm text-slate-600 dark:text-slate-300">
+                  {client.username}
+                </div>
+              </div>
+            ))}
           </div>
         </div>
       </div>
