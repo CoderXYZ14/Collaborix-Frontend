@@ -16,7 +16,6 @@ const Playground = ({
   setSuccess,
   setSolved,
   roomId,
-  username,
   clients,
   socket,
 }) => {
@@ -66,10 +65,6 @@ const Playground = ({
   };
 
   useEffect(() => {
-    const storedUser = localStorage.getItem("userData");
-    const parsedUser = storedUser ? JSON.parse(storedUser) : null;
-    const storedUsername = parsedUser?.user.username || "";
-
     if (isLoggedIn)
       setUserCode(
         localStorage.getItem(`code-${pid}`)

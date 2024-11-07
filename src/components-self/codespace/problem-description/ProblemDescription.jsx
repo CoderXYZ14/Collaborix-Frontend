@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState } from "react";
 import { CheckCircle, Users, UserPlus } from "lucide-react";
 import {
   HoverCard,
@@ -13,7 +13,6 @@ import {
 } from "@/components/ui/dialog";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
-import { useState } from "react";
 import useGetDifficultyColor from "@/custom-hooks/useGetDifficultyColor";
 import useProblemSolvedStatus from "@/custom-hooks/useProblemSolvedStatus";
 import { v4 as uuidV4 } from "uuid";
@@ -27,6 +26,7 @@ const ProblemDescription = ({ problem, solved, onRoomCreated, clients }) => {
   const [showCreateDialog, setShowCreateDialog] = useState(false);
   const [showJoinDialog, setShowJoinDialog] = useState(false);
   const [joinRoomId, setJoinRoomId] = useState("");
+  const [roomActive, setRoomActive] = useState(false);
 
   const handleCreateRoom = (e) => {
     e.preventDefault();
@@ -34,6 +34,7 @@ const ProblemDescription = ({ problem, solved, onRoomCreated, clients }) => {
     setRoomId(newRoomId);
     setShowCreateDialog(true);
     onRoomCreated(newRoomId);
+    setRoomActive(true); // Set room as active
   };
 
   const handleCopyRoomId = () => {
@@ -48,10 +49,10 @@ const ProblemDescription = ({ problem, solved, onRoomCreated, clients }) => {
 
   const handleJoinRoom = () => {
     if (joinRoomId) {
-      // Update the roomId with the joinRoomId
       setRoomId(joinRoomId);
-      setShowJoinDialog(false); // Close the join room dialog
-      onRoomCreated(joinRoomId); // Notify parent component that the room was created/joined
+      setShowJoinDialog(false);
+      onRoomCreated(joinRoomId);
+      setRoomActive(true); // Set room as active
     } else {
       toast.error("Please enter a room ID", {
         position: "top-center",
@@ -62,7 +63,6 @@ const ProblemDescription = ({ problem, solved, onRoomCreated, clients }) => {
 
   return (
     <div className="flex flex-col h-screen bg-gradient-to-b from-violet-200 from-10% to-purple-100 dark:bg-gradient-to-b dark:from-slate-800 dark:from-5% dark:to-purple-800 transition-colors duration-200">
-      {/* Tab Navigation */}
       <div className="flex justify-between h-12 items-center bg-gray-100 dark:bg-slate-900 border-b border-gray-200 dark:border-slate-800 transition-colors duration-200">
         <div className="px-6 py-2.5 text-sm font-medium bg-white dark:bg-slate-950 text-slate-900 dark:text-white border-b-2 border-violet-500 transition-colors duration-200 flex items-center">
           Description
@@ -72,8 +72,12 @@ const ProblemDescription = ({ problem, solved, onRoomCreated, clients }) => {
           <HoverCard>
             <HoverCardTrigger asChild>
               <UserPlus
-                className="h-4 w-4 text-slate-600 dark:text-slate-300 hover:text-violet-600 dark:hover:text-violet-400 cursor-pointer transition-colors duration-200"
-                onClick={handleCreateRoom}
+                className={`h-4 w-4 text-slate-600 dark:text-slate-300 ${
+                  roomActive
+                    ? "opacity-50 cursor-not-allowed"
+                    : "hover:text-violet-600 dark:hover:text-violet-400 cursor-pointer"
+                } transition-colors duration-200`}
+                onClick={!roomActive ? handleCreateRoom : undefined}
               />
             </HoverCardTrigger>
             <HoverCardContent className="w-64">
@@ -85,23 +89,24 @@ const ProblemDescription = ({ problem, solved, onRoomCreated, clients }) => {
           <HoverCard>
             <HoverCardTrigger asChild>
               <Users
-                className="h-4 w-4 text-slate-600 dark:text-slate-300 hover:text-violet-600 dark:hover:text-violet-400 cursor-pointer transition-colors duration-200"
-                onClick={() => setShowJoinDialog(true)}
+                className={`h-4 w-4 text-slate-600 dark:text-slate-300 ${
+                  roomActive
+                    ? "opacity-50 cursor-not-allowed"
+                    : "hover:text-violet-600 dark:hover:text-violet-400 cursor-pointer"
+                } transition-colors duration-200`}
+                onClick={
+                  !roomActive ? () => setShowJoinDialog(true) : undefined
+                }
               />
             </HoverCardTrigger>
             <HoverCardContent className="w-64">
-              <div className="text-sm">Join a room </div>
+              <div className="text-sm">Join a room</div>
             </HoverCardContent>
           </HoverCard>
         </div>
       </div>
-
       {/* Create Room Dialog */}
-      <Dialog
-        open={showCreateDialog}
-        onOpenChange={setShowCreateDialog}
-        className="bg-white"
-      >
+      <Dialog open={showCreateDialog} onOpenChange={setShowCreateDialog}>
         <DialogContent className="sm:max-w-md bg-gradient-to-b from-violet-200 from-10% to-purple-100 dark:bg-gradient-to-b dark:from-slate-800 dark:from-5% dark:to-purple-900 transition-colors duration-200">
           <DialogHeader>
             <DialogTitle className="dark:text-gray-300">
@@ -120,7 +125,7 @@ const ProblemDescription = ({ problem, solved, onRoomCreated, clients }) => {
               />
               <Button
                 size="sm"
-                className="bg-purple-700 text-gray-300 "
+                className="bg-purple-700 text-gray-300"
                 onClick={handleCopyRoomId}
               >
                 Copy
@@ -129,7 +134,6 @@ const ProblemDescription = ({ problem, solved, onRoomCreated, clients }) => {
           </div>
         </DialogContent>
       </Dialog>
-
       {/* Join Room Dialog */}
       <Dialog open={showJoinDialog} onOpenChange={setShowJoinDialog}>
         <DialogContent className="sm:max-w-md bg-gradient-to-b from-violet-200 from-10% to-purple-100 dark:bg-gradient-to-b dark:from-slate-800 dark:from-5% dark:to-purple-900 transition-colors duration-200">
@@ -158,64 +162,51 @@ const ProblemDescription = ({ problem, solved, onRoomCreated, clients }) => {
           </div>
         </DialogContent>
       </Dialog>
-
+      {/* Main Content */}
       <div className="flex-1 overflow-y-auto">
         <div className="p-6">
           <div className="space-y-6">
-            <div className="flex flex-col space-y-4">
-              <h1 className="text-xl font-semibold text-slate-900 dark:text-white transition-colors duration-200">
-                {problem.title}
-              </h1>
-
-              <div className="flex items-center space-x-2">
-                <div className="flex items-center space-x-2">
-                  <span
-                    className={`inline-flex items-center px-2.5 py-1 rounded-full text-xs font-medium ${bgColor} ${textColor} transition-colors duration-200`}
-                  >
-                    {problem.difficulty}
-                  </span>
-                  {(solved || isSolved) && (
-                    <CheckCircle
-                      color="#078827"
-                      className="w-4 h-4 transition-colors duration-200"
-                    />
-                  )}
-                </div>
-              </div>
+            <h1 className="text-xl font-semibold text-slate-900 dark:text-white">
+              {problem.title}
+            </h1>
+            <div className="flex items-center space-x-2">
+              <span
+                className={`inline-flex items-center px-2.5 py-1 rounded-full text-xs font-medium ${bgColor} ${textColor}`}
+              >
+                {problem.difficulty}
+              </span>
+              {(solved || isSolved) && (
+                <CheckCircle color="#078827" className="w-4 h-4" />
+              )}
             </div>
-
-            {/* Problem Statement */}
-            <div className="text-slate-700 dark:text-slate-300 space-y-4 text-sm transition-colors duration-200">
+            <div className="text-slate-700 dark:text-slate-300 space-y-4 text-sm">
               <div
                 dangerouslySetInnerHTML={{ __html: problem.problemStatement }}
               />
             </div>
-
-            {/* Examples Section */}
             <div className="space-y-6">
               {problem.examples.map((example, index) => (
                 <div key={example.id} className="space-y-3 mb-3">
-                  <h3 className="text-sm font-medium text-slate-900 dark:text-slate-100 transition-colors duration-200">
+                  <h3 className="text-sm font-medium text-slate-900 dark:text-slate-100">
                     Example {index + 1}
                   </h3>
-
-                  <div className="rounded-lg bg-slate-50 dark:bg-slate-900/50 border border-slate-200 dark:border-slate-800 transition-all duration-200">
+                  <div className="rounded-lg bg-slate-50 dark:bg-slate-900/50 border border-slate-200 dark:border-slate-800">
                     <div className="p-4 space-y-2 font-mono text-xs">
-                      <div className="text-slate-700 dark:text-slate-300 transition-colors duration-200">
-                        <span className="font-semibold text-violet-600 dark:text-violet-400 transition-colors duration-200">
+                      <div className="text-slate-700 dark:text-slate-300">
+                        <span className="font-semibold text-violet-600 dark:text-violet-400">
                           Input:{" "}
                         </span>
                         {example.inputText}
                       </div>
-                      <div className="text-slate-700 dark:text-slate-300 transition-colors duration-200">
-                        <span className="font-semibold text-violet-600 dark:text-violet-400 transition-colors duration-200">
+                      <div className="text-slate-700 dark:text-slate-300">
+                        <span className="font-semibold text-violet-600 dark:text-violet-400">
                           Output:{" "}
                         </span>
                         {example.outputText}
                       </div>
                       {example.explanation && (
-                        <div className="text-slate-700 dark:text-slate-300 pt-2 border-t border-slate-200 dark:border-slate-700 transition-colors duration-200">
-                          <span className="font-semibold text-violet-600 dark:text-violet-400 transition-colors duration-200">
+                        <div className="text-slate-700 dark:text-slate-300">
+                          <span className="font-semibold text-violet-600 dark:text-violet-400">
                             Explanation:{" "}
                           </span>
                           {example.explanation}
@@ -227,8 +218,11 @@ const ProblemDescription = ({ problem, solved, onRoomCreated, clients }) => {
               ))}
             </div>
           </div>
-          <div className="flex items-center mt-4 space-x-4">
-            {clients.map((client) => (
+        </div>
+        <div className="flex items-center mt-4 space-x-4">
+          {clients
+            .filter((client) => client.username) // Only include clients with a defined username
+            .map((client) => (
               <div key={client.socketId} className="flex flex-col items-center">
                 <div className="w-8 h-8 bg-violet-500 rounded-full text-white flex items-center justify-center">
                   {client.username.charAt(0).toUpperCase()}
@@ -238,7 +232,6 @@ const ProblemDescription = ({ problem, solved, onRoomCreated, clients }) => {
                 </div>
               </div>
             ))}
-          </div>
         </div>
       </div>
     </div>
