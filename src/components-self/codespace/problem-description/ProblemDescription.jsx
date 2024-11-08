@@ -1,5 +1,5 @@
-import React, { useState } from "react";
-import { CheckCircle, Users, UserPlus } from "lucide-react";
+import React, { useEffect, useState } from "react";
+import { CheckCircle, Users, UserPlus, LogOut } from "lucide-react";
 import {
   HoverCard,
   HoverCardContent,
@@ -18,7 +18,13 @@ import useProblemSolvedStatus from "@/custom-hooks/useProblemSolvedStatus";
 import { v4 as uuidV4 } from "uuid";
 import { toast } from "react-toastify";
 
-const ProblemDescription = ({ problem, solved, onRoomCreated, clients }) => {
+const ProblemDescription = ({
+  problem,
+  solved,
+  onRoomCreated,
+  onLeaveRoom,
+  clients,
+}) => {
   const isSolved = useProblemSolvedStatus(problem.id);
   const { textColor, bgColor } = useGetDifficultyColor(problem.difficulty);
 
@@ -34,13 +40,12 @@ const ProblemDescription = ({ problem, solved, onRoomCreated, clients }) => {
     setRoomId(newRoomId);
     setShowCreateDialog(true);
     onRoomCreated(newRoomId);
-    setRoomActive(true); // Set room as active
+    setRoomActive(true);
   };
 
   const handleCopyRoomId = () => {
     navigator.clipboard.writeText(roomId);
     setShowCreateDialog(false);
-
     toast.success("Room ID copied to clipboard!", {
       position: "top-center",
       autoClose: 2000,
@@ -52,7 +57,7 @@ const ProblemDescription = ({ problem, solved, onRoomCreated, clients }) => {
       setRoomId(joinRoomId);
       setShowJoinDialog(false);
       onRoomCreated(joinRoomId);
-      setRoomActive(true); // Set room as active
+      setRoomActive(true);
     } else {
       toast.error("Please enter a room ID", {
         position: "top-center",
@@ -61,13 +66,23 @@ const ProblemDescription = ({ problem, solved, onRoomCreated, clients }) => {
     }
   };
 
+  const handleLeaveRoom = () => {
+    setRoomId("");
+    setRoomActive(false);
+    onLeaveRoom();
+  };
+
+  useEffect(() => {
+    console.log("Clients in ProblemDescription:", clients);
+  }, [clients]);
+
   return (
-    <div className="flex flex-col h-screen bg-gradient-to-b from-violet-200 from-10% to-purple-100 dark:bg-gradient-to-b dark:from-slate-800 dark:from-5% dark:to-purple-800 transition-colors duration-200">
+    <div className="flex flex-col h-screen bg-gradient-to-b from-violet-200 from-10% to-purple-100 dark:bg-gradient-to-b dark:from-slate-800 dark:from-5% dark:to-purple-900 transition-colors duration-200">
       <div className="flex justify-between h-12 items-center bg-gray-100 dark:bg-slate-900 border-b border-gray-200 dark:border-slate-800 transition-colors duration-200">
         <div className="px-6 py-2.5 text-sm font-medium bg-white dark:bg-slate-950 text-slate-900 dark:text-white border-b-2 border-violet-500 transition-colors duration-200 flex items-center">
           Description
         </div>
-        <div className="mr-4 flex items-center space-x-1 ">
+        <div className="mr-4 flex items-center space-x-2">
           {/* Create Room Icon with Hover Card */}
           <HoverCard>
             <HoverCardTrigger asChild>
@@ -103,8 +118,26 @@ const ProblemDescription = ({ problem, solved, onRoomCreated, clients }) => {
               <div className="text-sm">Join a room</div>
             </HoverCardContent>
           </HoverCard>
+
+          {/* Leave Room Icon with Hover Card */}
+          <HoverCard>
+            <HoverCardTrigger asChild>
+              <LogOut
+                className={`h-4 w-4 text-slate-600 dark:text-slate-300 ${
+                  !roomActive
+                    ? "opacity-50 cursor-not-allowed"
+                    : "hover:text-violet-600 dark:hover:text-violet-400 cursor-pointer"
+                } transition-colors duration-200`}
+                onClick={roomActive ? handleLeaveRoom : undefined}
+              />
+            </HoverCardTrigger>
+            <HoverCardContent className="w-64">
+              <div className="text-sm">Leave room</div>
+            </HoverCardContent>
+          </HoverCard>
         </div>
       </div>
+
       {/* Create Room Dialog */}
       <Dialog open={showCreateDialog} onOpenChange={setShowCreateDialog}>
         <DialogContent className="sm:max-w-md bg-gradient-to-b from-violet-200 from-10% to-purple-100 dark:bg-gradient-to-b dark:from-slate-800 dark:from-5% dark:to-purple-900 transition-colors duration-200">
@@ -134,6 +167,7 @@ const ProblemDescription = ({ problem, solved, onRoomCreated, clients }) => {
           </div>
         </DialogContent>
       </Dialog>
+
       {/* Join Room Dialog */}
       <Dialog open={showJoinDialog} onOpenChange={setShowJoinDialog}>
         <DialogContent className="sm:max-w-md bg-gradient-to-b from-violet-200 from-10% to-purple-100 dark:bg-gradient-to-b dark:from-slate-800 dark:from-5% dark:to-purple-900 transition-colors duration-200">
@@ -162,6 +196,7 @@ const ProblemDescription = ({ problem, solved, onRoomCreated, clients }) => {
           </div>
         </DialogContent>
       </Dialog>
+
       {/* Main Content */}
       <div className="flex-1 overflow-y-auto">
         <div className="p-6">
@@ -218,20 +253,27 @@ const ProblemDescription = ({ problem, solved, onRoomCreated, clients }) => {
               ))}
             </div>
           </div>
-        </div>
-        <div className="flex items-center mt-4 space-x-4">
-          {clients
-            .filter((client) => client.username) // Only include clients with a defined username
-            .map((client) => (
-              <div key={client.socketId} className="flex flex-col items-center">
-                <div className="w-8 h-8 bg-violet-500 rounded-full text-white flex items-center justify-center">
-                  {client.username.charAt(0).toUpperCase()}
+          {/* Joined Clients Section */}
+          <div className="mt-6 bg-slate-50 dark:bg-slate-900/50 rounded-lg p-4">
+            <h3 className="text-sm font-medium text-slate-900 dark:text-slate-100 mb-2">
+              Collaborators
+            </h3>
+            <div className="grid grid-cols-4 sm:grid-cols-6 md:grid-cols-8 gap-3">
+              {clients.map((client) => (
+                <div
+                  key={client.socketId}
+                  className="flex flex-col items-center space-y-1"
+                >
+                  <div className="w-8 h-8 bg-violet-500 rounded-full text-white flex items-center justify-center">
+                    {client.username.charAt(0).toUpperCase()}
+                  </div>
+                  <div className="text-sm text-slate-600 dark:text-slate-300 ">
+                    {client.username}
+                  </div>
                 </div>
-                <div className="text-sm text-slate-600 dark:text-slate-300">
-                  {client.username}
-                </div>
-              </div>
-            ))}
+              ))}
+            </div>
+          </div>
         </div>
       </div>
     </div>

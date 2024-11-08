@@ -7,7 +7,7 @@ import useWindowSize from "@/custom-hooks/useWindowSize";
 import { toast } from "react-toastify";
 import { initSocket } from "@/socket/socket";
 import ACTIONS from "@/utils/socket-actions/action.js";
-
+import { useDispatch, useSelector } from "react-redux";
 const Codespace = ({ problem }) => {
   const { width, height } = useWindowSize();
   const [success, setSuccess] = useState(false);
@@ -16,62 +16,89 @@ const Codespace = ({ problem }) => {
   const [username, setUsername] = useState("");
   const [clients, setClients] = useState([]);
   const socketRef = useRef(null);
+  const [userCode, setUserCode] = useState();
+
+  const handleLeaveRoom = () => {
+    if (socketRef.current && roomId) {
+      socketRef.current.emit(ACTIONS.LEAVE, { roomId, username });
+      setRoomId("");
+      setClients([]);
+    }
+  };
 
   useEffect(() => {
     const init = async () => {
-      console.log("clients" + clients);
       socketRef.current = await initSocket();
-      socketRef.current.on("connect_error", (err) => handleErrors(err));
-      socketRef.current.on("connect_failed", (err) => handleErrors(err));
 
-      // const handleUsernameInput = (newUsername) => {
-      //   // Check if the newUsername is unique
-      //   if (clients.some((client) => client.username === newUsername)) {
-      //     // Username is not unique, prompt the user to choose a different one
-      //     toast.error(
-      //       "Username is already taken, please choose a different one.",
-      //       {
-      //         position: "top-center",
-      //         autoClose: 2000,
-      //       }
-      //     );
-      //   } else {
-      //     // Username is unique, set the username
-      //     //setUsername(newUsername);
-      //   }
-      // };
-
-      function handleErrors(e) {
-        console.log("socket error", e);
+      const handleErrors = (e) => {
+        console.error("socket error", e);
         toast.error("Socket connection failed, try again later.", {
           position: "top-center",
           autoClose: 2000,
         });
+      };
+
+      // Error handling for socket connection
+      socketRef.current.on("connect_error", handleErrors);
+      socketRef.current.on("connect_failed", handleErrors);
+
+      // Ensure roomId and username are available before emitting
+      if (roomId && username) {
+        socketRef.current.emit(ACTIONS.JOIN, { roomId, username });
       }
 
-      socketRef.current.emit(ACTIONS.JOIN, { roomId, username });
-
+      // Handle joined event
       socketRef.current.on(
         ACTIONS.JOINED,
         ({ clients, username: joinedUsername, socketId }) => {
-          if (username !== joinedUsername) {
-            handleUsernameInput(joinedUsername);
+          if (joinedUsername !== username) {
+            toast.info(`${joinedUsername} joined the room`, {
+              position: "top-center",
+              autoClose: 2000,
+            });
           }
+
           setClients(clients);
         }
       );
 
-      //listing for disconnected
-      socketRef.current.on(ACTIONS.DISCONNECTED, ({ socketId, username }) => {
-        toast.info(`${username} left the room`, {
-          position: "top-center",
-          autoClose: 2000,
-        });
-        setClients((prev) => {
-          return prev.filter((client) => client.socketId !== socketId);
-        });
-      });
+      socketRef.current.on(
+        ACTIONS.DISCONNECTED,
+        ({ socketId, username: leftUsername }) => {
+          toast.info(`${leftUsername} left the room`, {
+            position: "top-center",
+            autoClose: 2000,
+          });
+          setClients((prevClients) => {
+            const updatedClients = prevClients.filter(
+              (client) => client.socketId !== socketId
+            );
+            console.log("Clients after DISCONNECTED event:", updatedClients);
+            return updatedClients;
+          });
+        }
+      );
+
+      //leave room
+      socketRef.current.on(
+        ACTIONS.LEAVE,
+        ({ socketId, username: leftUsername }) => {
+          toast.info(`${leftUsername} left the room`, {
+            position: "top-center",
+            autoClose: 2000,
+          });
+
+          setClients((prevClients) => {
+            const updatedClients = prevClients.filter(
+              (client) => client.socketId !== socketId
+            );
+            console.log("Clients after LEAVE event:", updatedClients);
+            return updatedClients;
+          });
+        }
+      );
     };
+
     init();
     //clear listner
     return () => {
@@ -79,6 +106,7 @@ const Codespace = ({ problem }) => {
         socketRef.current.disconnect();
         socketRef.current.off(ACTIONS.JOINED);
         socketRef.current.off(ACTIONS.DISCONNECTED);
+        socketRef.current.off(ACTIONS.LEAVE);
       }
     };
   }, [roomId]);
@@ -88,16 +116,15 @@ const Codespace = ({ problem }) => {
     const storedUser = localStorage.getItem("userData");
     const parsedUser = storedUser ? JSON.parse(storedUser) : null;
     const storedUsername = parsedUser?.user.username || "";
-    console.log(storedUsername);
     setUsername(storedUsername);
   };
-
   return (
     <Split className="split" minSize={0}>
       <ProblemDescription
         problem={problem}
         solved={solved}
         onRoomCreated={handleRoomCreated}
+        onLeaveRoom={handleLeaveRoom}
         clients={clients}
       />
       <div>
@@ -108,6 +135,7 @@ const Codespace = ({ problem }) => {
           roomId={roomId}
           clients={clients}
           socket={socketRef.current}
+          setUserCode={setUserCode}
         />
         {success && (
           <Confetti

@@ -1,17 +1,11 @@
-// src/store/clientsSlice.js
 import { createSlice } from "@reduxjs/toolkit";
-
-const initialState = {
-  clients: [],
-};
 
 const clientsSlice = createSlice({
   name: "clients",
-  initialState,
+  initialState: {
+    clients: [],
+  },
   reducers: {
-    setClients: (state, action) => {
-      state.clients = action.payload;
-    },
     addClient: (state, action) => {
       state.clients.push(action.payload);
     },
@@ -23,6 +17,5 @@ const clientsSlice = createSlice({
   },
 });
 
-export const { setClients, addClient, removeClient } = clientsSlice.actions;
-
+export const { addClient, removeClient } = clientsSlice.actions;
 export default clientsSlice.reducer;
