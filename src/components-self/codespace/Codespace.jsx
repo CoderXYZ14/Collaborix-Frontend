@@ -16,7 +16,7 @@ const Codespace = ({ problem }) => {
   const [username, setUsername] = useState("");
   const [clients, setClients] = useState([]);
   const socketRef = useRef(null);
-  const [userCode, setUserCode] = useState();
+  const [userCode, setUserCode] = useState(problem.starterCode);
 
   const handleLeaveRoom = () => {
     if (socketRef.current && roomId) {
@@ -38,16 +38,18 @@ const Codespace = ({ problem }) => {
         });
       };
 
-      // Error handling for socket connection
       socketRef.current.on("connect_error", handleErrors);
       socketRef.current.on("connect_failed", handleErrors);
 
-      // Ensure roomId and username are available before emitting
       if (roomId && username) {
         socketRef.current.emit(ACTIONS.JOIN, { roomId, username });
+
+        // Emit SYNC_CODE immediately after joining if userCode is defined
+        if (userCode) {
+          socketRef.current.emit(ACTIONS.SYNC_CODE, { code: userCode });
+        }
       }
 
-      // Handle joined event
       socketRef.current.on(
         ACTIONS.JOINED,
         ({ clients, username: joinedUsername, socketId }) => {
@@ -59,6 +61,14 @@ const Codespace = ({ problem }) => {
           }
 
           setClients(clients);
+
+          // Ensure code is synced with the new client who just joined
+          if (userCode) {
+            socketRef.current.emit(ACTIONS.SYNC_CODE, {
+              code: userCode,
+              socketId, // Send the code specifically to the newly joined user
+            });
+          }
         }
       );
 
@@ -69,17 +79,12 @@ const Codespace = ({ problem }) => {
             position: "top-center",
             autoClose: 2000,
           });
-          setClients((prevClients) => {
-            const updatedClients = prevClients.filter(
-              (client) => client.socketId !== socketId
-            );
-            console.log("Clients after DISCONNECTED event:", updatedClients);
-            return updatedClients;
-          });
+          setClients((prevClients) =>
+            prevClients.filter((client) => client.socketId !== socketId)
+          );
         }
       );
 
-      //leave room
       socketRef.current.on(
         ACTIONS.LEAVE,
         ({ socketId, username: leftUsername }) => {
@@ -87,20 +92,17 @@ const Codespace = ({ problem }) => {
             position: "top-center",
             autoClose: 2000,
           });
-
-          setClients((prevClients) => {
-            const updatedClients = prevClients.filter(
-              (client) => client.socketId !== socketId
-            );
-            console.log("Clients after LEAVE event:", updatedClients);
-            return updatedClients;
-          });
+          setClients((prevClients) =>
+            prevClients.filter((client) => client.socketId !== socketId)
+          );
         }
       );
     };
 
-    init();
-    //clear listner
+    if (roomId && username) {
+      init();
+    }
+
     return () => {
       if (socketRef.current) {
         socketRef.current.disconnect();
@@ -109,7 +111,29 @@ const Codespace = ({ problem }) => {
         socketRef.current.off(ACTIONS.LEAVE);
       }
     };
-  }, [roomId]);
+  }, [roomId, username, userCode]);
+
+  // Sync code whenever clients or roomId changes
+  useEffect(() => {
+    if (socketRef.current && userCode && roomId) {
+      socketRef.current.emit(ACTIONS.SYNC_CODE, { code: userCode });
+    }
+  }, [userCode, roomId, clients]);
+
+  // Listen for incoming SYNC_CODE event to update code in this component
+  useEffect(() => {
+    if (socketRef.current) {
+      socketRef.current.on(ACTIONS.SYNC_CODE, ({ code }) => {
+        setUserCode(code);
+      });
+    }
+
+    return () => {
+      if (socketRef.current) {
+        socketRef.current.off(ACTIONS.SYNC_CODE);
+      }
+    };
+  }, []);
 
   const handleRoomCreated = (newRoomId) => {
     setRoomId(newRoomId);
@@ -135,7 +159,8 @@ const Codespace = ({ problem }) => {
           roomId={roomId}
           clients={clients}
           socket={socketRef.current}
-          setUserCode={setUserCode}
+          userCode={userCode} // Pass down userCode
+          setUserCode={setUserCode} // Pass down setUserCode
         />
         {success && (
           <Confetti

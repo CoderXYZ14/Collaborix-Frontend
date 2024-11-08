@@ -12,9 +12,17 @@ import { problems } from "@/utils/problems";
 import useSubmitProblem from "@/custom-hooks/useSubmitProblem";
 import ACTIONS from "@/utils/socket-actions/action";
 
-const Playground = ({ problem, setSuccess, setSolved, roomId, socket }) => {
+const Playground = ({
+  problem,
+  setSuccess,
+  setSolved,
+  roomId,
+  socket,
+  userCode,
+  setUserCode,
+}) => {
   const [activeTestCases, setActiveTestCases] = useState(0);
-  const [userCode, setUserCode] = useState(problem.starterCode);
+  //const [userCode, setUserCode] = useState(problem.starterCode);
   const isLoggedIn = useSelector((state) => state.auth.status);
   const { pid } = useParams();
 
@@ -92,7 +100,7 @@ const Playground = ({ problem, setSuccess, setSolved, roomId, socket }) => {
   useEffect(() => {
     if (socket) {
       socket.on(ACTIONS.CODE_CHANGE, ({ code }) => {
-        if (code != null) {
+        if (code !== null) {
           setUserCode(code);
           localStorage.setItem(`code-${pid}`, JSON.stringify(code));
         }
@@ -102,8 +110,16 @@ const Playground = ({ problem, setSuccess, setSolved, roomId, socket }) => {
     return () => {
       if (socket) socket.off(ACTIONS.CODE_CHANGE);
     };
-    // Clean up the socket event listener on component unmount
   }, [socket, pid]);
+
+  useEffect(() => {
+    if (socket && roomId) {
+      socket.emit(ACTIONS.SYNC_CODE, {
+        roomId,
+        code: userCode,
+      });
+    }
+  }, [socket, roomId, userCode]);
 
   return (
     <div className="flex flex-col bg-gray-900 relative overflow-x-hidden">
