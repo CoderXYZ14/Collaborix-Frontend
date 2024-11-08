@@ -22,11 +22,27 @@ const Playground = ({
   setUserCode,
 }) => {
   const [activeTestCases, setActiveTestCases] = useState(0);
-  //const [userCode, setUserCode] = useState(problem.starterCode);
   const isLoggedIn = useSelector((state) => state.auth.status);
   const { pid } = useParams();
-
   const { submitProblem } = useSubmitProblem(pid, setSolved, setSuccess);
+
+  // console.log(socket);
+  // Load code from localStorage on component mount
+  useEffect(() => {
+    const storedCode = localStorage.getItem(`code-${pid}`);
+    console.log("stored code below");
+    console.log(storedCode);
+    if (storedCode) {
+      console.log("updated");
+      setUserCode(JSON.parse(storedCode));
+      console.log(userCode);
+      console.log(storedCode);
+      console.log("update done");
+    } else {
+      console.log("goes here");
+      setUserCode(problem.starterCode); // Use starter code from problem prop
+    }
+  }, []);
 
   const handleSubmit = async () => {
     if (!isLoggedIn) {
@@ -67,34 +83,26 @@ const Playground = ({
     }
   };
 
-  useEffect(() => {
-    if (isLoggedIn) {
-      setUserCode(
-        localStorage.getItem(`code-${pid}`)
-          ? JSON.parse(localStorage.getItem(`code-${pid}`))
-          : problem.starterCode
-      );
-    } else {
-      setUserCode(problem.starterCode);
-    }
-  }, [pid, isLoggedIn, problem.starterCode]);
-
   const onChange = (value) => {
     setUserCode(value);
-    socket.emit(ACTIONS.CODE_CHANGE, {
-      roomId,
-      code: value,
-    });
+    localStorage.setItem(`code-${pid}`, JSON.stringify(value));
+    if (socket) {
+      socket.emit(ACTIONS.CODE_CHANGE, {
+        roomId,
+        code: value,
+      });
+    }
   };
 
   const handleReset = () => {
     setUserCode(problem.starterCode);
     localStorage.removeItem(`code-${pid}`);
-    // Emit reset code to socket
-    socket.emit(ACTIONS.CODE_CHANGE, {
-      roomId,
-      code: problem.starterCode,
-    });
+    if (socket) {
+      socket.emit(ACTIONS.CODE_CHANGE, {
+        roomId,
+        code: problem.starterCode,
+      });
+    }
   };
 
   useEffect(() => {
@@ -102,7 +110,6 @@ const Playground = ({
       socket.on(ACTIONS.CODE_CHANGE, ({ code }) => {
         if (code !== null) {
           setUserCode(code);
-          localStorage.setItem(`code-${pid}`, JSON.stringify(code));
         }
       });
     }

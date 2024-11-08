@@ -19,7 +19,12 @@ const Codespace = ({ problem }) => {
   const [username, setUsername] = useState("");
   const [clients, setClients] = useState([]);
   const socketRef = useRef(null);
-  const [userCode, setUserCode] = useState(problem.starterCode);
+  const [userCode, setUserCode] = useState(() => {
+    const storedCode = localStorage.getItem(`code-${problem.id}`);
+    console.log("Debug 1");
+    return storedCode ? JSON.parse(storedCode) : problem.starterCode;
+  });
+
   const previousProblemId = useRef(problem.id);
   const [isConnected, setIsConnected] = useState(false);
 
@@ -39,8 +44,12 @@ const Codespace = ({ problem }) => {
     // If problem ID changed or URL changed, cleanup previous connection
     if (previousProblemId.current !== problem.id || location.pathname) {
       handleLeaveRoom();
-      // Reset states for new problem
-      setUserCode(problem.starterCode);
+
+      // Check if there's saved code in local storage for this problem
+      const storedCode = localStorage.getItem(`code-${problem.id}`);
+      setUserCode(storedCode ? JSON.parse(storedCode) : problem.starterCode);
+
+      // Reset other states for the new problem
       setSolved(false);
       setSuccess(false);
     }
