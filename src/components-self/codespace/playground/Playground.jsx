@@ -1,4 +1,4 @@
-import React, { useEffect, useRef, useState } from "react";
+import React, { useEffect, useState } from "react";
 import PreferenceNavbar from "./PreferenceNavbar";
 import Split from "react-split";
 import ReactCodeMirror from "@uiw/react-codemirror";
@@ -10,18 +10,11 @@ import { toast } from "react-toastify";
 import { useParams } from "react-router-dom";
 import { problems } from "@/utils/problems";
 import useSubmitProblem from "@/custom-hooks/useSubmitProblem";
+import ACTIONS from "@/utils/socket-actions/action";
 
-const Playground = ({
-  problem,
-  setSuccess,
-  setSolved,
-  roomId,
-  clients,
-  socket,
-}) => {
+const Playground = ({ problem, setSuccess, setSolved, roomId, socket }) => {
   const [activeTestCases, setActiveTestCases] = useState(0);
-
-  let [userCode, setUserCode] = useState(problem.starterCode);
+  const [userCode, setUserCode] = useState(problem.starterCode);
   const isLoggedIn = useSelector((state) => state.auth.status);
   const { pid } = useParams();
 
@@ -37,8 +30,10 @@ const Playground = ({
     }
 
     try {
-      userCode = userCode.slice(userCode.indexOf(problem.starterFunctionName));
-      const cb = new Function(`return ${userCode}`)();
+      const trimmedCode = userCode.slice(
+        userCode.indexOf(problem.starterFunctionName)
+      );
+      const cb = new Function(`return ${trimmedCode}`)();
       const success = problems[pid].handlerFunction(cb);
 
       if (success) {
@@ -65,24 +60,51 @@ const Playground = ({
   };
 
   useEffect(() => {
-    if (isLoggedIn)
+    if (isLoggedIn) {
       setUserCode(
         localStorage.getItem(`code-${pid}`)
           ? JSON.parse(localStorage.getItem(`code-${pid}`))
           : problem.starterCode
       );
-    else setUserCode(problem.starterCode);
+    } else {
+      setUserCode(problem.starterCode);
+    }
   }, [pid, isLoggedIn, problem.starterCode]);
 
   const onChange = (value) => {
     setUserCode(value);
-    localStorage.setItem(`code-${pid}`, JSON.stringify(value));
+    socket.emit(ACTIONS.CODE_CHANGE, {
+      roomId,
+      code: value,
+    });
   };
 
   const handleReset = () => {
     setUserCode(problem.starterCode);
     localStorage.removeItem(`code-${pid}`);
+    // Emit reset code to socket
+    socket.emit(ACTIONS.CODE_CHANGE, {
+      roomId,
+      code: problem.starterCode,
+    });
   };
+
+  useEffect(() => {
+    if (socket) {
+      socket.on(ACTIONS.CODE_CHANGE, ({ code }) => {
+        if (code != null) {
+          setUserCode(code);
+          localStorage.setItem(`code-${pid}`, JSON.stringify(code));
+        }
+      });
+    }
+
+    return () => {
+      if (socket) socket.off(ACTIONS.CODE_CHANGE);
+    };
+    // Clean up the socket event listener on component unmount
+  }, [socket, pid]);
+
   return (
     <div className="flex flex-col bg-gray-900 relative overflow-x-hidden">
       <PreferenceNavbar onReset={handleReset} />
