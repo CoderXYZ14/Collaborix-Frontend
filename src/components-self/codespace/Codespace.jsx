@@ -1,5 +1,6 @@
 import React, { useEffect, useRef, useState } from "react";
 import Split from "react-split";
+import { useLocation, useParams } from "react-router-dom"; // Changed to React Router
 import Playground from "./playground/Playground";
 import ProblemDescription from "./problem-description/ProblemDescription";
 import Confetti from "react-confetti";
@@ -8,7 +9,9 @@ import { toast } from "react-toastify";
 import { initSocket } from "@/socket/socket";
 import ACTIONS from "@/utils/socket-actions/action.js";
 import { useDispatch, useSelector } from "react-redux";
+
 const Codespace = ({ problem }) => {
+  const location = useLocation();
   const { width, height } = useWindowSize();
   const [success, setSuccess] = useState(false);
   const [solved, setSolved] = useState(false);
@@ -17,21 +20,45 @@ const Codespace = ({ problem }) => {
   const [clients, setClients] = useState([]);
   const socketRef = useRef(null);
   const [userCode, setUserCode] = useState(problem.starterCode);
+  const previousProblemId = useRef(problem.id);
+  const [isConnected, setIsConnected] = useState(false);
 
   const handleLeaveRoom = () => {
     if (socketRef.current && roomId) {
       socketRef.current.emit(ACTIONS.LEAVE, { roomId, username });
+      socketRef.current.disconnect();
+      socketRef.current = null;
       setRoomId("");
       setClients([]);
+      setIsConnected(false);
     }
   };
 
+  // Effect to handle location/problem changes
+  useEffect(() => {
+    // If problem ID changed or URL changed, cleanup previous connection
+    if (previousProblemId.current !== problem.id || location.pathname) {
+      handleLeaveRoom();
+      // Reset states for new problem
+      setUserCode(problem.starterCode);
+      setSolved(false);
+      setSuccess(false);
+    }
+    previousProblemId.current = problem.id;
+  }, [location.pathname, problem.id]);
+
   useEffect(() => {
     const init = async () => {
+      if (socketRef.current) {
+        handleLeaveRoom();
+      }
+
       socketRef.current = await initSocket();
+      setIsConnected(true);
 
       const handleErrors = (e) => {
         console.error("socket error", e);
+        setIsConnected(false);
         toast.error("Socket connection failed, try again later.", {
           position: "top-center",
           autoClose: 2000,
@@ -44,7 +71,6 @@ const Codespace = ({ problem }) => {
       if (roomId && username) {
         socketRef.current.emit(ACTIONS.JOIN, { roomId, username });
 
-        // Emit SYNC_CODE immediately after joining if userCode is defined
         if (userCode) {
           socketRef.current.emit(ACTIONS.SYNC_CODE, { code: userCode });
         }
@@ -62,11 +88,10 @@ const Codespace = ({ problem }) => {
 
           setClients(clients);
 
-          // Ensure code is synced with the new client who just joined
           if (userCode) {
             socketRef.current.emit(ACTIONS.SYNC_CODE, {
               code: userCode,
-              socketId, // Send the code specifically to the newly joined user
+              socketId,
             });
           }
         }
@@ -95,6 +120,7 @@ const Codespace = ({ problem }) => {
           setClients((prevClients) =>
             prevClients.filter((client) => client.socketId !== socketId)
           );
+          setIsConnected(false);
         }
       );
     };
@@ -104,23 +130,18 @@ const Codespace = ({ problem }) => {
     }
 
     return () => {
-      if (socketRef.current) {
-        socketRef.current.disconnect();
-        socketRef.current.off(ACTIONS.JOINED);
-        socketRef.current.off(ACTIONS.DISCONNECTED);
-        socketRef.current.off(ACTIONS.LEAVE);
-      }
+      handleLeaveRoom();
     };
-  }, [roomId, username, userCode]);
+  }, [roomId, username]);
 
-  // Sync code whenever clients or roomId changes
+  // Listen for code changes and sync
   useEffect(() => {
     if (socketRef.current && userCode && roomId) {
       socketRef.current.emit(ACTIONS.SYNC_CODE, { code: userCode });
     }
-  }, [userCode, roomId, clients]);
+  }, [userCode, roomId]);
 
-  // Listen for incoming SYNC_CODE event to update code in this component
+  // Listen for incoming code syncs
   useEffect(() => {
     if (socketRef.current) {
       socketRef.current.on(ACTIONS.SYNC_CODE, ({ code }) => {
@@ -142,6 +163,14 @@ const Codespace = ({ problem }) => {
     const storedUsername = parsedUser?.user.username || "";
     setUsername(storedUsername);
   };
+
+  // Cleanup on component unmount
+  useEffect(() => {
+    return () => {
+      handleLeaveRoom();
+    };
+  }, []);
+
   return (
     <Split className="split" minSize={0}>
       <ProblemDescription
@@ -150,6 +179,7 @@ const Codespace = ({ problem }) => {
         onRoomCreated={handleRoomCreated}
         onLeaveRoom={handleLeaveRoom}
         clients={clients}
+        isConnected={isConnected}
       />
       <div>
         <Playground
@@ -159,8 +189,8 @@ const Codespace = ({ problem }) => {
           roomId={roomId}
           clients={clients}
           socket={socketRef.current}
-          userCode={userCode} // Pass down userCode
-          setUserCode={setUserCode} // Pass down setUserCode
+          userCode={userCode}
+          setUserCode={setUserCode}
         />
         {success && (
           <Confetti

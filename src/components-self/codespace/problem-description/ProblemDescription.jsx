@@ -24,6 +24,7 @@ const ProblemDescription = ({
   onRoomCreated,
   onLeaveRoom,
   clients,
+  isConnected,
 }) => {
   const isSolved = useProblemSolvedStatus(problem.id);
   const { textColor, bgColor } = useGetDifficultyColor(problem.difficulty);
@@ -84,15 +85,16 @@ const ProblemDescription = ({
         </div>
         <div className="mr-4 flex items-center space-x-2">
           {/* Create Room Icon with Hover Card */}
+          {/* Create Room Icon with Hover Card */}
           <HoverCard>
             <HoverCardTrigger asChild>
               <UserPlus
                 className={`h-4 w-4 text-slate-600 dark:text-slate-300 ${
-                  roomActive
+                  isConnected
                     ? "opacity-50 cursor-not-allowed"
                     : "hover:text-violet-600 dark:hover:text-violet-400 cursor-pointer"
                 } transition-colors duration-200`}
-                onClick={!roomActive ? handleCreateRoom : undefined}
+                onClick={!isConnected ? handleCreateRoom : undefined}
               />
             </HoverCardTrigger>
             <HoverCardContent className="w-64">
@@ -105,12 +107,12 @@ const ProblemDescription = ({
             <HoverCardTrigger asChild>
               <Users
                 className={`h-4 w-4 text-slate-600 dark:text-slate-300 ${
-                  roomActive
+                  isConnected
                     ? "opacity-50 cursor-not-allowed"
                     : "hover:text-violet-600 dark:hover:text-violet-400 cursor-pointer"
                 } transition-colors duration-200`}
                 onClick={
-                  !roomActive ? () => setShowJoinDialog(true) : undefined
+                  !isConnected ? () => setShowJoinDialog(true) : undefined
                 }
               />
             </HoverCardTrigger>
@@ -124,11 +126,11 @@ const ProblemDescription = ({
             <HoverCardTrigger asChild>
               <LogOut
                 className={`h-4 w-4 text-slate-600 dark:text-slate-300 ${
-                  !roomActive
+                  !isConnected
                     ? "opacity-50 cursor-not-allowed"
                     : "hover:text-violet-600 dark:hover:text-violet-400 cursor-pointer"
                 } transition-colors duration-200`}
-                onClick={roomActive ? handleLeaveRoom : undefined}
+                onClick={isConnected ? handleLeaveRoom : undefined}
               />
             </HoverCardTrigger>
             <HoverCardContent className="w-64">
