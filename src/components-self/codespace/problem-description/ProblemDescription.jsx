@@ -1,14 +1,5 @@
 import { useState } from "react";
-import { CheckCircle, Users, UserPlus, LogOut } from "lucide-react";
-
-import {
-  Dialog,
-  DialogContent,
-  DialogHeader,
-  DialogTitle,
-} from "@/components/ui/dialog";
-import { Button } from "@/components/ui/button";
-import { Input } from "@/components/ui/input";
+import { Users, UserPlus, LogOut } from "lucide-react";
 import useGetDifficultyColor from "@/custom-hooks/useGetDifficultyColor";
 import useProblemSolvedStatus from "@/custom-hooks/useProblemSolvedStatus";
 import { v4 as uuidV4 } from "uuid";
@@ -16,7 +7,14 @@ import {
   showErrorToast,
   showSuccessToast,
 } from "@/utils/toast/toastNotifications";
-import { CustomDialog, CustomHoverCard } from "./components";
+import {
+  Collaborators,
+  CustomDialog,
+  CustomHoverCard,
+  ProblemExamples,
+  ProblemStatement,
+} from "./components";
+import ProblemDetails from "./components/ProblemDetails";
 
 const ProblemDescription = ({
   problem,
@@ -72,7 +70,7 @@ const ProblemDescription = ({
           Description
         </div>
         <div className="mr-4 flex items-center space-x-2">
-          {/* Create Room Icon with Hover Card */}\
+          {/* Create Room Icon with Hover Card */}
           <CustomHoverCard
             tooltipText="Create a room"
             onClick={!isConnected ? handleCreateRoom : undefined}
@@ -107,7 +105,7 @@ const ProblemDescription = ({
         description="Share this room ID with others to collaborate:"
         inputValue={roomId}
         inputPlaceholder="Room ID"
-        onInputChange={() => {}} // Read-only input, no change handler
+        onInputChange={() => {}}
         onConfirm={handleCopyRoomId}
         confirmButtonText="Copy"
       />
@@ -126,83 +124,16 @@ const ProblemDescription = ({
       />
 
       {/* Main Content */}
-      <div className="flex-1 overflow-y-auto">
-        <div className="p-6">
-          <div className="space-y-6">
-            <h1 className="text-xl font-semibold text-slate-900 dark:text-white">
-              {problem.title}
-            </h1>
-            <div className="flex items-center space-x-2">
-              <span
-                className={`inline-flex items-center px-2.5 py-1 rounded-full text-xs font-medium ${bgColor} ${textColor}`}
-              >
-                {problem.difficulty}
-              </span>
-              {(solved || isSolved) && (
-                <CheckCircle color="#078827" className="w-4 h-4" />
-              )}
-            </div>
-            <div className="text-slate-700 dark:text-slate-300 space-y-4 text-sm">
-              <div
-                dangerouslySetInnerHTML={{ __html: problem.problemStatement }}
-              />
-            </div>
-            <div className="space-y-6">
-              {problem.examples.map((example, index) => (
-                <div key={example.id} className="space-y-3 mb-3">
-                  <h3 className="text-sm font-medium text-slate-900 dark:text-slate-100">
-                    Example {index + 1}
-                  </h3>
-                  <div className="rounded-lg bg-slate-50 dark:bg-slate-900/50 border border-slate-200 dark:border-slate-800">
-                    <div className="p-4 space-y-2 font-mono text-xs">
-                      <div className="text-slate-700 dark:text-slate-300">
-                        <span className="font-semibold text-violet-600 dark:text-violet-400">
-                          Input:{" "}
-                        </span>
-                        {example.inputText}
-                      </div>
-                      <div className="text-slate-700 dark:text-slate-300">
-                        <span className="font-semibold text-violet-600 dark:text-violet-400">
-                          Output:{" "}
-                        </span>
-                        {example.outputText}
-                      </div>
-                      {example.explanation && (
-                        <div className="text-slate-700 dark:text-slate-300">
-                          <span className="font-semibold text-violet-600 dark:text-violet-400">
-                            Explanation:{" "}
-                          </span>
-                          {example.explanation}
-                        </div>
-                      )}
-                    </div>
-                  </div>
-                </div>
-              ))}
-            </div>
-          </div>
-          {/* Joined Clients Section */}
-          <div className="mt-6 bg-slate-50 dark:bg-slate-900/50 rounded-lg p-4">
-            <h3 className="text-sm font-medium text-slate-900 dark:text-slate-100 mb-2">
-              Collaborators
-            </h3>
-            <div className="grid grid-cols-4 sm:grid-cols-6 md:grid-cols-8 gap-3">
-              {clients.map((client) => (
-                <div
-                  key={client.socketId}
-                  className="flex flex-col items-center space-y-1"
-                >
-                  <div className="w-8 h-8 bg-violet-500 rounded-full text-white flex items-center justify-center">
-                    {client.username.charAt(0).toUpperCase()}
-                  </div>
-                  <div className="text-sm text-slate-600 dark:text-slate-300 ">
-                    {client.username}
-                  </div>
-                </div>
-              ))}
-            </div>
-          </div>
-        </div>
+      <div className="flex-1 overflow-y-auto p-6 space-y-6">
+        <ProblemDetails
+          problem={problem}
+          isSolved={solved || isSolved}
+          bgColor={bgColor}
+          textColor={textColor}
+        />
+        <ProblemStatement problemStatement={problem.problemStatement} />
+        <ProblemExamples examples={problem.examples} />
+        <Collaborators clients={clients} />
       </div>
     </div>
   );
