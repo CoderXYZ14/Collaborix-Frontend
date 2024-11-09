@@ -19,7 +19,7 @@ const useLogout = () => {
       }
 
       await axios.post(
-        "http://localhost:8000/api/v1/users/logout",
+        `${VITE_APP_BACKEND_URL}/api/v1/users/logout`,
         {},
         {
           withCredentials: true,
