@@ -2,13 +2,6 @@ import { useState } from "react";
 import InputBox from "../InputBox";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent } from "@/components/ui/card";
-import {
-  Select,
-  SelectContent,
-  SelectItem,
-  SelectTrigger,
-  SelectValue,
-} from "@/components/ui/select";
 import { LogIn, Rocket } from "lucide-react";
 import useContributeQuestion from "@/custom-hooks/useContributeQuestion";
 import DifficultySelect from "./components/DifficultySelect";
