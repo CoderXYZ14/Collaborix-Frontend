@@ -130,21 +130,24 @@ const Playground = ({
   }, [socket, roomId, userCode]);
 
   return (
-    <div className="flex flex-col bg-gray-900 relative overflow-x-hidden">
+    <div className="flex flex-col w-full bg-gray-900 relative overflow-x-hidden h-screen">
       <PreferenceNavbar onReset={handleReset} />
+
       <Split
-        className="h-[calc(100vh-95px)]"
+        className="h-full"
         direction="vertical"
         sizes={[57, 43]}
         minSize={60}
       >
         <CodeEditor userCode={userCode} onChange={onChange} />
-        <div className="w-full px-6 py-4">
-          <TestCases
-            problem={problem}
-            activeTestCases={activeTestCases}
-            setActiveTestCases={setActiveTestCases}
-          />
+        <div className="h-full">
+          <div className="w-full px-6 py-4">
+            <TestCases
+              problem={problem}
+              activeTestCases={activeTestCases}
+              setActiveTestCases={setActiveTestCases}
+            />
+          </div>
           <EditorFooter handleSubmit={handleSubmit} />
         </div>
       </Split>

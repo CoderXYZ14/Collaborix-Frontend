@@ -1,6 +1,6 @@
 const ProblemExamples = ({ examples }) => (
   <div className="space-y-6">
-    {examples.map((example, index) => (
+    {examples.slice(0, 3).map((example, index) => (
       <div key={example.id} className="space-y-3 mb-3">
         <h3 className="text-sm font-medium text-slate-900 dark:text-slate-100">
           Example {index + 1}
