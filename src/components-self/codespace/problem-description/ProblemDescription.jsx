@@ -16,7 +16,7 @@ import {
   showErrorToast,
   showSuccessToast,
 } from "@/utils/toast/toastNotifications";
-import { CustomHoverCard } from "./components";
+import { CustomDialog, CustomHoverCard } from "./components";
 
 const ProblemDescription = ({
   problem,
@@ -100,63 +100,30 @@ const ProblemDescription = ({
       </div>
 
       {/* Create Room Dialog */}
-      <Dialog open={showCreateDialog} onOpenChange={setShowCreateDialog}>
-        <DialogContent className="sm:max-w-md bg-gradient-to-b from-violet-200 from-10% to-purple-100 dark:bg-gradient-to-b dark:from-slate-800 dark:from-5% dark:to-purple-900 transition-colors duration-200">
-          <DialogHeader>
-            <DialogTitle className="dark:text-gray-300">
-              Room Created
-            </DialogTitle>
-          </DialogHeader>
-          <div className="space-y-4">
-            <div className="text-sm text-slate-600 dark:text-slate-300">
-              Share this room ID with others to collaborate:
-            </div>
-            <div className="flex items-center space-x-2">
-              <Input
-                readOnly
-                value={roomId}
-                className="font-mono text-sm dark:text-gray-200 text-gray-800"
-              />
-              <Button
-                size="sm"
-                className="bg-purple-700 text-gray-300"
-                onClick={handleCopyRoomId}
-              >
-                Copy
-              </Button>
-            </div>
-          </div>
-        </DialogContent>
-      </Dialog>
+      <CustomDialog
+        isOpen={showCreateDialog}
+        onClose={() => setShowCreateDialog(false)}
+        title="Room Created"
+        description="Share this room ID with others to collaborate:"
+        inputValue={roomId}
+        inputPlaceholder="Room ID"
+        onInputChange={() => {}} // Read-only input, no change handler
+        onConfirm={handleCopyRoomId}
+        confirmButtonText="Copy"
+      />
 
       {/* Join Room Dialog */}
-      <Dialog open={showJoinDialog} onOpenChange={setShowJoinDialog}>
-        <DialogContent className="sm:max-w-md bg-gradient-to-b from-violet-200 from-10% to-purple-100 dark:bg-gradient-to-b dark:from-slate-800 dark:from-5% dark:to-purple-900 transition-colors duration-200">
-          <DialogHeader>
-            <DialogTitle className="dark:text-gray-300">Join Room</DialogTitle>
-          </DialogHeader>
-          <div className="space-y-4">
-            <div className="text-sm text-slate-600 dark:text-slate-300">
-              Enter the room ID to join:
-            </div>
-            <div className="flex items-center space-x-2">
-              <Input
-                value={joinRoomId}
-                onChange={(e) => setJoinRoomId(e.target.value)}
-                placeholder="Enter room ID"
-                className="font-mono text-sm dark:text-gray-200 text-gray-800"
-              />
-              <Button
-                size="sm"
-                className="bg-purple-700 text-gray-300"
-                onClick={handleJoinRoom}
-              >
-                Join
-              </Button>
-            </div>
-          </div>
-        </DialogContent>
-      </Dialog>
+      <CustomDialog
+        isOpen={showJoinDialog}
+        onClose={() => setShowJoinDialog(false)}
+        title="Join Room"
+        description="Enter the room ID to join:"
+        inputValue={joinRoomId}
+        inputPlaceholder="Enter room ID"
+        onInputChange={setJoinRoomId}
+        onConfirm={handleJoinRoom}
+        confirmButtonText="Join"
+      />
 
       {/* Main Content */}
       <div className="flex-1 overflow-y-auto">
