@@ -35,7 +35,7 @@ function App() {
   }, [darkMode]);
 
   return (
-    <div className="flex flex-col h-screen">
+    <div className="flex flex-col min-h-screen bg-gradient-to-b from-violet-200 from-10% to-purple-100 dark:from-slate-800 dark:to-purple-800 transition-colors duration-200">
       <Header />
       <ToastContainer
         position="top-center"
@@ -49,9 +49,7 @@ function App() {
         pauseOnHover
         theme={darkMode ? "dark" : "light"}
       />
-      <main className="flex-1">
-        <Outlet />
-      </main>
+      <Outlet />
     </div>
   );
 }
