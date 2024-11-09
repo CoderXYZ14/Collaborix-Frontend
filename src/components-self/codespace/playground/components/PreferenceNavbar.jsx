@@ -1,4 +1,3 @@
-import React from "react";
 import { Maximize, Minimize, RotateCcw } from "lucide-react";
 import {
   HoverCard,
@@ -7,7 +6,7 @@ import {
 } from "@/components/ui/hover-card";
 import useFullscreen from "@/custom-hooks/useFullscreen";
 
-const PreferenceNav = ({ onReset }) => {
+const PreferenceNavbar = ({ onReset }) => {
   const { isFullscreen, toggleFullscreen } = useFullscreen();
 
   return (
@@ -19,8 +18,8 @@ const PreferenceNav = ({ onReset }) => {
           </div>
         </div>
         <div className="flex">
-          <button
-            className="group flex items-center mr-3"
+          <div
+            className="group flex items-center mr-3 bg-transparent cursor-pointer"
             aria-label="Reset button"
             onClick={onReset}
           >
@@ -34,9 +33,9 @@ const PreferenceNav = ({ onReset }) => {
                 </HoverCardContent>
               </HoverCard>
             </div>
-          </button>
-          <button
-            className="group flex items-center mr-3"
+          </div>
+          <div
+            className="group flex items-center mr-3 bg-transparent cursor-pointer"
             aria-label="Toggle fullscreen"
             onClick={toggleFullscreen}
           >
@@ -54,11 +53,11 @@ const PreferenceNav = ({ onReset }) => {
                 </HoverCardContent>
               </HoverCard>
             </div>
-          </button>
+          </div>
         </div>
       </div>
     </div>
   );
 };
 
-export default PreferenceNav;
+export default PreferenceNavbar;

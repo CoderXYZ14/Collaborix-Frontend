@@ -1,16 +1,15 @@
 import React, { useEffect, useState } from "react";
-import PreferenceNavbar from "./PreferenceNavbar";
 import Split from "react-split";
 import ReactCodeMirror from "@uiw/react-codemirror";
 import { vscodeDark } from "@uiw/codemirror-theme-vscode";
 import { javascript } from "@codemirror/lang-javascript";
-import EditorFooter from "./EditorFooter";
 import { useSelector } from "react-redux";
 import { toast } from "react-toastify";
 import { useParams } from "react-router-dom";
 import { problems } from "@/utils/problems";
 import useSubmitProblem from "@/custom-hooks/useSubmitProblem";
 import ACTIONS from "@/utils/socket-actions/action";
+import { EditorFooter, PreferenceNavbar } from "./components";
 
 const Playground = ({
   problem,
