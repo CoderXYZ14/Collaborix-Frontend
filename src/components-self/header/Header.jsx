@@ -39,19 +39,21 @@ const Header = () => {
       <nav>
         <div className="mx-auto px-4 pt-4 pb-3">
           <div className="flex items-center justify-between">
-            <div className="flex items-center flex-wrap space-x-3">
-              <div className="flex items-center justify-center w-8 h-8 rounded-lg bg-white/10">
-                <Code2 size={20} className="text-gray-100" />
+            <Link to="/">
+              <div className="flex items-center flex-wrap space-x-3">
+                <div className="flex items-center justify-center w-8 h-8 rounded-lg bg-white/10">
+                  <Code2 size={20} className="text-gray-100" />
+                </div>
+                <div>
+                  <h1 className="text-base font-bold tracking-wide text-gray-100 font-mono">
+                    Collaborix
+                  </h1>
+                  <p className="text-xs font-medium tracking-wide text-purple-300">
+                    {"<Code /> Together, Build Better"}
+                  </p>
+                </div>
               </div>
-              <div>
-                <h1 className="text-base font-bold tracking-wide text-gray-100 font-mono">
-                  Collaborix
-                </h1>
-                <p className="text-xs font-medium tracking-wide text-purple-300">
-                  {"<Code /> Together, Build Better"}
-                </p>
-              </div>
-            </div>
+            </Link>
             {isProblemPage ? (
               <div className="flex items-center gap-2 flex-1 justify-center">
                 <div
