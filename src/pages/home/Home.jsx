@@ -10,7 +10,7 @@ import {
 } from "lucide-react";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 
 const FeatureCard = ({ icon: Icon, title, description }) => (
   <Card className="border-none shadow-lg bg-white/50 dark:bg-slate-900/50 backdrop-blur-sm">
@@ -27,6 +27,8 @@ const FeatureCard = ({ icon: Icon, title, description }) => (
 );
 
 const Home = () => {
+  const navigate = useNavigate();
+
   return (
     <div className="min-h-screen bg-gradient-to-b from-violet-200 from-10% to-purple-100 dark:from-slate-800 dark:to-purple-800 transition-colors duration-200">
       <div className="container mx-auto px-6 pt-24 pb-20">
@@ -48,21 +50,23 @@ const Home = () => {
               and grow together with peers in an interactive environment.
             </p>
             <div className="flex flex-col sm:flex-row gap-4 justify-center lg:justify-start">
-              <Link to="/signin">
-                <Button size="lg" className="bg-violet-600 hover:bg-violet-700">
-                  Start Coding Now
-                  <ChevronRight className="ml-2 w-4 h-4" />
-                </Button>
-              </Link>
-              <Link to="/problemset">
-                <Button
-                  size="lg"
-                  variant="outline"
-                  className="border-violet-600 dark:border-violet-400 text-violet-600 dark:text-violet-400"
-                >
-                  Explore Problems
-                </Button>
-              </Link>
+              <Button
+                size="lg"
+                onClick={() => navigate("/signin")}
+                className="bg-violet-600 hover:bg-violet-700"
+              >
+                Start Coding Now
+                <ChevronRight className="ml-2 w-4 h-4" />
+              </Button>
+
+              <Button
+                size="lg"
+                onClick={() => navigate("/problemset")}
+                variant="outline"
+                className="border-violet-600 dark:border-violet-400 text-violet-600 dark:text-violet-400"
+              >
+                Explore Problems
+              </Button>
             </div>
           </div>
 
@@ -186,16 +190,15 @@ const Home = () => {
               Join thousands of developers who are already enhancing their
               coding skills through collaborative problem-solving.
             </p>
-            <Link to="/problemset">
-              <Button
-                size="lg"
-                variant="secondary"
-                className="bg-white text-violet-600 hover:bg-violet-50"
-              >
-                Get Started Now
-                <ChevronRight className="ml-2 w-4 h-4" />
-              </Button>
-            </Link>
+            <Button
+              onClick={() => navigate("/problemset")}
+              size="lg"
+              variant="secondary"
+              className="bg-white text-violet-600 hover:bg-violet-50"
+            >
+              Get Started Now
+              <ChevronRight className="ml-2 w-4 h-4" />
+            </Button>
           </CardContent>
         </Card>
       </div>
