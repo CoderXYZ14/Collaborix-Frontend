@@ -19,7 +19,7 @@ const CustomHoverCard = ({ children, tooltipText, onClick, disabled }) => {
           {children}
         </div>
       </HoverCardTrigger>
-      <HoverCardContent className="w-64">
+      <HoverCardContent>
         <div className="text-sm">{tooltipText}</div>
       </HoverCardContent>
     </HoverCard>
