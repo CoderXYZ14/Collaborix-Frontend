@@ -17,7 +17,7 @@ const CustomDialog = ({
   onInputChange,
   onConfirm,
   confirmButtonText,
-  confirmButtonColor = "bg-purple-700 text-gray-300", // Default style
+  confirmButtonColor = "bg-purple-700 text-gray-300",
 }) => {
   return (
     <Dialog open={isOpen} onOpenChange={onClose}>
