@@ -17,7 +17,7 @@ const useSubmitProblem = (pid, setSolved, setSuccess) => {
     try {
       setLoading(true);
       const response = await axios.post(
-        `${VITE_APP_BACKEND_URL}/api/v1/problems/submit/${pid}`,
+        `${import.meta.env.VITE_APP_BACKEND_URL}/api/v1/problems/submit/${pid}`,
         {},
         {
           withCredentials: true,
