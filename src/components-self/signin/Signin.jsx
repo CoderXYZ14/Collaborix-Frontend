@@ -1,21 +1,17 @@
-import axios from "axios";
 import { useState } from "react";
 import InputBox from "../InputBox";
 import { Button } from "@/components/ui/button";
-import { LogIn, Star } from "lucide-react";
-import { Link, useNavigate } from "react-router-dom";
-import { useDispatch } from "react-redux";
-import { login } from "../../store/authSlice.js";
-import { toast } from "react-toastify";
+import { LogIn } from "lucide-react";
+import { Link } from "react-router-dom";
 import { Card, CardContent } from "@/components/ui/card";
+import useSignin from "@/custom-hooks/useSignin";
 
 const Signin = () => {
   const [formData, setFormData] = useState({
     identifier: "",
     password: "",
   });
-  const dispatch = useDispatch();
-  const navigate = useNavigate();
+  const { handleSignin } = useSignin();
 
   const handleChange = (e) => {
     setFormData({
@@ -24,29 +20,9 @@ const Signin = () => {
     });
   };
 
-  const handleSubmit = async (e) => {
+  const handleSubmit = (e) => {
     e.preventDefault();
-    try {
-      const response = await axios.post(
-        "http://localhost:8000/api/v1/users/login",
-        { identifier: formData.identifier, password: formData.password }
-      );
-      console.log("User logged in successfully:", response.data.data);
-      dispatch(login({ userData: response.data.data }));
-      localStorage.setItem("userData", JSON.stringify(response.data.data));
-
-      toast.success("Logged in successfully!", {
-        position: "top-center",
-        autoClose: 3000,
-      });
-      navigate("/");
-    } catch (error) {
-      toast.error("Error logging in. Please try again.", {
-        position: "top-center",
-        autoClose: 3000,
-      });
-      console.error("Error logging in:", error);
-    }
+    handleSignin(formData);
   };
 
   return (
