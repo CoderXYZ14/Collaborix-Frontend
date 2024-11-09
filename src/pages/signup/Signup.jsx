@@ -1,9 +1,12 @@
-import { Signup as SignupComponent } from "../../components-self/index.js";
+import {
+  Container,
+  Signup as SignupComponent,
+} from "../../components-self/index.js";
 const Signup = () => {
   return (
-    <div className="">
+    <Container>
       <SignupComponent />
-    </div>
+    </Container>
   );
 };
 
