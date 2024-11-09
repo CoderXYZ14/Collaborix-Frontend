@@ -12,7 +12,9 @@ const useProblemSolvedStatus = (problemId) => {
         if (!accessToken) return;
 
         const response = await axios.post(
-          `${VITE_APP_BACKEND_URL}/api/v1/problems/solved-status/${problemId}`,
+          `${
+            import.meta.env.VITE_APP_BACKEND_URL
+          }/api/v1/problems/solved-status/${problemId}`,
           {},
           {
             withCredentials: true,

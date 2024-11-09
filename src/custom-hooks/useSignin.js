@@ -15,7 +15,7 @@ const useSignin = () => {
   const handleSignin = async (formData) => {
     try {
       const response = await axios.post(
-        `${VITE_APP_BACKEND_URL}/api/v1/users/login`,
+        `${import.meta.env.VITE_APP_BACKEND_URL}/api/v1/users/login`,
         { identifier: formData.identifier, password: formData.password }
       );
       dispatch(login({ userData: response.data.data }));

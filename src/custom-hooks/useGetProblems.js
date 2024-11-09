@@ -14,7 +14,9 @@ const useGetProblems = (setLoading) => {
         const accessToken = userData?.accessToken;
 
         const response = await axios.get(
-          `${VITE_APP_BACKEND_URL}/api/v1/problems/get-questions`,
+          `${
+            import.meta.env.VITE_APP_BACKEND_URL
+          }/api/v1/problems/get-questions`,
           {
             withCredentials: true,
             headers: accessToken
