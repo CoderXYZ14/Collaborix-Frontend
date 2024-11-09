@@ -181,36 +181,38 @@ const Codespace = ({ problem }) => {
   }, []);
 
   return (
-    <Split className="split" minSize={0}>
-      <ProblemDescription
-        problem={problem}
-        solved={solved}
-        onRoomCreated={handleRoomCreated}
-        onLeaveRoom={handleLeaveRoom}
-        clients={clients}
-        isConnected={isConnected}
-      />
-      <div>
-        <Playground
+    <div className="w-full">
+      <Split className="split" minSize={0}>
+        <ProblemDescription
           problem={problem}
-          setSuccess={setSuccess}
-          setSolved={setSolved}
-          roomId={roomId}
+          solved={solved}
+          onRoomCreated={handleRoomCreated}
+          onLeaveRoom={handleLeaveRoom}
           clients={clients}
-          socket={socketRef.current}
-          userCode={userCode}
-          setUserCode={setUserCode}
+          isConnected={isConnected}
         />
-        {success && (
-          <Confetti
-            gravity={0.3}
-            tweenDuration={2000}
-            width={width}
-            height={height}
+        <div>
+          <Playground
+            problem={problem}
+            setSuccess={setSuccess}
+            setSolved={setSolved}
+            roomId={roomId}
+            clients={clients}
+            socket={socketRef.current}
+            userCode={userCode}
+            setUserCode={setUserCode}
           />
-        )}
-      </div>
-    </Split>
+          {success && (
+            <Confetti
+              gravity={0.3}
+              tweenDuration={2000}
+              width={width}
+              height={height}
+            />
+          )}
+        </div>
+      </Split>
+    </div>
   );
 };
 

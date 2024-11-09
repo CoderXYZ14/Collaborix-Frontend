@@ -78,7 +78,7 @@ const ProblemDescription = ({
   }, [clients]);
 
   return (
-    <div className="flex flex-col h-screen bg-gradient-to-b from-violet-200 from-10% to-purple-100 dark:bg-gradient-to-b dark:from-slate-800 dark:from-5% dark:to-purple-900 transition-colors duration-200">
+    <div className="flex flex-col ">
       <div className="flex justify-between h-12 items-center bg-gray-100 dark:bg-slate-900 border-b border-gray-200 dark:border-slate-800 transition-colors duration-200">
         <div className="px-6 py-2.5 text-sm font-medium bg-white dark:bg-slate-950 text-slate-900 dark:text-white border-b-2 border-violet-500 transition-colors duration-200 flex items-center">
           Description

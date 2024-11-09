@@ -7,13 +7,7 @@ const ProblemPage = () => {
   const { pid } = useParams();
   const problem = problems[pid];
 
-  return problem ? (
-    <div className="min-h-screen bg-gradient-to-b from-slate-800 via-purple-900 to-purple-950">
-      <Codespace problem={problem} />
-    </div>
-  ) : (
-    <ProblemNotFound />
-  );
+  return problem ? <Codespace problem={problem} /> : <ProblemNotFound />;
 };
 
 export default ProblemPage;
