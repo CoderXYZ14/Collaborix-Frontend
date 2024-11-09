@@ -1,7 +1,6 @@
 import React from "react";
 import { Button } from "@/components/ui/button";
 import {
-  Code2,
   Sun,
   Moon,
   ChevronLeft,
@@ -13,7 +12,7 @@ import { useSelector, useDispatch } from "react-redux";
 import { toggleDarkMode } from "../../store/themeSlice.js";
 import UserMenu from "../header/UserMenu";
 import useHandleProblemChange from "@/custom-hooks/useHandleProblemChange.js";
-
+import { Logo, ProblemNavigation } from "./components";
 const Header = () => {
   const location = useLocation();
   const isAuthRoute =
@@ -24,10 +23,7 @@ const Header = () => {
   const dispatch = useDispatch();
   const handleProblemChange = useHandleProblemChange();
 
-  const handleThemeToggle = () => {
-    dispatch(toggleDarkMode());
-  };
-
+  const handleThemeToggle = () => dispatch(toggleDarkMode());
   return (
     <header
       className={`sticky top-0 z-50 ${
@@ -40,75 +36,46 @@ const Header = () => {
         <div className="mx-auto px-4 pt-4 pb-3">
           <div className="flex items-center justify-between">
             <Link to="/">
-              <div className="flex items-center flex-wrap space-x-3">
-                <div className="flex items-center justify-center w-8 h-8 rounded-lg bg-white/10">
-                  <Code2 size={20} className="text-gray-100" />
-                </div>
-                <div>
-                  <h1 className="text-base font-bold tracking-wide text-gray-100 font-mono">
-                    Collaborix
-                  </h1>
-                  <p className="text-xs font-medium tracking-wide text-purple-300">
-                    {"<Code /> Together, Build Better"}
-                  </p>
-                </div>
-              </div>
+              <Logo />
             </Link>
             {isProblemPage ? (
-              <div className="flex items-center gap-2 flex-1 justify-center">
-                <div
-                  className="flex items-center justify-center rounded-lg bg-white/5 hover:bg-white/10 h-8 w-8 cursor-pointer transition-all duration-200 border border-white/10"
-                  onClick={() => handleProblemChange(false)}
-                >
-                  <ChevronLeft size={18} />
-                </div>
-                <Link
-                  to="/"
-                  className="flex items-center gap-2 font-medium max-w-[170px] text-white cursor-pointer"
-                >
-                  <div className="hover:bg-white/10 p-1.5 rounded-lg transition-all duration-200">
-                    <AlignJustify size={18} />
-                  </div>
-                  <p className="text-sm font-medium">Problem List</p>
-                </Link>
-                <div
-                  className="flex items-center justify-center rounded-lg bg-white/5 hover:bg-white/10 h-8 w-8 cursor-pointer transition-all duration-200 border border-white/10"
-                  onClick={() => handleProblemChange(true)}
-                >
-                  <ChevronRight size={18} />
-                </div>
-              </div>
+              <ProblemNavigation
+                onPrevious={() => handleProblemChange(false)}
+                onNext={() => handleProblemChange(true)}
+              />
             ) : (
-              <ul className="flex items-center justify-between font-medium lg:flex-row lg:space-x-8 lg:mt-0">
-                <li>
-                  <NavLink
-                    to="/"
-                    className={({ isActive }) =>
-                      `block py-2 px-3 duration-200 text-sm font-medium rounded-lg ${
-                        isActive
-                          ? "text-white bg-white/10 font-semibold"
-                          : "text-gray-100 hover:text-white"
-                      } hover:bg-white/5 transition-all`
-                    }
-                  >
-                    Home
-                  </NavLink>
-                </li>
-                <li>
-                  <NavLink
-                    to="/problemset"
-                    className={({ isActive }) =>
-                      `block py-2 px-3 duration-200 text-sm font-medium rounded-lg ${
-                        isActive
-                          ? "text-white bg-white/10 font-semibold"
-                          : "text-gray-100 hover:text-white"
-                      } hover:bg-white/5 transition-all`
-                    }
-                  >
-                    Problems
-                  </NavLink>
-                </li>
-              </ul>
+              !isAuthRoute && (
+                <ul className="flex items-center justify-between font-medium lg:flex-row lg:space-x-8 lg:mt-0">
+                  <li>
+                    <NavLink
+                      to="/"
+                      className={({ isActive }) =>
+                        `block py-2 px-3 duration-200 text-sm font-medium rounded-lg ${
+                          isActive
+                            ? "text-white bg-white/10 font-semibold"
+                            : "text-gray-100 hover:text-white"
+                        } hover:bg-white/5 transition-all`
+                      }
+                    >
+                      Home
+                    </NavLink>
+                  </li>
+                  <li>
+                    <NavLink
+                      to="/problemset"
+                      className={({ isActive }) =>
+                        `block py-2 px-3 duration-200 text-sm font-medium rounded-lg ${
+                          isActive
+                            ? "text-white bg-white/10 font-semibold"
+                            : "text-gray-100 hover:text-white"
+                        } hover:bg-white/5 transition-all`
+                      }
+                    >
+                      Problems
+                    </NavLink>
+                  </li>
+                </ul>
+              )
             )}
             {!isAuthRoute && (
               <div className="flex items-center space-x-4">
