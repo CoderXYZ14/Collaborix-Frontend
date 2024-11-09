@@ -69,39 +69,37 @@ const Signup = () => {
                 className="bg-white/70 dark:bg-slate-800/70"
               />
             </div>
-            <div>
-              <InputBox
-                label="Username: "
-                type="text"
-                name="username"
-                placeholder="Username"
-                value={formData.username}
-                onChange={handleChange}
-                className="bg-white/70 dark:bg-slate-800/70"
-              />
-            </div>
-            <div>
-              <InputBox
-                label="Email: "
-                type="email"
-                name="email"
-                placeholder="Email"
-                value={formData.email}
-                onChange={handleChange}
-                className="bg-white/70 dark:bg-slate-800/70"
-              />
-            </div>
-            <div>
-              <InputBox
-                label="Password: "
-                type="password"
-                name="password"
-                placeholder="********"
-                value={formData.password}
-                onChange={handleChange}
-                className="bg-white/70 dark:bg-slate-800/70"
-              />
-            </div>
+
+            <InputBox
+              label="Username: "
+              type="text"
+              name="username"
+              placeholder="Username"
+              value={formData.username}
+              onChange={handleChange}
+              className="bg-white/70 dark:bg-slate-800/70"
+            />
+
+            <InputBox
+              label="Email: "
+              type="email"
+              name="email"
+              placeholder="Email"
+              value={formData.email}
+              onChange={handleChange}
+              className="bg-white/70 dark:bg-slate-800/70"
+            />
+
+            <InputBox
+              label="Password: "
+              type="password"
+              name="password"
+              placeholder="********"
+              value={formData.password}
+              onChange={handleChange}
+              className="bg-white/70 dark:bg-slate-800/70"
+            />
+
             <div>
               <div className="flex items-start">
                 <input
