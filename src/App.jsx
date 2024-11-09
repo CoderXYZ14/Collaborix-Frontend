@@ -5,7 +5,7 @@ import { useDispatch, useSelector } from "react-redux";
 import { useEffect } from "react";
 import { login } from "./store/authSlice";
 import { ToastContainer } from "react-toastify";
-import "react-toastify/dist/ReactToastify.css";
+import { showErrorToast } from "./utils/toast/toastNotifications";
 
 function App() {
   const dispatch = useDispatch();
@@ -18,12 +18,9 @@ function App() {
       try {
         const parsedData = JSON.parse(userData);
         dispatch(login({ userData: parsedData }));
-        navigate("/");
+        // navigate("/");
       } catch (error) {
-        toast.error("Failed to parse userData:", {
-          position: "top-center",
-          autoClose: 3000,
-        });
+        showErrorToast("Failed to parse userData");
         console.error("Failed to parse userData");
       }
     }
