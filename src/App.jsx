@@ -6,6 +6,7 @@ import { useEffect } from "react";
 import { login } from "./store/authSlice";
 import { ToastContainer } from "react-toastify";
 import { showErrorToast } from "./utils/toast/toastNotifications";
+import "react-toastify/dist/ReactToastify.css";
 
 function App() {
   const dispatch = useDispatch();
