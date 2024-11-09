@@ -29,7 +29,7 @@ const useSignup = () => {
         password: dataToSend.password,
       };
       const loginResponse = await axios.post(
-        "http://localhost:8000/api/v1/users/login",
+        `${VITE_APP_BACKEND_URL}/api/v1/users/login`,
         loginData
       );
 

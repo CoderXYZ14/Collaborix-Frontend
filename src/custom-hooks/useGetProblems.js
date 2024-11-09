@@ -14,7 +14,7 @@ const useGetProblems = (setLoading) => {
         const accessToken = userData?.accessToken;
 
         const response = await axios.get(
-          "http://localhost:8000/api/v1/problems/get-questions",
+          `${VITE_APP_BACKEND_URL}/api/v1/problems/get-questions`,
           {
             withCredentials: true,
             headers: accessToken
