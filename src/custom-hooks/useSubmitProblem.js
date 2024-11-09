@@ -1,6 +1,6 @@
 import { useState } from "react";
 import axios from "axios";
-import { toast } from "react-toastify";
+import { showErrorToast } from "@/utils/toast/toastNotifications";
 
 const useSubmitProblem = (pid, setSolved, setSuccess) => {
   const [loading, setLoading] = useState(false);
@@ -10,10 +10,7 @@ const useSubmitProblem = (pid, setSolved, setSuccess) => {
     const accessToken = userData?.accessToken;
 
     if (!accessToken) {
-      toast.error("No access token found. Please login.", {
-        position: "top-center",
-        autoClose: 2000,
-      });
+      showErrorToast("No access token found. Please login.");
       return;
     }
 
@@ -33,20 +30,15 @@ const useSubmitProblem = (pid, setSolved, setSuccess) => {
       if (response.data.success) {
         setSolved(true);
         setSuccess(true);
-
-        // Update local storage with solved problem
-        const updatedUserData = JSON.parse(localStorage.getItem("user"));
-        if (updatedUserData) {
-          updatedUserData.solvedProblemList.push(pid);
-          localStorage.setItem("user", JSON.stringify(updatedUserData));
+        const solvedProblemList = userData?.user?.solvedProblemList || [];
+        if (!solvedProblemList.includes(response.data.data._id)) {
+          const updatedUserData = { ...userData };
+          updatedUserData.user.solvedProblemList.push(response.data.data._id);
+          localStorage.setItem("userData", JSON.stringify(updatedUserData));
         }
       }
     } catch (error) {
-      toast.error("Submission failed: " + error.message, {
-        position: "top-center",
-        autoClose: 2000,
-        theme: "dark",
-      });
+      showErrorToast("Submission failed: " + error.message);
     } finally {
       setLoading(false);
       setSuccess(false);

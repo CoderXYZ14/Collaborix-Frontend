@@ -1,9 +1,12 @@
 import { useDispatch } from "react-redux";
 import { useNavigate } from "react-router-dom";
 
-import { toast } from "react-toastify";
 import axios from "axios";
 import { login } from "@/store/authSlice";
+import {
+  showErrorToast,
+  showSuccessToast,
+} from "@/utils/toast/toastNotifications";
 
 const useSignin = () => {
   const dispatch = useDispatch();
@@ -18,16 +21,10 @@ const useSignin = () => {
       dispatch(login({ userData: response.data.data }));
       localStorage.setItem("userData", JSON.stringify(response.data.data));
 
-      toast.success("Logged in successfully!", {
-        position: "top-center",
-        autoClose: 1000,
-      });
+      showSuccessToast("Logged in successfully!");
       navigate("/");
     } catch (error) {
-      toast.error("Error logging in. Please try again.", {
-        position: "top-center",
-        autoClose: 1000,
-      });
+      showErrorToast("Error logging in. Please try again.");
       console.error("Error logging in:", error);
     }
   };

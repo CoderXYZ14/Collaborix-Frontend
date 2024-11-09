@@ -1,6 +1,6 @@
+import { showErrorToast } from "@/utils/toast/toastNotifications";
 import axios from "axios";
 import { useEffect, useState } from "react";
-import { toast } from "react-toastify";
 
 const useGetProblems = (setLoading) => {
   const [problems, setProblems] = useState([]);
@@ -10,11 +10,9 @@ const useGetProblems = (setLoading) => {
       try {
         setLoading(true);
 
-        // Get user data if available
         const userData = JSON.parse(localStorage.getItem("userData"));
         const accessToken = userData?.accessToken;
 
-        // Make API call with or without token
         const response = await axios.get(
           "http://localhost:8000/api/v1/problems/get-questions",
           {
@@ -30,13 +28,9 @@ const useGetProblems = (setLoading) => {
       } catch (error) {
         setLoading(false);
 
-        toast.error("Error fetching questions. Please try again.", {
-          position: "top-center",
-          autoClose: 3000,
-        });
-
+        showErrorToast("Error fetching questions. Please try again.");
         console.error("Error fetching questions:", error);
-        setProblems([]); // Set empty array on error
+        setProblems([]);
       }
     };
 

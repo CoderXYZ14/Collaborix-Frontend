@@ -2,7 +2,7 @@ import { useEffect, useState } from "react";
 import axios from "axios";
 
 const useProblemSolvedStatus = (problemId) => {
-  const [isSolved, setIsSolved] = useState(null); // Initialize as null
+  const [isSolved, setIsSolved] = useState(null);
 
   useEffect(() => {
     const checkProblemSolvedStatus = async () => {

@@ -1,6 +1,6 @@
 import axios from "axios";
-import { toast } from "react-toastify";
 import { useNavigate } from "react-router-dom";
+import { showSuccessToast } from "@/utils/toast/toastNotifications";
 
 const useContributeQuestion = () => {
   const navigate = useNavigate();
@@ -8,20 +8,14 @@ const useContributeQuestion = () => {
   const submitQuestion = async (formData) => {
     try {
       const response = await axios.post(
-        "http://localhost:8000/api/v1/problems/add-questions",
+        `${import.meta.env.VITE_APP_BACKEND_URL}/api/v1/problems/add-questions`,
         formData
       );
 
-      toast.success("Question added successfully !!", {
-        position: "top-center",
-        autoClose: 3000,
-      });
+      showSuccessToast("Question added successfully !!");
       navigate("/");
     } catch (error) {
-      toast.error("Error adding question. Please try again.", {
-        position: "top-center",
-        autoClose: 3000,
-      });
+      showSuccessToast("Error adding question. Please try again.");
       console.error("Error adding question:", error);
     }
   };
