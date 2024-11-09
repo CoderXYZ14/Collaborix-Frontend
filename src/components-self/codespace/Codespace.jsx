@@ -1,6 +1,6 @@
 import React, { useEffect, useRef, useState } from "react";
 import Split from "react-split";
-import { useLocation, useParams } from "react-router-dom"; // Changed to React Router
+import { useLocation } from "react-router-dom";
 import Playground from "./playground/Playground";
 import ProblemDescription from "./problem-description/ProblemDescription";
 import Confetti from "react-confetti";
@@ -8,7 +8,10 @@ import useWindowSize from "@/custom-hooks/useWindowSize";
 import { toast } from "react-toastify";
 import { initSocket } from "@/socket/socket";
 import ACTIONS from "@/utils/socket-actions/action.js";
-import { useDispatch, useSelector } from "react-redux";
+import {
+  showErrorToast,
+  showInfoToast,
+} from "@/utils/toast/toastNotifications";
 
 const Codespace = ({ problem }) => {
   const location = useLocation();
@@ -68,10 +71,7 @@ const Codespace = ({ problem }) => {
       const handleErrors = (e) => {
         console.error("socket error", e);
         setIsConnected(false);
-        toast.error("Socket connection failed, try again later.", {
-          position: "top-center",
-          autoClose: 2000,
-        });
+        showErrorToast("Socket connection failed, try again later.");
       };
 
       socketRef.current.on("connect_error", handleErrors);
@@ -88,12 +88,8 @@ const Codespace = ({ problem }) => {
       socketRef.current.on(
         ACTIONS.JOINED,
         ({ clients, username: joinedUsername, socketId }) => {
-          if (joinedUsername !== username) {
-            toast.info(`${joinedUsername} joined the room`, {
-              position: "top-center",
-              autoClose: 2000,
-            });
-          }
+          if (joinedUsername !== username)
+            showInfoToast(`${joinedUsername} joined the room`);
 
           setClients(clients);
 

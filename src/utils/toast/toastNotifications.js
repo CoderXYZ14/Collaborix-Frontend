@@ -13,3 +13,10 @@ export const showErrorToast = (message) => {
     autoClose: 1000,
   });
 };
+
+export const showInfoToast = (message) => {
+  toast.info(message, {
+    position: "top-center",
+    autoClose: 1000,
+  });
+};
