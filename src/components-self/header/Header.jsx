@@ -3,7 +3,7 @@ import { Sun, Moon } from "lucide-react";
 import { Link, useLocation } from "react-router-dom";
 import { useSelector, useDispatch } from "react-redux";
 import { toggleDarkMode } from "../../store/themeSlice.js";
-import UserMenu from "../header/UserMenu";
+import UserMenu from "./components/UserMenu.jsx";
 import useHandleProblemChange from "@/custom-hooks/useHandleProblemChange.js";
 import { Logo, NavMenu, ProblemNavigation, AuthButtons } from "./components";
 const Header = () => {
