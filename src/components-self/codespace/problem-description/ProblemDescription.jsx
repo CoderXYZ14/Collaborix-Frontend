@@ -1,10 +1,6 @@
-import React, { useEffect, useState } from "react";
+import { useState } from "react";
 import { CheckCircle, Users, UserPlus, LogOut } from "lucide-react";
-import {
-  HoverCard,
-  HoverCardContent,
-  HoverCardTrigger,
-} from "@/components/ui/hover-card";
+
 import {
   Dialog,
   DialogContent,
@@ -16,7 +12,11 @@ import { Input } from "@/components/ui/input";
 import useGetDifficultyColor from "@/custom-hooks/useGetDifficultyColor";
 import useProblemSolvedStatus from "@/custom-hooks/useProblemSolvedStatus";
 import { v4 as uuidV4 } from "uuid";
-import { toast } from "react-toastify";
+import {
+  showErrorToast,
+  showSuccessToast,
+} from "@/utils/toast/toastNotifications";
+import { CustomHoverCard } from "./components";
 
 const ProblemDescription = ({
   problem,
@@ -47,10 +47,7 @@ const ProblemDescription = ({
   const handleCopyRoomId = () => {
     navigator.clipboard.writeText(roomId);
     setShowCreateDialog(false);
-    toast.success("Room ID copied to clipboard!", {
-      position: "top-center",
-      autoClose: 2000,
-    });
+    showSuccessToast("Room ID copied to clipboard!");
   };
 
   const handleJoinRoom = () => {
@@ -59,12 +56,7 @@ const ProblemDescription = ({
       setShowJoinDialog(false);
       onRoomCreated(joinRoomId);
       setRoomActive(true);
-    } else {
-      toast.error("Please enter a room ID", {
-        position: "top-center",
-        autoClose: 2000,
-      });
-    }
+    } else showErrorToast("Please enter a room ID");
   };
 
   const handleLeaveRoom = () => {
@@ -73,10 +65,6 @@ const ProblemDescription = ({
     onLeaveRoom();
   };
 
-  useEffect(() => {
-    console.log("Clients in ProblemDescription:", clients);
-  }, [clients]);
-
   return (
     <div className="flex flex-col ">
       <div className="flex justify-between h-12 items-center bg-gray-100 dark:bg-slate-900 border-b border-gray-200 dark:border-slate-800 transition-colors duration-200">
@@ -84,59 +72,30 @@ const ProblemDescription = ({
           Description
         </div>
         <div className="mr-4 flex items-center space-x-2">
-          {/* Create Room Icon with Hover Card */}
-          {/* Create Room Icon with Hover Card */}
-          <HoverCard>
-            <HoverCardTrigger asChild>
-              <UserPlus
-                className={`h-4 w-4 text-slate-600 dark:text-slate-300 ${
-                  isConnected
-                    ? "opacity-50 cursor-not-allowed"
-                    : "hover:text-violet-600 dark:hover:text-violet-400 cursor-pointer"
-                } transition-colors duration-200`}
-                onClick={!isConnected ? handleCreateRoom : undefined}
-              />
-            </HoverCardTrigger>
-            <HoverCardContent className="w-64">
-              <div className="text-sm">Create a room</div>
-            </HoverCardContent>
-          </HoverCard>
-
-          {/* Join Room Icon with Hover Card */}
-          <HoverCard>
-            <HoverCardTrigger asChild>
-              <Users
-                className={`h-4 w-4 text-slate-600 dark:text-slate-300 ${
-                  isConnected
-                    ? "opacity-50 cursor-not-allowed"
-                    : "hover:text-violet-600 dark:hover:text-violet-400 cursor-pointer"
-                } transition-colors duration-200`}
-                onClick={
-                  !isConnected ? () => setShowJoinDialog(true) : undefined
-                }
-              />
-            </HoverCardTrigger>
-            <HoverCardContent className="w-64">
-              <div className="text-sm">Join a room</div>
-            </HoverCardContent>
-          </HoverCard>
-
-          {/* Leave Room Icon with Hover Card */}
-          <HoverCard>
-            <HoverCardTrigger asChild>
-              <LogOut
-                className={`h-4 w-4 text-slate-600 dark:text-slate-300 ${
-                  !isConnected
-                    ? "opacity-50 cursor-not-allowed"
-                    : "hover:text-violet-600 dark:hover:text-violet-400 cursor-pointer"
-                } transition-colors duration-200`}
-                onClick={isConnected ? handleLeaveRoom : undefined}
-              />
-            </HoverCardTrigger>
-            <HoverCardContent className="w-64">
-              <div className="text-sm">Leave room</div>
-            </HoverCardContent>
-          </HoverCard>
+          {/* Create Room Icon with Hover Card */}\
+          <CustomHoverCard
+            tooltipText="Create a room"
+            onClick={!isConnected ? handleCreateRoom : undefined}
+            disabled={isConnected}
+          >
+            <UserPlus className="h-4 w-4" />
+          </CustomHoverCard>
+          {/* Join Room Icon */}
+          <CustomHoverCard
+            tooltipText="Join a room"
+            onClick={!isConnected ? () => setShowJoinDialog(true) : undefined}
+            disabled={isConnected}
+          >
+            <Users className="h-4 w-4" />
+          </CustomHoverCard>
+          {/* Leave Room Icon */}
+          <CustomHoverCard
+            tooltipText="Leave room"
+            onClick={isConnected ? handleLeaveRoom : undefined}
+            disabled={!isConnected}
+          >
+            <LogOut className="h-4 w-4" />
+          </CustomHoverCard>
         </div>
       </div>
 
