@@ -39,29 +39,25 @@ const Signin = () => {
             Login to your account
           </h1>
           <form className="space-y-4 md:space-y-6" onSubmit={handleSubmit}>
-            <div>
-              <InputBox
-                label="Username / Email: "
-                type="text"
-                name="identifier"
-                placeholder="Username / Email"
-                value={formData.identifier}
-                onChange={handleChange}
-                className="bg-white/70 dark:bg-slate-800/70"
-              />
-            </div>
+            <InputBox
+              label="Username / Email: "
+              type="text"
+              name="identifier"
+              placeholder="Username / Email"
+              value={formData.identifier}
+              onChange={handleChange}
+              className="bg-white/70 dark:bg-slate-800/70"
+            />
 
-            <div>
-              <InputBox
-                label="Password: "
-                type="password"
-                name="password"
-                placeholder="********"
-                value={formData.password}
-                onChange={handleChange}
-                className="bg-white/70 dark:bg-slate-800/70"
-              />
-            </div>
+            <InputBox
+              label="Password: "
+              type="password"
+              name="password"
+              placeholder="********"
+              value={formData.password}
+              onChange={handleChange}
+              className="bg-white/70 dark:bg-slate-800/70"
+            />
 
             <Button
               className="w-full bg-violet-600 hover:bg-violet-700 dark:bg-violet-600 dark:hover:bg-violet-700 text-white"
