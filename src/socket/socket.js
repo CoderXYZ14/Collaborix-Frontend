@@ -8,6 +8,6 @@ export const initSocket = async () => {
     transports: ["websocket"],
   };
 
-  return io(import.meta.env.VITE_APP_BACKEND_URL, options);
+  return io(import.meta.env.VITE_APP_BACKEND_SOCKET_URL, options);
   //return an instance of socket client
 };

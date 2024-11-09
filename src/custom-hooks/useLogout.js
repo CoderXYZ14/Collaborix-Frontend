@@ -1,7 +1,10 @@
 import { useDispatch } from "react-redux";
 import axios from "axios";
-import { toast } from "react-toastify";
 import { logout } from "@/store/authSlice";
+import {
+  showErrorToast,
+  showSuccessToast,
+} from "@/utils/toast/toastNotifications";
 
 const useLogout = () => {
   const dispatch = useDispatch();
@@ -30,15 +33,9 @@ const useLogout = () => {
       localStorage.removeItem("userData");
       localStorage.removeItem("accessToken");
 
-      toast.success("User logged out successfully !!", {
-        position: "top-center",
-        autoClose: 1000,
-      });
+      showSuccessToast("User logged out successfully !!");
     } catch (error) {
-      toast.error("Error logging out. Please try again.", {
-        position: "top-center",
-        autoClose: 1000,
-      });
+      showErrorToast("Error logging out. Please try again.");
       console.error(
         "Logout failed:",
         error.response?.data?.message || error.message
