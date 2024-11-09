@@ -44,38 +44,7 @@ const Header = () => {
                 onNext={() => handleProblemChange(true)}
               />
             ) : (
-              !isAuthRoute && (
-                <ul className="flex items-center justify-between font-medium lg:flex-row lg:space-x-8 lg:mt-0">
-                  <li>
-                    <NavLink
-                      to="/"
-                      className={({ isActive }) =>
-                        `block py-2 px-3 duration-200 text-sm font-medium rounded-lg ${
-                          isActive
-                            ? "text-white bg-white/10 font-semibold"
-                            : "text-gray-100 hover:text-white"
-                        } hover:bg-white/5 transition-all`
-                      }
-                    >
-                      Home
-                    </NavLink>
-                  </li>
-                  <li>
-                    <NavLink
-                      to="/problemset"
-                      className={({ isActive }) =>
-                        `block py-2 px-3 duration-200 text-sm font-medium rounded-lg ${
-                          isActive
-                            ? "text-white bg-white/10 font-semibold"
-                            : "text-gray-100 hover:text-white"
-                        } hover:bg-white/5 transition-all`
-                      }
-                    >
-                      Problems
-                    </NavLink>
-                  </li>
-                </ul>
-              )
+              !isAuthRoute && <NavMenu />
             )}
             {!isAuthRoute && (
               <div className="flex items-center space-x-4">
