@@ -26,7 +26,7 @@ const Signin = () => {
   };
 
   return (
-    <div className="min-h-screen bg-gradient-to-b from-violet-200 from-10% to-purple-100 dark:from-slate-800 dark:to-purple-800 transition-colors duration-200 flex flex-col justify-center items-center">
+    <div className="flex flex-col justify-center items-center ">
       <div className="text-center mb-8">
         <h1 className="text-4xl font-bold text-slate-900 dark:text-white mb-4">
           Sign In to Your{" "}

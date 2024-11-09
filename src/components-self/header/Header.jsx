@@ -19,7 +19,7 @@ const Header = () => {
   const handleThemeToggle = () => dispatch(toggleDarkMode());
   return (
     <header
-      className={`sticky top-0 z-50 ${
+      className={`absolute w-full top-0 z-50 ${
         darkMode
           ? "bg-gradient-to-r from-slate-900 via-purple-900 to-slate-900 text-gray-100"
           : "bg-gradient-to-r from-indigo-700 via-purple-600 to-indigo-700 text-gray-50"

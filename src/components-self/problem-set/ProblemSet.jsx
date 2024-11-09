@@ -6,7 +6,7 @@ const ProblemSet = () => {
   const [loadingProblems, setLoadingProblem] = useState(true);
 
   return (
-    <main className="flex-col justify-center w-full h-screen items-center bg-gradient-to-b from-violet-700 to-purple-600 dark:bg-gradient-to-b dark:from-slate-800 from-5% dark:to-purple-800 ">
+    <main className="flex-col justify-center w-full items-center">
       <div className="px-6 pt-20 pb-12 flex flex-col items-center">
         <h1 className="text-3xl font-bold text-center mb-8 text-gray-50">
           &ldquo;QUALITY OVER QUANTITY&rdquo; 👇
