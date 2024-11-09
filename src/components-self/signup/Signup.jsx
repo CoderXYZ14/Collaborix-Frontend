@@ -1,4 +1,3 @@
-import axios from "axios";
 import { useState } from "react";
 import InputBox from "../InputBox";
 import { Button } from "@/components/ui/button";
@@ -9,10 +8,8 @@ import {
   HoverCardTrigger,
 } from "@/components/ui/hover-card";
 import { LogIn } from "lucide-react";
-import { Link, useNavigate } from "react-router-dom";
-import { useDispatch } from "react-redux";
-import { login } from "../../store/authSlice.js";
-import { toast } from "react-toastify";
+import { Link } from "react-router-dom";
+import useSignup from "@/custom-hooks/useSignup";
 
 const Signup = () => {
   const [formData, setFormData] = useState({
@@ -23,8 +20,7 @@ const Signup = () => {
     password: "",
     termsAccepted: false,
   });
-  const dispatch = useDispatch();
-  const navigate = useNavigate();
+  const { handleSignup } = useSignup();
 
   const handleChange = (e) => {
     const isCheckbox = e.target.type === "checkbox";
@@ -34,53 +30,9 @@ const Signup = () => {
     });
   };
 
-  const handleSubmit = async (e) => {
+  const handleSubmit = (e) => {
     e.preventDefault();
-    const { firstName, lastName, termsAccepted, ...rest } = formData;
-    const dataToSend = {
-      ...rest,
-      fullName: `${firstName} ${lastName}`,
-    };
-
-    if (!termsAccepted) {
-      toast.error("You must accept the terms and conditions to sign up.", {
-        position: "top-center",
-        autoClose: 3000,
-      });
-      return;
-    }
-
-    try {
-      const registerResponse = await axios.post(
-        "http://localhost:8000/api/v1/users/register",
-        dataToSend
-      );
-      console.log("Account created successfully:", registerResponse.data);
-
-      const loginData = {
-        identifier: dataToSend.username,
-        password: dataToSend.password,
-      };
-      const loginResponse = await axios.post(
-        "http://localhost:8000/api/v1/users/login",
-        loginData
-      );
-
-      dispatch(login({ userData: loginResponse.data.data }));
-      localStorage.setItem("userData", JSON.stringify(loginResponse.data.data));
-
-      toast.success("Account created and logged in successfully!", {
-        position: "top-center",
-        autoClose: 3000,
-      });
-      navigate("/");
-    } catch (error) {
-      toast.error("Error creating account or logging in. Please try again.", {
-        position: "top-center",
-        autoClose: 3000,
-      });
-      console.error("Error creating account or logging in:", error);
-    }
+    handleSignup(formData);
   };
 
   return (
