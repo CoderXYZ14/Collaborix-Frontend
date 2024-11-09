@@ -181,7 +181,7 @@ const Codespace = ({ problem }) => {
   }, []);
 
   return (
-    <div className="w-full">
+    <div className="w-full fixed">
       <Split className="split" minSize={0}>
         <ProblemDescription
           problem={problem}
