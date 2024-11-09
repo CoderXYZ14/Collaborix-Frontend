@@ -6,19 +6,11 @@ import {
   Brain,
   ChevronRight,
   Star,
-  Award,
-  GitBranch,
-  Globe,
   Zap,
 } from "lucide-react";
-import {
-  Card,
-  CardContent,
-  CardDescription,
-  CardHeader,
-  CardTitle,
-} from "@/components/ui/card";
+import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
+import { Link } from "react-router-dom";
 
 const FeatureCard = ({ icon: Icon, title, description }) => (
   <Card className="border-none shadow-lg bg-white/50 dark:bg-slate-900/50 backdrop-blur-sm">
@@ -37,7 +29,6 @@ const FeatureCard = ({ icon: Icon, title, description }) => (
 const Home = () => {
   return (
     <div className="min-h-screen bg-gradient-to-b from-violet-200 from-10% to-purple-100 dark:from-slate-800 dark:to-purple-800 transition-colors duration-200">
-      {/* Hero Section */}
       <div className="container mx-auto px-6 pt-24 pb-20">
         <div className="flex flex-col lg:flex-row items-center gap-12 mb-20">
           <div className="flex-1 text-center lg:text-left">
@@ -57,17 +48,21 @@ const Home = () => {
               and grow together with peers in an interactive environment.
             </p>
             <div className="flex flex-col sm:flex-row gap-4 justify-center lg:justify-start">
-              <Button size="lg" className="bg-violet-600 hover:bg-violet-700">
-                Start Coding Now
-                <ChevronRight className="ml-2 w-4 h-4" />
-              </Button>
-              <Button
-                size="lg"
-                variant="outline"
-                className="border-violet-600 dark:border-violet-400 text-violet-600 dark:text-violet-400"
-              >
-                Explore Problems
-              </Button>
+              <Link to="/signin">
+                <Button size="lg" className="bg-violet-600 hover:bg-violet-700">
+                  Start Coding Now
+                  <ChevronRight className="ml-2 w-4 h-4" />
+                </Button>
+              </Link>
+              <Link to="/problemset">
+                <Button
+                  size="lg"
+                  variant="outline"
+                  className="border-violet-600 dark:border-violet-400 text-violet-600 dark:text-violet-400"
+                >
+                  Explore Problems
+                </Button>
+              </Link>
             </div>
           </div>
 
@@ -107,7 +102,7 @@ const Home = () => {
                 strokeWidth="2"
                 stroke="currentColor"
               />
-              {/* Code Editor Windows */}
+
               <rect
                 x="60"
                 y="50"
@@ -124,7 +119,7 @@ const Home = () => {
                 rx="4"
                 fill="url(#grad2)"
               />
-              {/* Connection Lines */}
+
               <path
                 d="M177.5 140 C190 140, 190 140, 202.5 140"
                 stroke="#7c3aed"
@@ -140,9 +135,9 @@ const Home = () => {
         {/* Stats Section */}
         <div className="grid grid-cols-2 md:grid-cols-4 gap-8 mb-20">
           {[
-            { number: "1000+", label: "Coding Problems" },
-            { number: "50K+", label: "Active Users" },
-            { number: "100K+", label: "Solutions Submitted" },
+            { number: "10+", label: "Coding Problems" },
+            { number: "20+", label: "Active Users" },
+            { number: "1K+", label: "Solutions Submitted" },
             { number: "99.9%", label: "Platform Uptime" },
           ].map((stat, index) => (
             <div key={index} className="text-center">
@@ -173,16 +168,7 @@ const Home = () => {
             title="Time-based Challenges"
             description="Practice under pressure with timed coding challenges and compete with friends in real-time contests."
           />
-          <FeatureCard
-            icon={GitBranch}
-            title="Version Control"
-            description="Built-in version control system to track changes and maintain different solution approaches."
-          />
-          <FeatureCard
-            icon={Globe}
-            title="Global Community"
-            description="Connect with developers worldwide, share solutions, and learn different approaches to problem-solving."
-          />
+
           <FeatureCard
             icon={Zap}
             title="Instant Feedback"
@@ -200,14 +186,16 @@ const Home = () => {
               Join thousands of developers who are already enhancing their
               coding skills through collaborative problem-solving.
             </p>
-            <Button
-              size="lg"
-              variant="secondary"
-              className="bg-white text-violet-600 hover:bg-violet-50"
-            >
-              Get Started Now
-              <ChevronRight className="ml-2 w-4 h-4" />
-            </Button>
+            <Link to="/problemset">
+              <Button
+                size="lg"
+                variant="secondary"
+                className="bg-white text-violet-600 hover:bg-violet-50"
+              >
+                Get Started Now
+                <ChevronRight className="ml-2 w-4 h-4" />
+              </Button>
+            </Link>
           </CardContent>
         </Card>
       </div>
@@ -216,7 +204,7 @@ const Home = () => {
       <footer className="border-t border-violet-200 dark:border-violet-800 py-8 mt-20">
         <div className="container mx-auto px-6">
           <div className="flex flex-col md:flex-row justify-between items-center">
-            <div className="flex items-center space-x-2 text-violet-600 dark:text-violet-400 font-semibold text-xl">
+            <div className="flex items-center space-x-2 text-gray-50 dark:text-gray-50 font-semibold text-xl">
               <Code2 />
               <span>Collaborix</span>
             </div>
