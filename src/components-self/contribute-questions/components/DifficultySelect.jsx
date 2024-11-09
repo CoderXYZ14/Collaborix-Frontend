@@ -12,17 +12,23 @@ const DifficultySelect = ({ value, onValueChange }) => {
 
   return (
     <Select value={value} onValueChange={onValueChange}>
-      <SelectTrigger className="w-full bg-slate-900/90 backdrop-blur-sm border border-slate-700 text-white hover:bg-slate-800/90 transition-colors">
+      <SelectTrigger
+        className="relative flex h-10 w-full items-center justify-between rounded-md border border-slate-200 bg-white/70 px-3 py-2 text-sm   dark:border-slate-700 dark:bg-slate-800/70 
+          focus:ring-2 
+          focus:ring-violet-500/50 dark:focus:ring-violet-400/50 
+          focus:border-violet-500 dark:focus:border-violet-400
+          "
+      >
         <SelectValue placeholder="Select difficulty">
           {value && (
-            <span className="inline-flex items-center gap-2">
+            <div className="inline-flex items-center gap-2">
               <span
                 className={`h-2 w-2 rounded-full ${getColorClasses(
                   value
                 ).textColor.replace("text-", "bg-")}`}
               />
               <span className={getColorClasses(value).textColor}>{value}</span>
-            </span>
+            </div>
           )}
         </SelectValue>
       </SelectTrigger>
