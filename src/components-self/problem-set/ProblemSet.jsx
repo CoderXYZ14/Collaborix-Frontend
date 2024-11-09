@@ -1,5 +1,4 @@
-import React, { useState } from "react";
-
+import { useState } from "react";
 import LoadingSkeletonProblemList from "../loading-skeleton/LoadingSkeletonProblemList.jsx";
 import { ProblemTableHeader, ProblemList } from "./components";
 
