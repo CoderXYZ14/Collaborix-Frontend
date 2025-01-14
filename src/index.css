@@ -98,3 +98,7 @@ body {
   height: 100%; /* Ensure full height for body */
   overflow-x: hidden; /* Prevent horizontal scroll if not needed */
 }
+
+::-webkit-scrollbar {
+  width: 0;
+}
