@@ -1,9 +1,5 @@
 const Container = ({ children }) => {
-  return (
-    <div className="w-full flex-1 flex justify-center items-center">
-      {children}
-    </div>
-  );
+  return <div className="w-full ">{children}</div>;
 };
 
 export default Container;
