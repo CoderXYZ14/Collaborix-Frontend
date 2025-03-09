@@ -10,6 +10,7 @@ import {
 import { LogIn } from "lucide-react";
 import { Link } from "react-router-dom";
 import useSignup from "@/custom-hooks/useSignup";
+import { GoogleLogin } from "@react-oauth/google";
 
 const Signup = () => {
   const [formData, setFormData] = useState({
@@ -20,7 +21,7 @@ const Signup = () => {
     password: "",
     termsAccepted: false,
   });
-  const { handleSignup } = useSignup();
+  const { handleSignup, handleGoogleSignup } = useSignup();
 
   const handleChange = (e) => {
     const isCheckbox = e.target.type === "checkbox";
@@ -36,7 +37,7 @@ const Signup = () => {
   };
 
   return (
-    <div className=" flex flex-col justify-center items-center">
+    <div className="flex flex-col justify-center items-center">
       <div className="text-center mb-8">
         <h1 className="text-4xl font-bold text-slate-900 dark:text-white mb-4">
           Sign Up for Your{" "}
@@ -48,6 +49,32 @@ const Signup = () => {
           <h1 className="text-xl font-bold text-slate-900 dark:text-white mb-6">
             Create an account
           </h1>
+
+          <div className="mb-6">
+            <GoogleLogin
+              onSuccess={(credentialResponse) => {
+                handleGoogleSignup(credentialResponse);
+              }}
+              onError={() => {
+                console.log("Google Sign-Up Failed");
+              }}
+              size="large"
+              width="100%"
+              text="signup_with"
+            />
+          </div>
+
+          <div className="relative my-6">
+            <div className="absolute inset-0 flex items-center">
+              <div className="w-full border-t border-slate-300 dark:border-slate-700"></div>
+            </div>
+            <div className="relative flex justify-center text-sm">
+              <span className="px-2 bg-white/50 dark:bg-slate-900/50 text-slate-500 dark:text-slate-400">
+                Or continue with
+              </span>
+            </div>
+          </div>
+
           <form className="space-y-4 md:space-y-6" onSubmit={handleSubmit}>
             <div className="flex justify-between space-x-3">
               <InputBox
