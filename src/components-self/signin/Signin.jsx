@@ -40,7 +40,7 @@ const Signin = () => {
             Login to your account
           </h1>
 
-          <div className="mb-6">
+          {/* <div className="mb-6">
             <GoogleLogin
               onSuccess={(credentialResponse) => {
                 handleGoogleSignin(credentialResponse);
@@ -52,10 +52,10 @@ const Signin = () => {
               width="100%"
               text="signin_with"
             />
-          </div>
+          </div> */}
 
           {/* Divider */}
-          <div className="relative my-6">
+          {/* <div className="relative my-6">
             <div className="absolute inset-0 flex items-center">
               <div className="w-full border-t border-slate-300 dark:border-slate-700"></div>
             </div>
@@ -64,7 +64,7 @@ const Signin = () => {
                 Or continue with
               </span>
             </div>
-          </div>
+          </div> */}
 
           {/* Regular Sign-In Form */}
           <form className="space-y-4 md:space-y-6" onSubmit={handleSubmit}>

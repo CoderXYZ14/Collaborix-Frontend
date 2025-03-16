@@ -50,7 +50,7 @@ const Signup = () => {
             Create an account
           </h1>
 
-          <div className="mb-6">
+          {/* <div className="mb-6">
             <GoogleLogin
               onSuccess={(credentialResponse) => {
                 handleGoogleSignup(credentialResponse);
@@ -62,9 +62,9 @@ const Signup = () => {
               width="100%"
               text="signup_with"
             />
-          </div>
+          </div> */}
 
-          <div className="relative my-6">
+          {/* <div className="relative my-6">
             <div className="absolute inset-0 flex items-center">
               <div className="w-full border-t border-slate-300 dark:border-slate-700"></div>
             </div>
@@ -73,7 +73,7 @@ const Signup = () => {
                 Or continue with
               </span>
             </div>
-          </div>
+          </div> */}
 
           <form className="space-y-4 md:space-y-6" onSubmit={handleSubmit}>
             <div className="flex justify-between space-x-3">
